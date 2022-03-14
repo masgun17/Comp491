@@ -1,25 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Routes,
   Route,
-  Redirect,
 } from "react-router-dom";
 import "./App.css";
-import route from "./tool/route.js";
+import Layout from "./pages/Layout";
+import DiseaseInformationPage from "./pages/DiseaseInformationPage";
+import RiskFactorsPage from "./pages/RiskFactorsPage";
+import Dashboard from "./pages/Dashboard";
+import TestInformationPage from "./pages/TestInformation";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
 
 function App() {
   return (
-    <div className="App">
-      <h>HEYyyyY</h>
-      {/* <Router basename={"http://localhost:3001" || "/"}>
+    <BrowserRouter>
       <Routes>
-        <Route exact path="/dashboard">
-          <h>HEYY2</h>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="diseaseInformationPage" element={<DiseaseInformationPage />} />
+          <Route path="riskFactors" element={<RiskFactorsPage />} />
+          <Route path="testInformation" element={<TestInformationPage />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="privacy" element={<Privacy />} />
+          {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
-       </Router> */}
-    </div>
+    </BrowserRouter>
   );
 }
 
