@@ -1,11 +1,12 @@
 import React from "react";
+import './styles/styles.css';
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 import "./App.css";
-import Layout from "./pages/Layout";
+import Header from "./pages/Header";
 import DiseaseInformationPage from "./pages/DiseaseInformationPage";
 import RiskFactorsPage from "./pages/RiskFactorsPage";
 import Dashboard from "./pages/Dashboard";
@@ -17,7 +18,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Header />}>
           <Route index element={<Dashboard />} />
           <Route path="diseaseInformationPage" element={<DiseaseInformationPage />} />
           <Route path="riskFactors" element={<RiskFactorsPage />} />
