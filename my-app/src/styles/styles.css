@@ -1,19 +1,58 @@
-.header, .header:visited, .header:active, .header:hover{
+.headerWholePage{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 10% 90%;
+}
+
+.header,
+.header:visited,
+.header:active,
+.header:hover {
   background-color: #556c9c;
-  height: 10vh;
+  /* height: 10%; */
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 20%;
+  padding-right: 20%;
   /* font-size: calc(10px + 2vmin); */
   font-size: 20px;
   color: rgb(235, 217, 217) !important;
 }
 
 a:-webkit-any-link {
-    color: inherit;
-    cursor: pointer;
-    text-decoration: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: inherit;
+}
+
+.dashboardLayout {
+  /* background-color: #556c9c; */
+  padding: 0% 20% 5% 20%;
+  display: grid;
+  grid-template-rows: 10% 45% 45%;
+  height: auto;
+  /* height: 70vh; */
+}
+
+.dashboardDiv1 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: max-content; */
+}
+
+.dashboardDiv2, .dashboardDiv3 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100%; */
+  /* height: max-content; */
+  margin: 30px 0px 30px 0px;
+  /* background-color: #556c9c; */
+  border: 1px solid #556c9c;
+  border-radius: 90px;
 }
