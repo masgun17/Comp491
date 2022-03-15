@@ -1,5 +1,5 @@
 const DiseaseInformationPage = () => {
-    return <h1>DiseaseInformationPage</h1>;
+    return <h1>Disease Information Page</h1>;
   };
   
   export default DiseaseInformationPage;
