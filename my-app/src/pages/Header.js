@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 const Header = () => {
   return (
     <div className="headerWholePage">
-      <div className="header">
+      <div className="header" style={{ "grid-row-start": "1", "grid-row-end": "2" }}>
         <Link to="/">Anasayfa</Link>
         <Link to="/diseaseInformationPage">Alzheimer Hastalığı</Link>
         <Link to="/riskFactors">Risk Faktörleri</Link>
@@ -12,7 +12,7 @@ const Header = () => {
         <Link to="/privacy">Gizlilik</Link>
       </div>
 
-      <Outlet />
+      <Outlet style={{ "grid-row-start": "2" }} />
       {/* <h1>HEY</h1> */}
     </div>
   )
