@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-
-
 const TestInformationPage = () => {
   const navigate = useNavigate();
   return (
