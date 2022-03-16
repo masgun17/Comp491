@@ -149,26 +149,31 @@ a:-webkit-any-link {
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
+  /* background-color: #E3F0E1; */
+  background-color: #e8f2f8;
+  border: 1px solid #556c9c;
   align-items: center;
   height: max-content;
   /* min-height: 260px; */
   margin: 30px 0px 30px 0px;
-  background-color: #e8f2f8;
+  /* background-color: #e8f2f8; */
   /* border: 1px solid #556c9c; */
   /* border-radius: 90px; */
   border-radius: 40px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
   padding: 0px 0px 20px 0px;
 }
 
 .partHeader {
   position: relative;
-  background-color: #72dfa1;
+  /* background-color: #72dfa1; */
+  background-color: #C4C4C4;
+  border: 1px solid #556c9c;
+  border-top: none;
   height: 40px;
   /* border: 1px solid black; */
   border-radius: 100px;
-  z-index: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -177,4 +182,51 @@ a:-webkit-any-link {
   font-size: 20px;
   /* color: rgb(235, 217, 217) !important; */
   color: #000;
+  margin-bottom: 20px;
+}
+
+.questionDetails{
+  position: relative;
+  background-color: #bdbbb8;
+  height: max-content;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  border: 1px solid rgb(161, 160, 160);
+  border-right: 1px solid #556c9c;
+  border-left: 1px solid #556c9c;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: calc(100% - 40px);
+  grid-template-columns: 45% 45% 10%;
+  /* margin-bottom: 10px; */
+}
+
+.editButton {
+  height: 20px;
+  width: 20px;
+  background-color: #6781bb;
+  border: #6781bb;
+  border-radius: 50%;
+  /* display: inline-block; */
+}
+
+.deleteButton {
+  height: 20px;
+  width: 20px;
+  background-color: #bb6767;
+  border: #bb6767;
+  border-radius: 50%;
+  /* display: inline-block; */
+}
+
+.questionButtonLayout {
+  position: relative;
+  /* padding: 0% 20% 5% 20%; */
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
 }
