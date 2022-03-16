@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard";
 import TestInformationPage from "./pages/TestInformation";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
+import ShowTest from "./pages/ShowTest";
+import TakeTest from "./pages/TakeTest";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="testInformation" element={<TestInformationPage />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />
+          <Route path="showTest" element={<ShowTest />} />
+          <Route path="takeTest" element={<TakeTest />} />
           {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
