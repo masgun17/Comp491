@@ -15,6 +15,8 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import ShowTest from "./pages/ShowTest";
 import TakeTest from "./pages/TakeTest";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -29,9 +31,12 @@ function App() {
           <Route path="privacy" element={<Privacy />} />
           <Route path="showTest" element={<ShowTest />} />
           <Route path="takeTest" element={<TakeTest />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
           {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
-      </Routes>
+       </Routes>
+       <button path="login" element={<Login />} />
     </BrowserRouter>
   );
 }
