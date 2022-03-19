@@ -1,5 +1,14 @@
 import { Outlet, Link } from "react-router-dom";
+import { useState } from 'react';
+import React from 'react';
+import Approve from './Approve';
+
 const Signup = () => {
+  const [isOpen, setIsOpen] = useState(false);
+ 
+  const toggleApprove = () => {
+    setIsOpen(!isOpen);
+  }
     return (
         // <h1>Disease Information Page</h1>
         <div className="informationPageLayout">
@@ -22,8 +31,8 @@ const Signup = () => {
                             <input type="email" name="email" id="email" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="tel">Telefon Numarasý: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="123-456-78-91" pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}" maxLength="10" />
+                            <label htmlFor="tel">Telefon Numarasï¿½: </label>
+                            <input type="tel" name="tel" id="tel" placeholder="1234567891" pattern="[0-9]{10}" maxLength="10" />
 
                         </div>
                         <div className="form-group">
@@ -31,7 +40,19 @@ const Signup = () => {
                             <input type="password" name="password" id="password" />
                         </div>
                         <div className="form-group">
-                            <Link to="/kvkk" style={{ "color": "red" }}>Okudum, onayladým</Link><input type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} />
+                            <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladï¿½m</Link><input type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} />
+                            {isOpen && <Approve
+                                content={<>
+                                <b>SÃ¶zleÅŸme</b>
+                                <p>Disclaimer
+c
+You may provide consent for us to use your Personal Information and responses for educational and research purposes. 
+
+You further understand and agree that the research tool is not meant, nor intended to be, a substitute for professional, medical, or psychiatric advice and that by accessing the research tool you agree to hold harmless the ANU and the Centre in relation to the responses you provide and the results of the research tool's assessment.</p>
+                                </>}
+                                handleClose={toggleApprove}
+                            />}
+                        
                         </div>
                         <input type="submit" value="Kayit Ol" name="submit" id="submit" />
                     </div>
