@@ -1,0 +1,13 @@
+pip install flask
+pip install virtualenv
+pip install requests
+
+# for DB
+pip install sqlalchemy
+pip install pyodbc
+
+
+For Database:
+Server=localhost\SQLEXPRESS;
+Database=master;
+Trusted_Connection=True;
