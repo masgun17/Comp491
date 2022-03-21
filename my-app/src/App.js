@@ -13,11 +13,16 @@ import Dashboard from "./pages/Dashboard";
 import TestInformationPage from "./pages/TestInformation";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
-import ShowTest from "./pages/ShowTest";
-import TakeTest from "./pages/TakeTest";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Approve from "./pages/Approve";
+
 
 function App() {
+  
+
   return (
+   
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
@@ -27,13 +32,17 @@ function App() {
           <Route path="testInformation" element={<TestInformationPage />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />
-          <Route path="showTest" element={<ShowTest />} />
-          <Route path="takeTest" element={<TakeTest />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="approve" element={<Approve />} />
+
           {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
-      </Routes>
+          </Routes>
     </BrowserRouter>
+    
   );
+  
 }
 
 export default App;

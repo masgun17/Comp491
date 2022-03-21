@@ -10,6 +10,7 @@ const Header = () => {
         <Link to="/testInformation">Risk Değerlendirmesi Yapın</Link>
         <Link to="/contact">İletişim</Link>
         <Link to="/privacy">Gizlilik</Link>
+        <button type="button"><Link to="/login">Giriş</Link></button>
       </div>
 
       <Outlet style={{ "grid-row-start": "2" }} />
