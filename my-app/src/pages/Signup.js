@@ -13,7 +13,7 @@ const Signup = () => {
         // <h1>Disease Information Page</h1>
         <div className="informationPageLayout">
             <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Kayit Ol</h1>
+                <h1>Kayıt Ol</h1>
             </div>
             <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
                 <form>
@@ -31,16 +31,16 @@ const Signup = () => {
                             <input type="email" name="email" id="email" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="tel">Telefon Numaras�: </label>
+                            <label htmlFor="tel">Telefon Numarası: </label>
                             <input type="tel" name="tel" id="tel" placeholder="1234567891" pattern="[0-9]{10}" maxLength="10" />
 
                         </div>
                         <div className="form-group">
-                            <label htmlFor="password">Sifre: </label>
+                            <label htmlFor="password">Şifre: </label>
                             <input type="password" name="password" id="password" />
                         </div>
                         <div className="form-group">
-                            <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onaylad�m</Link><input type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} />
+                            <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladım</Link><input type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} />
                             {isOpen && <Approve
                                 content={<>
                                 <b>Sözleşme</b>
