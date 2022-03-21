@@ -1,3 +1,4 @@
+import json
 import urllib
 
 import flask
@@ -11,7 +12,7 @@ import pyodbc
 
 app = Flask("comp491")
 
-response = requests.get('https://httpbin.org/ip')
+## response = requests.get('https://httpbin.org/ip')
 ## print('Your IP is {0}'.format(response.json()['origin']))
 
 # Trusted Connection to Named Instance
@@ -36,19 +37,31 @@ def anasayfa():
     return redirect(url_for('http://localhost:3000/'))
 
 
-@app.route("/add",  methods=['GET'])
+@app.route("/add",  methods=['GET', 'POST'])
 def add():
-    num1 = int(request.form["num1"])
-    num2 = int(request.form["num2"])
-    print(num1)
-    print(num2)
-    number1 = conn.execute(f"SELECT value FROM Numbers where Id = {num1};").fetchall()
-    number2 = conn.execute(f"SELECT value FROM Numbers where Id = {num2};").fetchall()
-    print(number1[0][0])
-    print(number2[0][0])
-    sum = number1[0][0] + number2[0][0]
-    print(sum)
-    return {"Summation": sum}
+    try:
+        print("debug1")
+        print(request)
+        print(request.data)
+        print(request.json)
+        print(request.data)
+        print(json.loads(request.data))
+        num1 = int(json.loads(request.data)["num1"])
+        print("debug2")
+        num2 = int(json.loads(request.data)["num2"])
+        print("debug3")
+        print(num1)
+        print(num2)
+        number1 = conn.execute(f"SELECT value FROM Numbers where Id = {num1};").fetchall()
+        number2 = conn.execute(f"SELECT value FROM Numbers where Id = {num2};").fetchall()
+        print(number1[0][0])
+        print(number2[0][0])
+        sum = number1[0][0] + number2[0][0]
+        print(sum)
+        return json.dumps(sum)
+    except Exception as e:
+        print(e)
+        return 'Bad Request '
 
 
 app.run()
