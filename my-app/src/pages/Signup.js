@@ -4,11 +4,11 @@ import React from 'react';
 import Approve from './Approve';
 
 const Signup = () => {
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
  
-  const toggleApprove = () => {
-    setIsOpen(!isOpen);
-  }
+    const toggleApprove = () => {
+      setIsOpen(!isOpen);
+    }
     return (
         // <h1>Disease Information Page</h1>
         <div className="informationPageLayout">
@@ -54,7 +54,7 @@ You further understand and agree that the research tool is not meant, nor intend
                             />}
                         
                         </div>
-                        <input type="submit" value="Kayit Ol" name="submit" id="submit" />
+                        <input type="submit" value="Kayıt Ol" name="submit" id="submit" />
                     </div>
                 </form>
             </div>
