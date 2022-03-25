@@ -64,7 +64,7 @@ const Privacy = () => {
   //   setNum2(0);
   // };
 
-  async function submitNum() {
+  async function submitNum(n1,n2) {
     // var formData = new FormData();
     // formData.append("num1", 1);
     // formData.append("num2", 2);
@@ -129,8 +129,8 @@ const Privacy = () => {
    
     var jsonData = {
       "data": [{
-             "num1": "2",
-             "num2": "3"
+             "num1": n1,
+             "num2": n2
            }]
     }
     let head = new Headers();
@@ -190,7 +190,7 @@ const Privacy = () => {
         onClick={() => {
           setNum1(document.getElementById("num1").value);
           setNum2(document.getElementById("num2").value);
-          submitNum();
+          submitNum(document.getElementById("num1").value,document.getElementById("num2").value);
         }}
       >
         Sum
