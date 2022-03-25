@@ -4,8 +4,8 @@ import urllib
 import flask
 from flask import Flask, request, url_for, jsonify
 import requests
-import react
-from react.render import render_component
+#from react  import 'react'
+#from react.render import render_component
 from werkzeug.utils import redirect
 from sqlalchemy import create_engine, text
 import pyodbc
@@ -16,7 +16,7 @@ app = Flask("comp491")
 ## print('Your IP is {0}'.format(response.json()['origin']))
 
 # Trusted Connection to Named Instance
-connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost\SQLEXPRESS;DATABASE=Comp491;Trusted_Connection=yes;')
+connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER=localhost\SQLEXPRESS;DATABASE=master;Trusted_Connection=yes;')
 conn=connection.cursor()
 
 @app.route("/")
@@ -42,18 +42,23 @@ def add():
     try:
         print("debug1")
         print(request)
-        print(request.data)
-        print(request.json)
-        print(request.data)
-        print(json.loads(request.data))
-        num1 = int(json.loads(request.data)["num1"])
         print("debug2")
-        num2 = int(json.loads(request.data)["num2"])
+        print(request.data)
         print("debug3")
-        print(num1)
-        print(num2)
-        number1 = conn.execute(f"SELECT value FROM Numbers where Id = {num1};").fetchall()
-        number2 = conn.execute(f"SELECT value FROM Numbers where Id = {num2};").fetchall()
+        a = json.loads(request.data)
+        deneme = a['data']
+        print(deneme)
+        print("debug4")
+        print(deneme[0])
+        numbers = deneme[0]
+        print("debug5")
+        print(numbers['num1'])
+        print("debug6")
+        num1 = int(numbers['num1'])
+        num2 = int(numbers['num2'])
+
+        number1 = conn.execute(f"SELECT val FROM Numbers where id = {num1};").fetchall()
+        number2 = conn.execute(f"SELECT val FROM Numbers where id = {num2};").fetchall()
         print(number1[0][0])
         print(number2[0][0])
         sum = number1[0][0] + number2[0][0]

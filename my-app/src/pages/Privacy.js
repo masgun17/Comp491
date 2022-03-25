@@ -126,44 +126,34 @@ const Privacy = () => {
     // });
     // console.log(response);
     // return response.json();
+   
+    var jsonData = {
+      "data": [{
+             "num1": "2",
+             "num2": "3"
+           }]
+    }
+    let head = new Headers();
+    head.append('Access-Control-Allow-Origin','http://localhost:3000');
+    head.append('Access-Control-Allow-Credentials', 'true');
+    head.append('Access-Control-Allow-Methods', 'POST');
+    head.append('Content-Type', 'application/json')
+    head.append('Accept', 'application/json');
 
-    var xhr = new XMLHttpRequest();
+    await fetch('/add', {  // Enter your IP address here
 
-    // get a callback when the server responds
-    xhr.onreadystatechange = function () {
-      // Typical action to be performed when the document is ready:
-      console.log(xhr.responseText);
-      console.log(xhr.response);
-      console.log(xhr.data);
-      console.log(xhr.JSON);
-      console.log(xhr);
-    };
-    // open the request with the verb and the url
-    await xhr.open("POST", "http://localhost:5000/add");
-    // send the request
-    await xhr.send(JSON.stringify({ num1: "2", num2: "3" }));
-    setSum(xhr.responseText);
+      method: 'POST', 
+      //mode: 'no-cors', 
+      headers: {
+        'Access-Control-Allow-Origin':'http://localhost:3000/',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'POST',
+        'Content-Type' :'application/json'
+      },
+      body: JSON.stringify(jsonData) // body data type must match "Content-Type" header
 
-    xhr.onload = function() {
-      if (xhr.status != 200) { // analyze HTTP status of the response
-        alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-      } else { // show the result
-        alert(`Done, got ${xhr.response.length} bytes`); // responseText is the server
-      }
-    };
-    
-    xhr.onprogress = function(event) {
-      if (event.lengthComputable) {
-        alert(`Received ${event.loaded} of ${event.total} bytes`);
-      } else {
-        alert(`Received ${event.loaded} bytes`); // no Content-Length
-      }
-    
-    };
-    
-    xhr.onerror = function() {
-      alert("Request failed");
-    };
+    }).then(response=>{console.log(response.json())});
+
   }
 
 
