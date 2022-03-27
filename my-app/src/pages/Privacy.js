@@ -91,17 +91,23 @@ const Privacy = () => {
     //   }),
     // });
 
-    // const data = JSON.stringify({
-    //   num1: 2,
-    //   num2: 3,
-    // });
-    // axios.post("http://localhost:5000/add", data).end((error, response) => {
+    var jsonData = {
+      "data": [{
+             "num1": n1,
+             "num2": n2
+           }]
+    }
+    const a = await axios.post("/add", jsonData);
+    //.then(console.log("Success")).catch(console.log("hata"));
+    
+    // //end((error, response) => {
     //   if (!error && response) {
     //     console.log("got a valid response from the server");
     //   } else {
     //     console.log(`Error fetching data from the server: `, error);
     //   }
     // });
+    console.log(a.data);
 
     // fetch(`http://localhost:5000/add`, {
     //   method: "POST",
@@ -133,14 +139,9 @@ const Privacy = () => {
              "num2": n2
            }]
     }
-    let head = new Headers();
-    head.append('Access-Control-Allow-Origin','http://localhost:3000');
-    head.append('Access-Control-Allow-Credentials', 'true');
-    head.append('Access-Control-Allow-Methods', 'POST');
-    head.append('Content-Type', 'application/json')
-    head.append('Accept', 'application/json');
 
-    await fetch('/add', {  // Enter your IP address here
+/*
+    const a = await fetch('/add', {  // Enter your IP address here
 
       method: 'POST', 
       //mode: 'no-cors', 
@@ -153,7 +154,8 @@ const Privacy = () => {
       body: JSON.stringify(jsonData) // body data type must match "Content-Type" header
 
     }).then(response=>{console.log(response.json())});
-
+    console.log(a);
+*/
   }
 
 

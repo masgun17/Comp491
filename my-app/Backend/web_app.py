@@ -40,27 +40,14 @@ def anasayfa():
 @app.route("/add",  methods=['GET', 'POST'])
 def add():
     try:
-        print("debug1")
-        print(request)
-        print("debug2")
-        print(request.data)
-        print("debug3")
         a = json.loads(request.data)
-        deneme = a['data']
-        print(deneme)
-        print("debug4")
-        print(deneme[0])
-        numbers = deneme[0]
-        print("debug5")
-        print(numbers['num1'])
-        print("debug6")
+        data = a['data']
+        numbers = data[0]
         num1 = int(numbers['num1'])
         num2 = int(numbers['num2'])
 
         number1 = conn.execute(f"SELECT val FROM Numbers where id = {num1};").fetchall()
         number2 = conn.execute(f"SELECT val FROM Numbers where id = {num2};").fetchall()
-        print(number1[0][0])
-        print(number2[0][0])
         sum = number1[0][0] + number2[0][0]
         print(sum)
         return json.dumps(sum)
