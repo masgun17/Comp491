@@ -38,7 +38,7 @@ function App() {
           {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
        </Routes>
-       <button path="login" element={<Login />} />
+       {/* <button path="login" element={<Login />} /> */}
     </BrowserRouter>
   );
 }
