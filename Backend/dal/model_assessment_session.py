@@ -20,12 +20,12 @@ class AssessmentSession():
     @classmethod
     def has_item(cls, assessment_id):
         conn = connection.cursor()
-        item = None
+        query_item = None
         result_code = False
         try:
-            query_item = conn.execute(f"select * from AssessmentSession where Id = {assessment_id}").fetchall()
+            query_item = conn.execute(f"select * from AssessmentSession where Id = {assessment_id}").fetchall()[0]
             if query_item is not None:
-                item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
+                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
@@ -57,7 +57,7 @@ class AssessmentSession():
         items = None
         result_code = False
         try:
-            items = conn.execute("select * from AssessmentSession")
+            items = conn.execute("select * from AssessmentSession").fetchall()
             if items is not None and len(items) > 0:
                 result_code = True
         except Exception as e:
@@ -78,8 +78,9 @@ class AssessmentSession():
                        ,[AddDate])
                     values
                        ({UserId}
-                       ,{datetime.now()})""")
+                       ,'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')""")
                 result_code = True
+                conn.commit()
             except Exception as e:
                 print(e)
             finally:
@@ -97,14 +98,22 @@ class AssessmentSession():
         try:
             conn.execute(f"delete from AssessmentSession where Id={item_id}")
             result_code = True
+            conn.commit()
         except Exception as e:
             print(e)
         finally:
             conn.close()
             return result_code
-
-"""result_code1, one_item = AssessmentSession.has_item(2)
+"""
+result_code1, one_item = AssessmentSession.has_item(2)
 result_code1, all_items = AssessmentSession.has_item_by_column("UserId",1)
 
 print(one_item)
+print(all_items)
+"""
+
+"""
+AssessmentSession.delete_item(3)
+
+result_code1, all_items = AssessmentSession.has_item_by_column("UserId",1)
 print(all_items)"""
