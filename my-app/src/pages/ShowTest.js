@@ -4,15 +4,6 @@ import { useNavigate } from "react-router-dom";
 const ShowTest = () => {
   const navigate = useNavigate();
 
-  // I assumed that question details that we will fetch from db will be in double array format
-  // Probably we will have to switch to useState structure when we fetch from db
-  let partArray = [...Array(5)];
-  for (let index = 0; index < partArray.length; index += 1) {
-    const questionsPerPart = [...Array(10)];
-    partArray[index] = questionsPerPart;
-  }
-
-
   const [parts, setParts] = useState([]);
 
   useEffect(async () => {
@@ -83,6 +74,7 @@ const ShowTest = () => {
                     Choices:
                   </div>
                   <div className="questionDetailsChoices">
+                    {/* TODO: Get choices from db */}
                     <div>
                       Choice 1
                     </div>
