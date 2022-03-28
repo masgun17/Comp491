@@ -40,7 +40,7 @@ class AssessmentSession():
         result_code = False
         try:
             if column_value is not None and column_name is not None and len(column_name) > 0:
-                items = conn.execute(f"select * from AssessmentSession where {column_name} = {column_value}").fetchall()
+                items = conn.execute(f"select * from AssessmentSession where {column_name} = '{column_value}'").fetchall()
                 if items is not None and len(items) > 0:
                     result_code = True
                     if first_n is not None:
