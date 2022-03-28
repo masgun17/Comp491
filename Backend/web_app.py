@@ -56,4 +56,19 @@ def add():
         return 'Bad Request '
 
 
+@app.route("/fetchdb",  methods=['GET'])
+def fetchDB():
+    try:
+        print("debug1")
+        data = []
+        out = conn.execute(f"SELECT Value FROM Numbers;").fetchall()
+        for row in out:
+            for x in row:
+                data.append(x)
+        return json.dumps(data)
+        # return {"Values": data}
+    except Exception as e:
+        print(e)
+        return 'Bad Request'
+
 app.run()
