@@ -16,7 +16,7 @@ app = Flask("comp491")
 ## print('Your IP is {0}'.format(response.json()['origin']))
 
 # Trusted Connection to Named Instance
-connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER=localhost\SQLEXPRESS;DATABASE=master;Trusted_Connection=yes;')
+connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER=localhost\SQLEXPRESS;DATABASE=Comp491;Trusted_Connection=yes;')
 conn=connection.cursor()
 
 @app.route("/")
@@ -46,8 +46,8 @@ def add():
         num1 = int(numbers['num1'])
         num2 = int(numbers['num2'])
 
-        number1 = conn.execute(f"SELECT val FROM Numbers where id = {num1};").fetchall()
-        number2 = conn.execute(f"SELECT val FROM Numbers where id = {num2};").fetchall()
+        number1 = conn.execute(f"SELECT Value FROM Numbers where Id = {num1};").fetchall()
+        number2 = conn.execute(f"SELECT Value FROM Numbers where Id = {num2};").fetchall()
         sum = number1[0][0] + number2[0][0]
         print(sum)
         return json.dumps(sum)
@@ -55,5 +55,20 @@ def add():
         print(e)
         return 'Bad Request '
 
+
+@app.route("/fetchdb",  methods=['GET'])
+def fetchDB():
+    try:
+        print("debug1")
+        data = []
+        out = conn.execute(f"SELECT Value FROM Numbers;").fetchall()
+        for row in out:
+            for x in row:
+                data.append(x)
+        return json.dumps(data)
+        # return {"Values": data}
+    except Exception as e:
+        print(e)
+        return 'Bad Request'
 
 app.run()
