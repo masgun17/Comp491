@@ -6,7 +6,7 @@ from sqlalchemy.dialects.mysql import pymysql
 
 from Backend.app_globals import connection
 
-class UserType():
+class Question():
     __tablename__ = 'Question'
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
     PartId = Column(BigInteger)
