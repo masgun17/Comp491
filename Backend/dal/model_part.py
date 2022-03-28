@@ -136,8 +136,8 @@ class UserType():
             try:
                 conn.execute(f"""
                     update Suggestions set
-                       PartId = {suggestion_item[0]}
-                       ,Suggestion = '{suggestion_item[1]}'
+                       PartId = '{suggestion_item[0]}'
+                       ,Suggestion = {suggestion_item[1]}
                     where Id = {suggestion_id}
                        """)
                 result_code = True
