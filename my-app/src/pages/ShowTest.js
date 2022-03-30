@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAllPartsAction, getAllQuestionsAction } from "../tool/actions";
 import AddQuestion from "./AddQuestion";
 // import Modal from "react-bootstrap/Modal";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,38 +14,43 @@ const ShowTest = () => {
   const [parts, setParts] = useState([]);
 
   useEffect(async () => {
-    // TODO
-    // const result = await getPartsAction();
-    // setParts(result);
-    setParts([...Array(5)]);
+    const result = await getAllPartsAction();
+    setParts(result);
+    // setParts([...Array(5)]);
   }, []);
 
   const [questions, setQuestions] = useState([]);
   const [isExtended, setIsExtended] = useState([]);
 
   useEffect(async () => {
-    // TODO
-    // const result = await getQuestionsAction();
-    // setQuestions(result);
-    let partArray = [...Array(5)];
-    for (let index = 0; index < partArray.length; index += 1) {
-      let questionsPerPart = [...Array(10)];
-      partArray[index] = questionsPerPart;
-    }
-    setQuestions(partArray);
+    const result = await getAllQuestionsAction();
+    setQuestions(result);
+    // let partArray = [...Array(5)];
+    // for (let index = 0; index < partArray.length; index += 1) {
+    //   let questionsPerPart = [...Array(10)];
+    //   partArray[index] = questionsPerPart;
+    // }
+    // setQuestions(partArray);
 
-    let arr = [...partArray];
-    for (let index = 0; index < arr.length; index++) {
-      for (let index2 = 0; index2 < arr[index].length; index2++) {
-        arr[index][index2] = 0;
-      }
+    // let partArray = [...Array(5)];
+    // let arr = [...partArray];
+    // for (let index = 0; index < arr.length; index++) {
+    //   for (let index2 = 0; index2 < arr[index].length; index2++) {
+    //     arr[index][index2] = 0;
+    //   }
+    // }
+    // setIsExtended(arr);
+    const questionNumber = result.length;
+    const extended = [...Array(questionNumber)];
+    for (let index = 0; index < result.length; index++) {
+      extended[index] = 0;
     }
-    setIsExtended(arr);
+    setIsExtended(extended);
   }, []);
 
-  const updateExtended = (i, index, val) => {
+  const updateExtended = (index, val) => {
     let arr = isExtended;
-    arr[i][index] = val;
+    arr[index] = val;
     setIsExtended(arr);
   };
 
@@ -62,61 +68,67 @@ const ShowTest = () => {
       {parts.map((e, i) => (
         <div className="showTestDiv">
           <div className="partHeader">
-            <h2>Part {i + 1}</h2>
+            <h2>{e[1]}</h2>
           </div>
-          {questions[i].map((element, index) =>
-            isExtended[i][index] ? (
-              <div
-                className="questionDetailsOnClick"
-                onClick={(val) => {
-                  updateExtended(i, index, 0);
-                  setShow(false);
-                }}
-              >
-                <div className="questionDetailsTopRow">
-                  <div style={{ "margin-left": "10px" }}>
-                    Question {index + 1}
+          {questions.map(
+            (element, index) =>
+              element[1] === e[0] ? (
+                isExtended[index] ? (
+                  <div
+                    className="questionDetailsOnClick"
+                    onClick={(val) => {
+                      updateExtended(index, 0);
+                      setShow(false);
+                    }}
+                  >
+                    <div className="questionDetailsTopRow">
+                      <div style={{ "margin-left": "10px" }}>
+                        {element[2]}
+                      </div>
+                      <div
+                        className="questionButtonLayout"
+                        onClick={(val) => {}}
+                      >
+                        <button
+                          className="editButton"
+                          onClick={(val) => console.log("clicked")}
+                        />
+                        <button className="deleteButton" />
+                      </div>
+                    </div>
+                    <div className="questionDetailsChoicesRow">
+                      <div>Choices:</div>
+                      <div className="questionDetailsChoices">
+                        {/* TODO: Get choices from db */}
+                        {JSON.parse(element[5]).map((choices, index2) => 
+                        <div> 
+                          {choices}
+                        </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="questionButtonLayout" onClick={(val) => {}}>
-                    <button
-                      className="editButton"
-                      onClick={(val) => console.log("clicked")}
-                    />
-                    <button className="deleteButton" />
+                ) : (
+                  <div
+                    className="questionDetails"
+                    onClick={(val) => {
+                      updateExtended(index, 1);
+                      setShow(false);
+                    }}
+                  >
+                    <div style={{ "margin-left": "10px" }}>
+                      {element[2]}
+                    </div>
+                    <div className="questionButtonLayout">
+                      <button
+                        className="editButton"
+                        onClick={(val) => console.log("clicked")}
+                      />
+                      <button className="deleteButton" />
+                    </div>
                   </div>
-                </div>
-                <div className="questionDetailsChoicesRow">
-                  <div>Choices:</div>
-                  <div className="questionDetailsChoices">
-                    {/* TODO: Get choices from db */}
-                    <div>Choice 1</div>
-                    <div>Choice 2</div>
-                    <div>Choice 3</div>
-                    <div>Choice 4</div>
-                    <div>Choice 5</div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div
-                className="questionDetails"
-                onClick={(val) => {
-                  updateExtended(i, index, 1);
-                  setShow(false);
-                }}
-              >
-                <div style={{ "margin-left": "10px" }}>
-                  Question {index + 1}
-                </div>
-                <div className="questionButtonLayout">
-                  <button
-                    className="editButton"
-                    onClick={(val) => console.log("clicked")}
-                  />
-                  <button className="deleteButton" />
-                </div>
-              </div>
-            )
+                )
+              ) : null
           )}
           <button
             className="addQuestionButton"

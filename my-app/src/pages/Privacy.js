@@ -145,6 +145,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="string"
             onChange={(e) => setPartName(e.target.value)}
           />
         </label>
@@ -153,6 +154,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="int"
             onChange={(e) => setScoreLimit(e.target.value)}
           />
         </label>
@@ -174,6 +176,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="int"
             onChange={(e) => setPartid(e.target.value)}
           />
         </label>
@@ -182,6 +185,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="string"
             onChange={(e) => setQuestionText(e.target.value)}
           />
         </label>
@@ -190,6 +194,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="float"
             onChange={(e) => setWeight(e.target.value)}
           />
         </label>
@@ -198,6 +203,7 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
+            placeholder="string"
             onChange={(e) => setQuestionType(e.target.value)}
           />
         </label>
@@ -206,7 +212,8 @@ const Privacy = () => {
           <input
             type="text"
             name="name"
-            placeholder="Write comma seperated"
+            placeholder="string(s)-comma seperated"
+            style={{'width' : '200px'}}
             onChange={(e) => setOptions(e.target.value)}
           />
         </label>
