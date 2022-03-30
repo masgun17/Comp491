@@ -25,8 +25,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  padding-left: 20%;
-  padding-right: 20%;
+  padding-left: 10%;
+  padding-right: 10%;
   /* font-size: calc(10px + 2vmin); */
   font-size: 20px;
   /* color: rgb(235, 217, 217) !important; */
@@ -202,11 +202,12 @@ a:-webkit-any-link {
   justify-content: space-between;
   font-size: 18px;
   border: 1px solid rgb(161, 160, 160);
-  border-right: 1px solid #556c9c;
-  border-left: 1px solid #556c9c;
+  /* border-right: 1px solid #556c9c;
+  border-left: 1px solid #556c9c; */
   padding-left: 20px;
   padding-right: 20px;
-  width: calc(100% - 40px);
+  /* width: calc(100% - 40px); */
+  width: 100%;
   /* grid-template-columns: 80% 20%; */
   /* margin-bottom: 10px; */
 }
@@ -217,11 +218,12 @@ a:-webkit-any-link {
   display: grid;
   font-size: 18px;
   border: 1px solid rgb(161, 160, 160);
-  border-right: 1px solid #556c9c;
-  border-left: 1px solid #556c9c;
+  /* border-right: 1px solid #556c9c;
+  border-left: 1px solid #556c9c; */
   padding-left: 20px;
   padding-right: 20px;
-  width: calc(100% - 40px);
+  /* width: calc(100% - 40px); */
+  width: 100%;
   grid-template-rows: auto auto;
   grid-gap: 10px;
   min-height: 100px;
