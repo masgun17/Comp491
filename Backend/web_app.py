@@ -96,13 +96,6 @@ def createPart():
 @app.route("/getAllParts",  methods=['GET'])
 def getAllParts():
     try:
-        """a = json.loads(request.data)
-        data = a['data']
-        parameters = data[0]
-        PartName = parameters['PartName']
-        ScoreLimit = int(parameters['ScoreLimit'])
-        result_code = Part.add_item([PartName, ScoreLimit])
-        """
         data = []
         result_code, parts = Part.get_all()
         if result_code:
@@ -130,12 +123,9 @@ def createQuestion():
         QuestionText = parameters['QuestionText']
         Weight = float(parameters['Weight'])
         QuestionType = parameters['QuestionType']
-        Options = json.dumps(parameters['Options'])
+        Options = json.dumps(parameters['Options'], ensure_ascii=False)
 
         result_code = Question.add_item([PartId, QuestionText, Weight, QuestionType, Options])
-        result_code2, question_item = Question.has_item_by_column("QuestionText", "Deneme soru 1")
-        if result_code2:
-            print(question_item)
 
         if result_code:
             return 'Part added Successfully'
