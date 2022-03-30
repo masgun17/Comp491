@@ -9,6 +9,8 @@ import requests
 from werkzeug.utils import redirect
 from sqlalchemy import create_engine, text
 import pyodbc
+from dal.model_question import Question
+from dal.model_part import Part
 
 app = Flask("comp491")
 
@@ -70,5 +72,96 @@ def fetchDB():
     except Exception as e:
         print(e)
         return 'Bad Request'
+
+
+@app.route("/createPart",  methods=['GET', 'POST'])
+def createPart():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        PartName = parameters['PartName']
+        ScoreLimit = int(parameters['ScoreLimit'])
+
+        result_code = Part.add_item([PartName, ScoreLimit])
+        if result_code:
+            return 'Part added Successfully'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getAllParts",  methods=['GET'])
+def getAllParts():
+    try:
+        """a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        PartName = parameters['PartName']
+        ScoreLimit = int(parameters['ScoreLimit'])
+        result_code = Part.add_item([PartName, ScoreLimit])
+        """
+        data = []
+        result_code, parts = Part.get_all()
+        if result_code:
+            for row in parts:
+                line = []
+                for x in row:
+                    line.append(x)
+                data.append(line)
+            return json.dumps(data)
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/createQuestion",  methods=['GET', 'POST'])
+def createQuestion():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        PartId = int(parameters['PartId'])
+        QuestionText = parameters['QuestionText']
+        Weight = float(parameters['Weight'])
+        QuestionType = parameters['QuestionType']
+        Options = json.dumps(parameters['Options'])
+
+        result_code = Question.add_item([PartId, QuestionText, Weight, QuestionType, Options])
+        result_code2, question_item = Question.has_item_by_column("QuestionText", "Deneme soru 1")
+        if result_code2:
+            print(question_item)
+
+        if result_code:
+            return 'Part added Successfully'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getAllQuestions",  methods=['GET'])
+def getAllQuestions():
+    try:
+        data = []
+        result_code, questions = Question.get_all()
+        if result_code:
+            for row in questions:
+                line = []
+                for x in row:
+                    line.append(x)
+                data.append(line)
+            return json.dumps(data)
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 app.run()

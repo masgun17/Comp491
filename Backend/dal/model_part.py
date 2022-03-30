@@ -98,8 +98,8 @@ class Part():
                        ([PartName]
                         ,[ScoreLimit])
                     values
-                       ({part_item[0]}
-                       ,'{part_item[1]}')""")
+                       ('{part_item[0]}'
+                       ,{part_item[1]})""")
                 result_code = True
                 conn.commit()
             except Exception as e:
