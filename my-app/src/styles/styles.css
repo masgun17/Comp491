@@ -479,11 +479,9 @@ a:-webkit-any-link {
   /* display: 'flex';
 	justify-content: 'center';
 	align-items: 'center'; */
-  margin-top: 10%;
   padding: 3%;
 }
-.modal-dialog {
-}
+
 .modal-grid{
   display: grid;
   height: 100%;
@@ -501,4 +499,15 @@ a:-webkit-any-link {
   display: grid;
   grid-template-rows: 1fr 3fr;
   grid-row-gap: 10px;
+}
+
+.add-question{
+  margin-right: 0;
+  margin-left: auto;
+  width: 200px;
+  height: 70%;
+  background-color: #f57226;
+  color:rgb(255, 255, 255);
+  border-radius: 15px;
+  border: none;
 }

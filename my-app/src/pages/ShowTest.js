@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import AddQuestion from "./AddQuestion";
-import { Modal } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import AddQuestion from "./AddQuestion";
+// import Modal from "react-bootstrap/Modal";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 const ShowTest = () => {
   const navigate = useNavigate();
@@ -131,21 +131,12 @@ const ShowTest = () => {
         </div>
       ))}
       {/* </div> */}
-      <Modal
-        className="addQuestionModal"
+      <AddQuestion
         show={modalShow}
-        size="xl"
         onHide={() => {
           handleModalClose();
         }}
-      >
-        <div className="modal-grid">
-          <h className="modal-header">Add a New Question</h>
-          <div className="modal-question-type"></div>
-          <h>hey3</h>
-          <h>hey4</h>
-        </div>
-      </Modal>
+      />
     </div>
   );
 };
