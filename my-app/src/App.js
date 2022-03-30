@@ -18,6 +18,7 @@ import TakeTest from "./pages/TakeTest";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Approve from "./pages/Approve";
+// import AddQuestion from "./pages/AddQuestion";
 
 function App() {
   return (
@@ -35,7 +36,6 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="approve" element={<Approve />} />
-          {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
        </Routes>
        {/* <button path="login" element={<Login />} /> */}
