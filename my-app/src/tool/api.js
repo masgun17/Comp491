@@ -5,4 +5,6 @@ export default {
     getAllParts: '/getAllParts',
     createQuestion: '/createQuestion',
     getAllQuestions: '/getAllQuestions',
+    creatingNewAccount: '/creatingNewAccount',
+    loginAccount: '/loginAccount',
 };

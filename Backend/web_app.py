@@ -11,6 +11,9 @@ from sqlalchemy import create_engine, text
 import pyodbc
 from dal.model_question import Question
 from dal.model_part import Part
+from dal import hashingPassword
+import codecs
+from dal.model_user import Users
 
 app = Flask("comp491")
 
@@ -153,5 +156,59 @@ def getAllQuestions():
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
+
+@app.route("/creatingNewAccount",  methods=['POST'])
+def creatingNewAccount():
+    try:
+        print("debug1")
+        result_code = False
+        form = json.loads(request.data)
+        accountInfo = form['data']
+        personInfo = accountInfo[0]
+        name = personInfo['name']
+        print(name)
+        if len(name)==0:
+            return "Lütfen isminizi giriniz!"
+        surname = personInfo['surname']
+        if len(surname)==0:
+            return "Lütfen soyadınızı giriniz!"
+        email = personInfo['email']
+        phoneNumber = personInfo['phone']
+        if len(email)==0 and len(phoneNumber)==0:
+            return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
+        password = personInfo['password']
+        if len(password)==0:
+            return "Lütfen bir şifre belirleyiniz!"
+        if len(password)<8:
+            return "Şifreniz en az 8 haneli olmak zorundadır!"    
+        print(password)
+        #kvkk = personInfo['kvkk']
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        if salt!=False and hashedPassword!=False:
+            result_code=Users.add_item([1,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            if result_code:
+                return 'User added Successfully'
+            else:
+                return 'Bad Request'
+        else:
+            return 'User is already in the db'
+    except Exception as e:
+        print(e)
+        return "Bad Request"
+   
+@app.route("/loginAccount",  methods=['POST'])
+def loginAccount():
+    form = json.loads(request.data)
+    print("debug1")
+    accountInfo = form['data']
+    personInfo = accountInfo[0]
+    email = personInfo['email']
+    phoneNumber = personInfo['phone']
+    if len(email)==0 and len(phoneNumber)==0 :
+        return "Email ya da telefon numaranızı giriniz!"
+    password = personInfo['password']
+    if len(password)==0:
+        return "Lütfen Şifrenizi Giriniz!"
+    return hashingPassword.checkingPasswordWithDatabase(password,email,phoneNumber)
 
 app.run()

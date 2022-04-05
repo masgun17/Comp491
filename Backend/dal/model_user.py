@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, Float, \
     BLOB, Boolean, Index, BigInteger, and_, text, ForeignKey, REAL, or_, FLOAT, TEXT, asc, desc
 from sqlalchemy.dialects.mysql import pymysql
 
-from Backend.app_globals import connection
+from app_globals import connection
 
 class Users():
     __tablename__ = 'Users'
@@ -97,7 +97,7 @@ class Users():
     def add_item(cls, user_item):
         conn = connection.cursor()
         result_code = False
-        if user_item is not None and len(user_item)==7:
+        if user_item is not None and len(user_item)==8:
             try:
                 conn.execute(f"""
                     insert into Users
@@ -106,6 +106,7 @@ class Users():
                        ,[Surname]
                        ,[Email]
                        ,[Phone]
+                       ,[Salting]
                        ,[Password]
                        ,[KvkkCheck])
                     values
@@ -115,10 +116,12 @@ class Users():
                        ,'{user_item[3]}'
                        ,'{user_item[4]}'
                        ,'{user_item[5]}'
-                       ,{user_item[6]})""")
+                       ,'{user_item[6]}'
+                       ,{user_item[7]})""")
                 result_code = True
                 conn.commit()
             except Exception as e:
+                print("deneme")
                 print(e)
             finally:
                 conn.close()

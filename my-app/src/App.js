@@ -18,10 +18,30 @@ import TakeTest from "./pages/TakeTest";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Approve from "./pages/Approve";
+import Profile from "./pages/Profile";
+import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "./Helper/Context";
+import { useState, useContext } from 'react';
+
 // import AddQuestion from "./pages/AddQuestion";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [emailForProfile,setEmailForProfile] = useState("");
+  const [phoneForProfile,setPhoneForProfile] = useState("");
+  const [id, setId] = useState("");
+  const [userTypeId, setUserTypeId] = useState("");
   return (
+
+    <LoginContext.Provider value={{isLogin, setIsLogin}}>
+    <UserNameContext.Provider value={{name, setName}}>
+    <UserSurnameContext.Provider value={{surname, setSurname}}>
+    <UserEmailContext.Provider value={{emailForProfile,setEmailForProfile}}>
+    <UserPhoneContext.Provider value={{phoneForProfile,setPhoneForProfile}}>
+    <UserTypeIdContext.Provider value={{userTypeId, setUserTypeId}}>
+    <UserIdContext.Provider value={{id, setId}}>
+
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
@@ -36,10 +56,18 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="approve" element={<Approve />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
        </Routes>
        {/* <button path="login" element={<Login />} /> */}
     </BrowserRouter>
+      </UserIdContext.Provider>
+      </UserTypeIdContext.Provider>
+      </UserPhoneContext.Provider>
+      </UserEmailContext.Provider>
+      </UserSurnameContext.Provider>
+      </UserNameContext.Provider>
+    </LoginContext.Provider>
   );
 }
 

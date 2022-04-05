@@ -59,3 +59,23 @@ export const getAllQuestionsAction = async () => {
     console.log(error);
   }
 }
+
+export const signUpAction = async (data) => {
+  try{
+    const result = await services.signUpService(data);
+    return result.data;
+  }catch (error){
+    console.log("Error on signUpAction");
+    console.log(error);
+  }
+};
+
+export const loginAction = async (data) => {
+  try{
+    const result = await services.loginService(data);
+    return result.data;
+  }catch (error){
+    console.log("Error on loginAction");
+    console.log(error);
+  }
+};

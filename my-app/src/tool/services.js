@@ -30,3 +30,14 @@ export const getAllQuestionsService = async () =>
   new Promise((resolve, reject) => {
     axios.get(API.getAllQuestions).then(resolve).catch(reject);
   });
+
+  export const signUpService = async(data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.creatingNewAccount, data).then(resolve).catch(reject);
+  });
+
+  export const loginService = async(data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.loginAccount, data).then(resolve).catch(reject);
+  });
+  
