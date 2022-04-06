@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllPartsAction, getAllQuestionsAction } from "../tool/actions";
+import { getAllPartsAction, getAllQuestionsAction, createPartAction, createQuestionAction, } from "../tool/actions";
 import AddQuestion from "./AddQuestion";
 // import Modal from "react-bootstrap/Modal";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,10 +10,11 @@ const ShowTest = () => {
   const [modalShow, setModalShow] = useState(false);
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
+  const [showAddNewPart, setShowAddNewPart] = useState(false);
 
   const [parts, setParts] = useState([]);
 
-  useEffect(async () => {
+  const getParts = async () => {
     let result = await getAllPartsAction();
     if (result) {
       while (result === "Bad Request ") {
@@ -21,6 +22,10 @@ const ShowTest = () => {
       }
       setParts(result);
     }
+  }
+
+  useEffect(async () => {
+    await getParts();
   }, []);
 
   const [questions, setQuestions] = useState([]);
@@ -48,6 +53,19 @@ const ShowTest = () => {
     arr[index] = val;
     setIsExtended(arr);
   };
+
+  const createPart = async (name, limit) => {
+    var jsonData = {
+      data: [
+        {
+          PartName: name,
+          ScoreLimit: limit,
+        },
+      ],
+    };
+    const a = await createPartAction(jsonData);
+    console.log(a);
+  }
 
   const [show, setShow] = useState(true);
 
@@ -127,6 +145,57 @@ const ShowTest = () => {
           </button>
         </div>
       ))}
+
+
+      <div className="addPartButtonDiv">
+        <button
+          className="addPartButton"
+          // Update onClick function such that it will open a modal content structure
+          onClick={() => {
+            setShowAddNewPart(!showAddNewPart);
+          }}
+          style={{ "margin-top": "10px" }}
+        >
+          Add a New Part
+        </button>
+      </div>
+      
+      {showAddNewPart ? 
+      <div className="AddPartDiv">
+        <div className="AddPartInfoText">
+          Here you can add a new part for the test
+        </div>
+
+        <div>
+        <label>
+          PartName:
+          <input
+            type="text"
+            id="partName"
+            placeholder="string"
+          />
+        </label>
+        <label>
+          ScoreLimit:
+          <input
+            type="text"
+            id="scoreLimit"
+            placeholder="int"
+          />
+        </label>
+        <button
+          onClick={async () => {
+            await createPart(document.getElementById("partName").value, document.getElementById("scoreLimit").value);
+            await getParts();
+          }}
+        >
+          Create
+        </button>
+      </div>
+        
+      </div> 
+      :
+      null}
       {/* </div> */}
       <AddQuestion
         show={modalShow}

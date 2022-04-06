@@ -245,10 +245,10 @@ a:-webkit-any-link {
 .questionDetailsChoicesRow {
   margin-left: 20px;
   display: grid;
-  grid-template-columns: 20% 80%
+  grid-template-columns: 20% 80%;
 }
 
-.questionDetailsChoices{
+.questionDetailsChoices {
   display: grid;
   grid-template-rows: auto;
 }
@@ -482,14 +482,14 @@ a:-webkit-any-link {
   padding: 3%;
 }
 
-.modal-grid{
+.modal-grid {
   display: grid;
   height: 100%;
   grid-template-rows: 10% auto auto 10%;
   grid-row-gap: 20px;
 }
-.modal-header{
-  font-size: 25px;  
+.modal-header {
+  font-size: 25px;
   border: none !important;
   text-align: center;
   margin-left: auto;
@@ -501,13 +501,34 @@ a:-webkit-any-link {
   grid-row-gap: 10px;
 }
 
-.add-question{
+.add-question {
   margin-right: 0;
   margin-left: auto;
   width: 200px;
   height: 70%;
   background-color: #f57226;
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   border-radius: 15px;
   border: none;
+}
+
+.addPartButton {
+  width: 20%;
+}
+
+.addPartButtonDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.AddPartInfoText {
+}
+
+.AddPartDiv {
+  border: 1px solid red;
+  border-radius: 30px;
+  padding: 20px;
 }
