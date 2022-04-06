@@ -70,4 +70,14 @@ export const deletePartAction = async (data) => {
   }
 }
 
+export const deleteQuestionAction = async (data) => {
+  try {
+    const result = await services.deleteQuestionService(data);
+    return result.data;
+  } catch (error) {
+    console.log("Error on deleteQuestionAction");
+    console.log(error);
+  }
+}
+
 

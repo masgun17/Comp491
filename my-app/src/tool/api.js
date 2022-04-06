@@ -6,4 +6,5 @@ export default {
     createQuestion: '/createQuestion',
     getAllQuestions: '/getAllQuestions',
     deletePart: '/deletePart',
+    deleteQuestion: '/deleteQuestion',
 };

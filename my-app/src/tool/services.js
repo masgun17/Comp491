@@ -35,3 +35,8 @@ export const deletePartService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.deletePart, data).then(resolve).catch(reject);
   });
+
+export const deleteQuestionService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deleteQuestion, data).then(resolve).catch(reject);
+  });

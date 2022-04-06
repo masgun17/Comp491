@@ -6,6 +6,7 @@ import {
   createPartAction,
   createQuestionAction,
   deletePartAction,
+  deleteQuestionAction,
 } from "../tool/actions";
 import AddQuestion from "./AddQuestion";
 // import Modal from "react-bootstrap/Modal";
@@ -86,6 +87,20 @@ const ShowTest = () => {
     await getQuestions();
   }
 
+  const deleteQuestion = async id => {
+    var jsonData = {
+      data: [
+        {
+          Id: id,
+        },
+      ],
+    };
+    const a = await deleteQuestionAction(jsonData);
+    console.log(a);
+    await getParts();
+    await getQuestions();
+  }
+
   const [show, setShow] = useState(true);
 
   useEffect(async () => {
@@ -129,7 +144,10 @@ const ShowTest = () => {
                         className="editButton"
                         onClick={(val) => console.log("clicked")}
                       />
-                      <button className="deleteButton" />
+                      <button 
+                        className="deleteButton" 
+                        onClick={() => deleteQuestion(element[0])}
+                      />
                     </div>
                   </div>
                   <div className="questionDetailsChoicesRow">
@@ -156,7 +174,10 @@ const ShowTest = () => {
                       className="editButton"
                       onClick={(val) => console.log("clicked")}
                     />
-                    <button className="deleteButton" />
+                    <button 
+                      className="deleteButton" 
+                      onClick={() => deleteQuestion(element[0])}
+                    />
                   </div>
                 </div>
               )
