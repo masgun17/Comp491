@@ -191,6 +191,32 @@ a:-webkit-any-link {
   margin-bottom: 20px;
 }
 
+.partButtons {
+  display: none;
+  align-items: flex-end;
+}
+
+.partEditButton {
+  height: 20px;
+  width: 20px;
+  background-color: #6781bb;
+  border: #6781bb;
+  border-radius: 50%;
+}
+
+.partDeleteButton {
+  height: 20px;
+  width: 20px;
+  background-color: #bb6767;
+  border: #bb6767;
+  border-radius: 50%;
+}
+
+.partHeader:hover .partButtons {
+  display: flex;
+  flex-direction: row;
+}
+
 .questionDetails {
   position: relative;
   background-color: #bdbbb8;

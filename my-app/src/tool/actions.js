@@ -59,3 +59,15 @@ export const getAllQuestionsAction = async () => {
     console.log(error);
   }
 }
+
+export const deletePartAction = async (data) => {
+  try {
+    const result = await services.deletePartService(data);
+    return result.data;
+  } catch (error) {
+    console.log("Error on deletePartAction");
+    console.log(error);
+  }
+}
+
+

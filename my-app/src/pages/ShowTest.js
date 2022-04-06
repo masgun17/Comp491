@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllPartsAction, getAllQuestionsAction, createPartAction, createQuestionAction, } from "../tool/actions";
+import {
+  getAllPartsAction,
+  getAllQuestionsAction,
+  createPartAction,
+  createQuestionAction,
+  deletePartAction,
+} from "../tool/actions";
 import AddQuestion from "./AddQuestion";
 // import Modal from "react-bootstrap/Modal";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,9 +26,9 @@ const ShowTest = () => {
       while (result === "Bad Request ") {
         result = await getAllPartsAction();
       }
-      setParts(result);
+      setParts(result.sort());
     }
-  }
+  };
 
   useEffect(async () => {
     await getParts();
@@ -31,7 +37,7 @@ const ShowTest = () => {
   const [questions, setQuestions] = useState([]);
   const [isExtended, setIsExtended] = useState([]);
 
-  useEffect(async () => {
+  const getQuestions = async () =>{
     let result = await getAllQuestionsAction();
     if (result) {
       while (result === "Bad Request ") {
@@ -46,6 +52,10 @@ const ShowTest = () => {
       }
       setIsExtended(extended);
     }
+  }
+
+  useEffect(async () => {
+    await getQuestions();
   }, []);
 
   const updateExtended = (index, val) => {
@@ -65,6 +75,22 @@ const ShowTest = () => {
     };
     const a = await createPartAction(jsonData);
     console.log(a);
+    await getParts();
+    await getQuestions();
+  };
+
+  const deletePart = async id => {
+    var jsonData = {
+      data: [
+        {
+          Id: id,
+        },
+      ],
+    };
+    const a = await deletePartAction(jsonData);
+    console.log(a);
+    await getParts();
+    await getQuestions();
   }
 
   const [show, setShow] = useState(true);
@@ -82,6 +108,16 @@ const ShowTest = () => {
         <div className="showTestDiv">
           <div className="partHeader">
             <h2>{e[1]}</h2>
+            <div className="partButtons">
+              <button
+                className="partEditButton"
+                onClick={(val) => console.log("clicked")}
+              />
+              <button 
+                className="partDeleteButton" 
+                onClick={async () => {deletePart(e[0]);}}
+              />
+            </div>
           </div>
           {questions.map((element, index) =>
             element[1] === e[0] ? (
@@ -146,7 +182,6 @@ const ShowTest = () => {
         </div>
       ))}
 
-
       <div className="addPartButtonDiv">
         <button
           className="addPartButton"
@@ -159,43 +194,36 @@ const ShowTest = () => {
           Add a New Part
         </button>
       </div>
-      
-      {showAddNewPart ? 
-      <div className="AddPartDiv">
-        <div className="AddPartInfoText">
-          Here you can add a new part for the test
-        </div>
 
-        <div>
-        <label>
-          PartName:
-          <input
-            type="text"
-            id="partName"
-            placeholder="string"
-          />
-        </label>
-        <label>
-          ScoreLimit:
-          <input
-            type="text"
-            id="scoreLimit"
-            placeholder="int"
-          />
-        </label>
-        <button
-          onClick={async () => {
-            await createPart(document.getElementById("partName").value, document.getElementById("scoreLimit").value);
-            await getParts();
-          }}
-        >
-          Create
-        </button>
-      </div>
-        
-      </div> 
-      :
-      null}
+      {showAddNewPart ? (
+        <div className="AddPartDiv">
+          <div className="AddPartInfoText">
+            Here you can add a new part for the test
+          </div>
+
+          <div>
+            <label>
+              PartName:
+              <input type="text" id="partName" placeholder="string" />
+            </label>
+            <label>
+              ScoreLimit:
+              <input type="text" id="scoreLimit" placeholder="int" />
+            </label>
+            <button
+              onClick={() => {
+                createPart(
+                  document.getElementById("partName").value,
+                  document.getElementById("scoreLimit").value
+                );
+                
+              }}
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      ) : null}
       {/* </div> */}
       <AddQuestion
         show={modalShow}
