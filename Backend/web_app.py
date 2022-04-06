@@ -106,7 +106,7 @@ def getAllParts():
                 data.append(line)
             return json.dumps(data)
         else:
-            return 'Bad Request '
+            return json.dumps(data)
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
@@ -168,7 +168,7 @@ def getAllQuestions():
                 data.append(line)
             return json.dumps(data)
         else:
-            return 'Bad Request '
+            return json.dumps(data)
     except Exception as e:
         print(e)
         return 'Bad Request Exception'

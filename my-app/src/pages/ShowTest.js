@@ -22,12 +22,7 @@ const ShowTest = () => {
 
   const getParts = async () => {
     let result = await getAllPartsAction();
-    if (result) {
-      while (result === "Bad Request ") {
-        result = await getAllPartsAction();
-      }
-      setParts(result.sort());
-    }
+    setParts(result.sort((a,b) => {return a[1].localeCompare(b[1])}));
   };
 
   useEffect(async () => {
@@ -39,23 +34,21 @@ const ShowTest = () => {
 
   const getQuestions = async () =>{
     let result = await getAllQuestionsAction();
-    if (result) {
-      while (result === "Bad Request ") {
-        result = await getAllQuestionsAction();
-      }
-      setQuestions(result);
+    setQuestions(result);
 
-      const questionNumber = result.length;
-      const extended = [...Array(questionNumber)];
-      for (let index = 0; index < result.length; index++) {
-        extended[index] = 0;
-      }
-      setIsExtended(extended);
+    const questionNumber = result.length;
+    const extended = [...Array(questionNumber)];
+    for (let index = 0; index < result.length; index++) {
+      extended[index] = 0;
     }
+    setIsExtended(extended);
+  
   }
 
   useEffect(async () => {
-    await getQuestions();
+    setTimeout(() => {
+      getQuestions();
+    }, 100);
   }, []);
 
   const updateExtended = (index, val) => {
