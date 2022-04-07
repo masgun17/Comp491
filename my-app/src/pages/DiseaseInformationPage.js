@@ -1,12 +1,31 @@
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import ZoomOut from '@material-ui/icons/ZoomOut';
+import React, { useState } from "react";
+
 const DiseaseInformationPage = () => {
+  const [font, setFont] = useState(20);
+  const increaseFont = () => {
+    setFont(font+10);
+  }
+
+  const decreaseFont = () => {
+    if(font-10>10){
+      setFont(font-10);
+    }
+  }
+  
   return (
     // <h1>Disease Information Page</h1>
+    <div>
+      <button id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
+      <button id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>  
+    
     <div className="informationPageLayout">
         <div className="informationPageDiv1" style={{"grid-row-start": "1"}}>
-            <h1>Alzheimer's disease and Dementia facts & figures</h1>
+            <h1 style={{"font-size": font}}>Alzheimer's disease and Dementia facts & figures</h1>
         </div>
         <div className="informationPageDiv2" style={{"grid-row-start": "2", "font-size": "20px", "line-height": "1.8"}}>
-          <ul>
+          <ul style={{"font-size": font}}>
             <li>
             Dementia is not a normal part of ageing
             </li>
@@ -39,6 +58,7 @@ const DiseaseInformationPage = () => {
             </li>
           </ul>
         </div>
+      </div>
       </div>
   );
 };

@@ -44,7 +44,7 @@ const ChangePassword = ({ ...props }) => {
     }
 
   return (
-    <Modal {...props} size="xl" centered>
+    <Modal {...props} size="l" centered>
         <div className="createNewSuperAdminPageLayout">
         <div className="createNewSuperAdmingPageDiv1" style={{ "grid-row-start": "1" }}>
                 <h1>Şifre Değiştirme</h1>

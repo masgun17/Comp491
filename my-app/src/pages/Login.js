@@ -3,7 +3,8 @@ import { loginAction, fetchDBAction } from "../tool/actions";
 import { useState, useContext } from 'react';
 import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "../Helper/Context";
 import { useNavigate } from "react-router-dom";
-;
+import ForgetPassword from './ForgetPassword';
+
 function Login () {
     const navigate = useNavigate();
     const{isLogin,setIsLogin} = useContext(LoginContext) 
@@ -16,7 +17,7 @@ function Login () {
     const [email, setEmail] = useState(0);
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
-
+    const [modalShow, setModalShow] = useState(false);
 
     async function submitLoginForm(email, phone, password) {
         console.log("Helllooo")
@@ -74,12 +75,21 @@ function Login () {
                             <label htmlFor="password">Şifre: </label>
                             <input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)}/>
                         </div>
+                        <div style={{ "justify-content": "center","text-align":"center"}}>
+                        <Link to="/Login" style={{ "color": "red", "text-align":"center",  "position" : "center"}} 
+                        onClick={() => {
+                            setModalShow(true);
+                          }}> Şifremi Unuttum</Link>
+                        </div>
                         <label htmlFor="text">Hesabınız Yoksa:</label><Link to="/Signup" style={{ "color": "red" }}>   Kayıt Olun</Link>
-
-
-                      
                     </div>
                 </form>
+                <ForgetPassword
+             show={modalShow}
+             onHide={() => {
+             setModalShow(false);
+             }}
+           />
                 <button onClick={() => 
                             {submitLoginForm(document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
