@@ -19,6 +19,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Approve from "./pages/Approve";
 import Profile from "./pages/Profile";
+import Statistics from "./pages/Statistics";
 import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "./Helper/Context";
 import { useState, useContext } from 'react';
 
@@ -56,6 +57,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="approve" element={<Approve />} />
+          <Route path="statistics" element={<Statistics />} />
           <Route path="profile" element={<Profile />} />
         </Route>
        </Routes>

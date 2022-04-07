@@ -152,6 +152,36 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
     else:
         return "Login unsuccessful"
     
+def changingPassword(id,passwordOld,passwordNew):
+    recordId = Users.has_item_by_multipple_columns(["Id"],[str(id)])
+    print(recordId)
+    record = recordId[1][0]
+    salt = record[6]
+    salt_bytes=salt.encode('utf-8')
+    salt = base64.b64decode(salt_bytes)
+    #salt = salt.decode('utf-8')
+    #salt = bytes(record[6], 'utf-8')
+    print(salt)
+    plaintext = passwordOld.encode()
+    digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
+    hex_hashed_password = digest_password.hex()
+    hex_hashed_password_from_database = record[7]
+    print(hex_hashed_password)
+    print(hex_hashed_password_from_database)
+    if hex_hashed_password == hex_hashed_password_from_database:
+        plaintext_new = passwordNew.encode()
+        print("debug5")
+        digest_password_new = hashlib.pbkdf2_hmac('sha256', plaintext_new, salt, 10000)
+        hex_hashed_password_new = digest_password_new.hex()
+        recordStatus = Users.change_password(id,hex_hashed_password_new)
+        print(recordStatus)
+        if recordStatus:
+            return "Password changed"
+        else:
+            return "Password Couldn't changed"
+    else:
+        return "Current Password is not correct"
+        
     #@app.route("/creatingNewAccount",  methods=['GET', 'POST'])
     def creatingNewAccount():
         conn = connection.cursor()

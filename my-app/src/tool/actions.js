@@ -79,3 +79,34 @@ export const loginAction = async (data) => {
     console.log(error);
   }
 };
+
+export const createNewAdminAction = async (data) => {
+  try{
+    const result = await services.createNewAdminService(data);
+    return result.data;
+  }catch (error){
+    console.log("Error on loginAction");
+    console.log(error);
+  }
+};
+
+export const createNewSuperAdminAction = async (data) => {
+  try{
+    const result = await services.createNewSuperAdminService(data);
+    return result.data;
+  }catch (error){
+    console.log("Error on loginAction");
+    console.log(error);
+  }
+};
+
+
+export const changePasswordAction = async (data) => {
+  try{
+    const result = await services.changePasswordService(data);
+    return result.data;
+  }catch (error){
+    console.log("Error on loginAction");
+    console.log(error);
+  }
+};

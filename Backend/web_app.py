@@ -211,4 +211,107 @@ def loginAccount():
         return "Lütfen Şifrenizi Giriniz!"
     return hashingPassword.checkingPasswordWithDatabase(password,email,phoneNumber)
 
+@app.route("/createNewAdminAccount",  methods=['POST'])
+def createNewAdminAccount():
+    try:
+        print("debug1")
+        result_code = False
+        form = json.loads(request.data)
+        accountInfo = form['data']
+        personInfo = accountInfo[0]
+        name = personInfo['name']
+        print(name)
+        if len(name)==0:
+            return "Lütfen isminizi giriniz!"
+        surname = personInfo['surname']
+        if len(surname)==0:
+            return "Lütfen soyadınızı giriniz!"
+        email = personInfo['email']
+        phoneNumber = personInfo['phone']
+        if len(email)==0 and len(phoneNumber)==0:
+            return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
+        password = personInfo['password']
+        if len(password)==0:
+            return "Lütfen bir şifre belirleyiniz!"
+        if len(password)<8:
+            return "Şifreniz en az 8 haneli olmak zorundadır!"    
+        print(password)
+        #kvkk = personInfo['kvkk']
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        if salt!=False and hashedPassword!=False:
+            result_code=Users.add_item([2,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            if result_code:
+                return 'User added Successfully'
+            else:
+                return 'Bad Request'
+        else:
+            return 'User is already in the db'
+    except Exception as e:
+        print(e)
+        return "Bad Request"
+
+@app.route("/createNewSuperAdminAccount",  methods=['POST'])
+def createNewSuperAdminAccount():
+    try:
+        print("debug1")
+        result_code = False
+        form = json.loads(request.data)
+        accountInfo = form['data']
+        personInfo = accountInfo[0]
+        name = personInfo['name']
+        print(name)
+        if len(name)==0:
+            return "Lütfen isminizi giriniz!"
+        surname = personInfo['surname']
+        if len(surname)==0:
+            return "Lütfen soyadınızı giriniz!"
+        email = personInfo['email']
+        phoneNumber = personInfo['phone']
+        if len(email)==0 and len(phoneNumber)==0:
+            return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
+        password = personInfo['password']
+        if len(password)==0:
+            return "Lütfen bir şifre belirleyiniz!"
+        if len(password)<8:
+            return "Şifreniz en az 8 haneli olmak zorundadır!"    
+        print(password)
+        #kvkk = personInfo['kvkk']
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        if salt!=False and hashedPassword!=False:
+            result_code=Users.add_item([3,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            if result_code:
+                return 'User added Successfully'
+            else:
+                return 'Bad Request'
+        else:
+            return 'User is already in the db'
+    except Exception as e:
+        print(e)
+        return "Bad Request"
+
+@app.route("/changePassword",  methods=['POST'])
+def changePassword():
+    try:
+        print("debug1")
+        result_code = False
+        form = json.loads(request.data)
+        accountInfo = form['data']
+        personInfo = accountInfo[0]
+        id = personInfo['id']
+        password = personInfo['password']
+        passwordNew = personInfo['passwordNew']
+        passwordNewAgain = personInfo['passwordNewAgain']
+        print("debug2")
+        print(id)
+        result_code = hashingPassword.changingPassword(id,password,passwordNew)
+        print(result_code)
+        if result_code=="Current Password is not correct":
+            return "Current Password is not correct"
+        elif result_code:
+            return 'Password Changed'
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return "Bad Request"
 app.run()

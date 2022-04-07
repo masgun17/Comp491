@@ -1,9 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import { LoginContext } from "../Helper/Context";
+import { LoginContext, UserTypeIdContext } from "../Helper/Context";
 import { useState, useContext } from 'react';
 
 const Header = () => {
   const{isLogin,setIsLogin} = useContext(LoginContext); 
+  const{userTypeId,setUserTypeId} = useContext(UserTypeIdContext) 
   return (
     <div className="headerWholePage">
       <div className="header" style={{ "grid-row-start": "1", "grid-row-end": "2" }}>
@@ -13,6 +14,11 @@ const Header = () => {
         <Link to="/testInformation">Risk Değerlendirmesi Yapın</Link>
         <Link to="/contact">İletişim</Link>
         <Link to="/privacy">Gizlilik</Link>
+        {userTypeId=='2' || userTypeId=='3' ? (
+           <Link to="/statistics">İstatistikler</Link>
+        ):(
+          null
+        )}
         {isLogin ? (
           <Link to="/profile">Profil</Link>
         ):(
@@ -20,7 +26,7 @@ const Header = () => {
         )}
         {isLogin ? (
           <button type="button" onClick={() => 
-            {setIsLogin(false)}}><Link to="/">Çıkış</Link></button>
+            {setIsLogin(false); setUserTypeId('0')}}><Link to="/">Çıkış</Link></button>
         ):(
           <button type="button"><Link to="/login">Giriş</Link></button>
         )}

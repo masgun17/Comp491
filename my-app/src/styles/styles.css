@@ -543,3 +543,58 @@ a:-webkit-any-link {
   margin-top: 20px;
   margin-bottom: 10px;
   color: rgb(235, 217, 217);}
+
+.modal-content .createNewSuperAdminPageLayout button[id="newSuperAdminAdd"]{
+  position: center;
+  padding: 5px 5px;
+  background-color: #556c9c;
+  border-radius: 8px;
+  background-position: center;
+  font-size: 20px;
+  position: center;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: rgb(235, 217, 217);}
+
+.modal-content .innerForm[id="createNewAdminForm"] .form-group label {
+  display: block;
+  position: center;
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 5px;
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto; 
+  text-align: center;
+ }
+
+.modal-content .innerForm[id="createNewAdminForm"] .form-group {
+  display: block;
+  position: center;
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+    
+.modal-content .innerForm[id="createNewAdminForm"] .form-group input {
+  display: block;
+  position: center;
+  font-size: 20px;
+  padding: 10px 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-content .createNewSuperAdmingPageDiv1 {
+  position: center;
+  padding: 0% 10% 0% 10%;
+  display: grid;
+  text-align: center;
+}

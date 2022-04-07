@@ -41,3 +41,17 @@ export const getAllQuestionsService = async () =>
     axios.post(API.loginAccount, data).then(resolve).catch(reject);
   });
   
+  export const createNewAdminService = async(data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.createNewAdminAccount, data).then(resolve).catch(reject);
+  });
+
+  export const createNewSuperAdminService = async(data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.createNewSuperAdminAccount, data).then(resolve).catch(reject);
+  });
+
+  export const changePasswordService = async(data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.changePassword, data).then(resolve).catch(reject);
+  });
