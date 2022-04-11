@@ -512,4 +512,13 @@ a:-webkit-any-link {
   border: 1px solid red;
   border-radius: 30px;
   padding: 20px;
+  max-height: 100px;
+}
+
+
+.testPageLayout {
+  position: relative;
+  padding: 0% 20% 5% 20%;
+  display: grid;
+  grid-template-rows: 10fr 1fr;
 }
