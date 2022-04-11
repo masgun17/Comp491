@@ -49,7 +49,7 @@ const ShowTest = () => {
   useEffect(async () => {
     setTimeout(() => {
       getQuestions();
-    }, 100);
+    }, 300);
   }, []);
 
   const updateExtended = (index, val) => {
