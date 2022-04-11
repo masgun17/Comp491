@@ -191,6 +191,32 @@ a:-webkit-any-link {
   margin-bottom: 20px;
 }
 
+.partButtons {
+  display: none;
+  align-items: flex-end;
+}
+
+.partEditButton {
+  height: 20px;
+  width: 20px;
+  background-color: #6781bb;
+  border: #6781bb;
+  border-radius: 50%;
+}
+
+.partDeleteButton {
+  height: 20px;
+  width: 20px;
+  background-color: #bb6767;
+  border: #bb6767;
+  border-radius: 50%;
+}
+
+.partHeader:hover .partButtons {
+  display: flex;
+  flex-direction: row;
+}
+
 .questionDetails {
   position: relative;
   background-color: #bdbbb8;
@@ -245,10 +271,10 @@ a:-webkit-any-link {
 .questionDetailsChoicesRow {
   margin-left: 20px;
   display: grid;
-  grid-template-columns: 20% 80%
+  grid-template-columns: 20% 80%;
 }
 
-.questionDetailsChoices{
+.questionDetailsChoices {
   display: grid;
   grid-template-rows: auto;
 }
@@ -467,49 +493,26 @@ a:-webkit-any-link {
   border: 1px solid #999;
   font-size: 20px;
 }
-
-/* Styles for Add Question Tool (Modal) */
-/* .addQuestionModal {
-  height: 500px;
-} */
-.modal-content {
-  height: 80vh;
-  align-self: center;
-  border-radius: 20px !important;
-  /* display: 'flex';
-	justify-content: 'center';
-	align-items: 'center'; */
-  padding: 3%;
+.addPartButton {
+  width: 20%;
 }
 
-.modal-grid{
-  display: grid;
-  height: 100%;
-  grid-template-rows: 10% auto auto 10%;
-  grid-row-gap: 20px;
-}
-.modal-header{
-  font-size: 25px;  
-  border: none !important;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-.modal-question-type {
-  display: grid;
-  grid-template-rows: 1fr 3fr;
-  grid-row-gap: 10px;
+.addPartButtonDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-.add-question{
-  margin-right: 0;
-  margin-left: auto;
-  width: 200px;
-  height: 70%;
-  background-color: #f57226;
-  color:rgb(255, 255, 255);
-  border-radius: 15px;
-  border: none;
+.AddPartInfoText {
+}
+
+.AddPartDiv {
+  border: 1px solid red;
+  border-radius: 30px;
+  padding: 20px;
+  max-height: 100px;
 }
 
 .header button[id="Profile"]{
@@ -599,3 +602,10 @@ a:-webkit-any-link {
   text-align: center;
 }
 
+
+.testPageLayout {
+  position: relative;
+  padding: 0% 20% 5% 20%;
+  display: grid;
+  grid-template-rows: 10fr 1fr;
+}

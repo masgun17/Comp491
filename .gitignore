@@ -1,0 +1,3 @@
+
+*.pyc
+Backend/dal/__pycache__/*.pyc

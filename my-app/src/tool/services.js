@@ -21,7 +21,7 @@ export const getAllPartsService = async () =>
     axios.get(API.getAllParts).then(resolve).catch(reject);
   });
 
-  export const createQuestionService = async (data) =>
+export const createQuestionService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.createQuestion, data).then(resolve).catch(reject);
   });
@@ -54,4 +54,13 @@ export const getAllQuestionsService = async () =>
   export const changePasswordService = async(data) =>
   new Promise((resolve, reject) => {
     axios.post(API.changePassword, data).then(resolve).catch(reject);
+  });
+export const deletePartService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deletePart, data).then(resolve).catch(reject);
+  });
+
+export const deleteQuestionService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deleteQuestion, data).then(resolve).catch(reject);
   });

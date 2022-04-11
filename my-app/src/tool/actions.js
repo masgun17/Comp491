@@ -85,7 +85,7 @@ export const createNewAdminAction = async (data) => {
     const result = await services.createNewAdminService(data);
     return result.data;
   }catch (error){
-    console.log("Error on loginAction");
+    console.log("Error on createNewAdminAction");
     console.log(error);
   }
 };
@@ -95,7 +95,7 @@ export const createNewSuperAdminAction = async (data) => {
     const result = await services.createNewSuperAdminService(data);
     return result.data;
   }catch (error){
-    console.log("Error on loginAction");
+    console.log("Error on createNewSuperAdminAction");
     console.log(error);
   }
 };
@@ -106,7 +106,28 @@ export const changePasswordAction = async (data) => {
     const result = await services.changePasswordService(data);
     return result.data;
   }catch (error){
-    console.log("Error on loginAction");
+    console.log("Error on changePasswordAction");
     console.log(error);
   }
 };
+export const deletePartAction = async (data) => {
+  try {
+    const result = await services.deletePartService(data);
+    return result.data;
+  } catch (error) {
+    console.log("Error on deletePartAction");
+    console.log(error);
+  }
+}
+
+export const deleteQuestionAction = async (data) => {
+  try {
+    const result = await services.deleteQuestionService(data);
+    return result.data;
+  } catch (error) {
+    console.log("Error on deleteQuestionAction");
+    console.log(error);
+  }
+}
+
+

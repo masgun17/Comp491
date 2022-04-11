@@ -10,5 +10,6 @@ export default {
     createNewAdminAccount: '/createNewAdminAccount',
     createNewSuperAdminAccount: '/createNewSuperAdminAccount',
     changePassword: '/changePassword',
-
+    deletePart: '/deletePart',
+    deleteQuestion: '/deleteQuestion',
 };

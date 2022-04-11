@@ -109,6 +109,24 @@ def getAllParts():
                 data.append(line)
             return json.dumps(data)
         else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/deletePart", methods=['GET', 'POST'])
+def deletePart():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        Id = int(parameters['Id'])
+
+        result_code = Part.delete_item(Id)
+        if result_code:
+            return "Part removed successfully"
+        else:
             return 'Bad Request '
     except Exception as e:
         print(e)
@@ -131,7 +149,7 @@ def createQuestion():
         result_code = Question.add_item([PartId, QuestionText, Weight, QuestionType, Options])
 
         if result_code:
-            return 'Part added Successfully'
+            return 'Question added Successfully'
         else:
             return 'Bad Request '
     except Exception as e:
@@ -151,6 +169,23 @@ def getAllQuestions():
                     line.append(x)
                 data.append(line)
             return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/deleteQuestion", methods=['GET', 'POST'])
+def deleteQuestion():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        Id = int(parameters['Id'])
+
+        result_code = Question.delete_item(Id)
+        if result_code:
+            return "Question removed successfully"
         else:
             return 'Bad Request '
     except Exception as e:
