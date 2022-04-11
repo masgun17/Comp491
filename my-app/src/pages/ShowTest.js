@@ -4,7 +4,6 @@ import {
   getAllPartsAction,
   getAllQuestionsAction,
   createPartAction,
-  createQuestionAction,
   deletePartAction,
   deleteQuestionAction,
 } from "../tool/actions";
@@ -105,6 +104,8 @@ const ShowTest = () => {
     setShow(true);
   }, [JSON.stringify(isExtended)]);
 
+  const [selectedPartId, setSelectedPartId] = useState();
+
   return (
     <div className="showTestPageLayout">
       <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
@@ -185,6 +186,7 @@ const ShowTest = () => {
             className="addQuestionButton"
             // Update onClick function such that it will open a modal content structure
             onClick={() => {
+              setSelectedPartId(e[0]);
               handleModalShow();
             }}
             style={{ "margin-top": "10px" }}
@@ -241,7 +243,9 @@ const ShowTest = () => {
         show={modalShow}
         onHide={() => {
           handleModalClose();
+          getQuestions();
         }}
+        partId={selectedPartId}
       />
     </div>
   );

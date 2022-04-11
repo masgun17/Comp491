@@ -3,11 +3,12 @@ import { Modal, Dropdown } from "react-bootstrap";
 import "../AddQuestion/AddQuestion.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSearchParams } from "react-router-dom";
+import { createQuestionAction } from "../tool/actions";
 
-const AddQuestion = ({ ...props }) => {
+const AddQuestion = ({ partId, ...props }) => {
   const [freeText, setFreeText] = useState(true);
-  const [optionNo, setOptionNo] = useState(2);
-  const [options, setOptions] = useState(["", ""]);
+  const [optionNo, setOptionNo] = useState(0);
+  const [options, setOptions] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [weight, setWeight] = useState(0);
 
@@ -22,10 +23,35 @@ const AddQuestion = ({ ...props }) => {
     setShowOptions(true);
   }, [optionNo]);
 
-  // useEffect(async () => {
-  //   console.log(options);
-  //   setShowOptions(true);
-  // }, [options]);
+
+  async function createQuestion() {
+    const questionText = document.getElementById("questionText").value;
+    const weight = parseFloat(document.getElementById("questionWeight").value);
+    const questionType = freeText ? "free-text" : "multi-select";
+    const optArray = [];
+    if (questionType === "multi-select") {
+      for (let index = 0; index < optionNo; index++) {
+        const opt = document.getElementById(index).value;
+        console.log(opt);
+        optArray.push(opt);
+      }
+    }
+
+    var jsonData = {
+      data: [
+        {
+          PartId: partId,
+          QuestionText: questionText,
+          Weight: weight,
+          QuestionType: questionType,
+          Options: optArray,
+        },
+      ],
+    };
+    const a = await createQuestionAction(jsonData);
+    console.log(a);
+
+  }
 
   return (
     <Modal
@@ -43,7 +69,6 @@ const AddQuestion = ({ ...props }) => {
     >
       <div className="modal-grid">
         <h className="modal-header">Add a New Question</h>
-
         <div className="modal-question-type">
           <Dropdown className="modal-dropdown">
             <Dropdown.Toggle className="modal-toggle">
@@ -70,11 +95,13 @@ const AddQuestion = ({ ...props }) => {
             </Dropdown.Menu>
           </Dropdown>
           <textarea
+            id='questionText'
             className="questionDescription"
             placeholder="Soru açıklaması giriniz..."
           />
           <input
             className="questionWeight"
+            id='questionWeight'
             placeholder="Sorunun ağırlığını giriniz..."
             onChange={(e) => {
               setWeight(e);
@@ -101,7 +128,7 @@ const AddQuestion = ({ ...props }) => {
             ))}
         </div>
 
-        <button className="add-question">Add Question</button>
+        <button className="add-question" onClick={createQuestion} >Add Question</button>
       </div>
     </Modal>
   );
