@@ -146,7 +146,7 @@ def createQuestion():
         result_code = Question.add_item([PartId, QuestionText, Weight, QuestionType, Options])
 
         if result_code:
-            return 'Part added Successfully'
+            return 'Question added Successfully'
         else:
             return 'Bad Request '
     except Exception as e:
