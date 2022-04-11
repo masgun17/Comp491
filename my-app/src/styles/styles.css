@@ -493,51 +493,6 @@ a:-webkit-any-link {
   border: 1px solid #999;
   font-size: 20px;
 }
-
-/* Styles for Add Question Tool (Modal) */
-/* .addQuestionModal {
-  height: 500px;
-} */
-.modal-content {
-  height: 80vh;
-  align-self: center;
-  border-radius: 20px !important;
-  /* display: 'flex';
-	justify-content: 'center';
-	align-items: 'center'; */
-  padding: 3%;
-}
-
-.modal-grid {
-  display: grid;
-  height: 100%;
-  grid-template-rows: 10% auto auto 10%;
-  grid-row-gap: 20px;
-}
-.modal-header {
-  font-size: 25px;
-  border: none !important;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-.modal-question-type {
-  display: grid;
-  grid-template-rows: 1fr 3fr;
-  grid-row-gap: 10px;
-}
-
-.add-question {
-  margin-right: 0;
-  margin-left: auto;
-  width: 200px;
-  height: 70%;
-  background-color: #f57226;
-  color: rgb(255, 255, 255);
-  border-radius: 15px;
-  border: none;
-}
-
 .addPartButton {
   width: 20%;
 }

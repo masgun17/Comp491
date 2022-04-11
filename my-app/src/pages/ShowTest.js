@@ -8,9 +8,7 @@ import {
   deletePartAction,
   deleteQuestionAction,
 } from "../tool/actions";
-import AddQuestion from "./AddQuestion";
-// import Modal from "react-bootstrap/Modal";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import AddQuestion from "../AddQuestion/AddQuestion";
 
 const ShowTest = () => {
   const navigate = useNavigate();
