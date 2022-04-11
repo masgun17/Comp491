@@ -9,6 +9,7 @@ const AddQuestion = ({ ...props }) => {
   const [optionNo, setOptionNo] = useState(2);
   const [options, setOptions] = useState(["", ""]);
   const [showOptions, setShowOptions] = useState(false);
+  const [weight, setWeight] = useState(0);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -26,14 +27,19 @@ const AddQuestion = ({ ...props }) => {
   //   setShowOptions(true);
   // }, [options]);
 
-
   return (
     <Modal
       {...props}
       centered
       contentClassName="custom-modal-content"
       dialogClassName="custom-modal-dialogue"
-      onExit={() => {console.log("clicked"); setShowOptions(false); setOptions(["", ""]); setFreeText(true); setOptionNo(0);}}
+      onExit={() => {
+        console.log("clicked");
+        setShowOptions(false);
+        setOptions(["", ""]);
+        setFreeText(true);
+        setOptionNo(0);
+      }}
     >
       <div className="modal-grid">
         <h className="modal-header">Add a New Question</h>
@@ -66,6 +72,13 @@ const AddQuestion = ({ ...props }) => {
           <textarea
             className="questionDescription"
             placeholder="Soru açıklaması giriniz..."
+          />
+          <input
+            className="questionWeight"
+            placeholder="Sorunun ağırlığını giriniz..."
+            onChange={(e) => {
+              setWeight(e);
+            }}
           />
         </div>
 
