@@ -1,5 +1,6 @@
 import json
 import urllib
+from xml.etree.ElementTree import tostring
 
 import flask
 from flask import Flask, request, url_for, jsonify
@@ -362,7 +363,11 @@ def createAssessmentSession():
 
         result_code = AssessmentSession.add_item(UserId)
         if result_code:
-            return 'New assessment session is created successfully'
+            result, item = AssessmentSession.get_last()
+            if result:
+                return str(item[0])
+            else:
+                return 'New assessment session is created / could not fetch sessionId'
         else:
             return 'Bad Request '
     except Exception as e:

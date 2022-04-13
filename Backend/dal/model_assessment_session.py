@@ -65,6 +65,21 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
+    
+    @classmethod
+    def get_last(cls):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute("select * from AssessmentSession order by Id desc").fetchall()
+            if items is not None and len(items) > 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items[0]
 
     @classmethod
     def add_item(cls, UserId):

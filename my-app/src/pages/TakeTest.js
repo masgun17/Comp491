@@ -6,6 +6,7 @@ import QuestionBody from "./QuestionBody";
 
 const TakeTest = () => {
   const{id,setId} = useContext(UserIdContext);
+  const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
   
   const createAssessmentSession = async () => {
     var jsonData = {
@@ -16,7 +17,7 @@ const TakeTest = () => {
       ],
     };
     const a = await createAssessmentSessionAction(jsonData);
-    console.log(a);
+    setCurrentAssessmentSession(a);
   }
 
   useEffect(async () => {
