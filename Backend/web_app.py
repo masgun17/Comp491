@@ -9,6 +9,7 @@ import requests
 from werkzeug.utils import redirect
 from sqlalchemy import create_engine, text
 import pyodbc
+from dal.model_assessment_session import AssessmentSession
 from dal.model_question import Question
 from dal.model_part import Part
 from dal import hashingPassword
@@ -349,4 +350,24 @@ def changePassword():
     except Exception as e:
         print(e)
         return "Bad Request"
+
+
+@app.route("/createAssessmentSession",  methods=['GET', 'POST'])
+def createAssessmentSession():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        UserId = parameters['UserId']
+
+        result_code = AssessmentSession.add_item(UserId)
+        if result_code:
+            return 'New assessment session is created successfully'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
 app.run()

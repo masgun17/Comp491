@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, Float, \
     BLOB, Boolean, Index, BigInteger, and_, text, ForeignKey, REAL, or_, FLOAT, TEXT, asc, desc
 from sqlalchemy.dialects.mysql import pymysql
 
-from Backend.app_globals import connection
+from app_globals import connection
 
 class AssessmentSession():
     __tablename__ = 'AssessmentSession'
