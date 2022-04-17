@@ -2,14 +2,10 @@ import React, { useState, useContext } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet, Link } from "react-router-dom";
-import { changePasswordAction, fetchDBAction } from "../tool/actions";
-import { UserIdContext} from "../Helper/Context";
 import { submitNewPasswordAction } from "../tool/actions";
-import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = ({ ...props }) => {
     const [email, setEmail] = useState(0);
-    const navigate = useNavigate();
 
     async function submitNewPassword() {
         var jsonData = {
@@ -17,7 +13,6 @@ const ForgetPassword = ({ ...props }) => {
               "email": email
             }]
           }
-        console.log(email)
         const a = await submitNewPasswordAction(jsonData);
         if(a==='Password Changed'){
             alert('Yeni şifreniz mailinize yönlendirilmiştir.')

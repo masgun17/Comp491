@@ -337,11 +337,8 @@ def changePassword():
 @app.route("/submitNewPassword",  methods=['POST'])
 def submitNewPassword():
     form = json.loads(request.data)
-    print(form)
     accountInfo = form['data']
-    print(accountInfo)
     personInfo = accountInfo[0]
-    print(personInfo)
     email = personInfo['email']
     randomPassword, recordStatus, name = hashingPassword.getUsersDetailFromEmail(email)
     if randomPassword=='User is not registered':

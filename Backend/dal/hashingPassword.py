@@ -119,7 +119,6 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
     
 def getUsersDetailFromEmail(email):
     recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
-    print(recordEmail)
     if len(recordEmail[1])==0:
         return 'User is not registered', False, False
     record = recordEmail[1][0]
@@ -134,13 +133,9 @@ def getUsersDetailFromEmail(email):
     all = lower + upper + num
     temp = random.sample(all,8)
     randomPassword = "".join(temp)
-    print(randomPassword)
-    print(type(randomPassword))
     plaintext = randomPassword.encode()
     digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
     hex_hashed_password = digest_password.hex()
-    print(id)
-    print(hex_hashed_password)
     recordStatus = Users.change_password(id,hex_hashed_password)
     return randomPassword, recordStatus, name 
 

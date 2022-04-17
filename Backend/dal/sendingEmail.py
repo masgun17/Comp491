@@ -4,7 +4,6 @@ def sendNewPassword(randomPassword,email,name):
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
     sender_email ="alzheimerhastaliktest@gmail.com"
-    print(email)
     receiver_email = email
     password = "alzheimer2022"
     message = """Subject: Yeni Sifreniz
