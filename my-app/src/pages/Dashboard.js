@@ -23,9 +23,9 @@ const Dashboard = () => {
     <div>
       <button id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
       <button id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>        
-      <div className="dashboardLayout">
+      <div className="dashboardLayout" style={{"font-size": font}}>
           <div className="dashboardDiv1" style={{"grid-row-start": "1"}}>
-            <h1 style={{"font-size": font}}>Anasayfa</h1>
+            <h1 >Anasayfa</h1>
         </div>
         <div className="dashboardDiv2" style={{"grid-row-start": "2"}}>
             Test Hakkında

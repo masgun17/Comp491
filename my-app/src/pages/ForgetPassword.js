@@ -4,12 +4,26 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet, Link } from "react-router-dom";
 import { changePasswordAction, fetchDBAction } from "../tool/actions";
 import { UserIdContext} from "../Helper/Context";
+import { submitNewPasswordAction } from "../tool/actions";
+
 
 
 const ForgetPassword = ({ ...props }) => {
     const [email, setEmail] = useState(0);
-    const [phone, setTel] = useState(0);
-    const [password, setPassword] = useState(0);
+
+    async function submitNewPassword() {
+        var jsonData = {
+            "data": [{
+              "email": email
+            }]
+          }
+        console.log(email)
+        const a = await submitNewPasswordAction(jsonData);
+        if(a==='Password Changed'){
+            alert('Yeni şifreniz mailinize yönlendirilmiştir.')
+        }
+    
+    }
 
   return (
     <Modal {...props} size="l" centered>
@@ -23,19 +37,11 @@ const ForgetPassword = ({ ...props }) => {
                             <label htmlFor="email">Email: </label>
                             <input type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="tel">Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  onChange={(e) => setTel(e.target.value)}/>
-                        </div>
-                       {/*  <div className="form-group">
-                            <label htmlFor="password">Şifre: </label>
-                            <input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)}/>
-                        </div> */}
-                        
-
                     </div >
                 </form>
-                <button id="newSuperAdminAdd" 
+                <button id="newSuperAdminAdd" onClick={() => 
+                            {submitNewPassword(document.getElementById("email").value);
+                            }}
                         >Şifreyi Sıfırla 
                              </button>
             <Outlet style={{ "grid-row-start": "2" }} />

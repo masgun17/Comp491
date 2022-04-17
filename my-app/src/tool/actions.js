@@ -130,4 +130,16 @@ export const deleteQuestionAction = async (data) => {
   }
 }
 
+export const submitNewPasswordAction = async (data) => {
+  try {
+    console.log(data)
+    const result = await services.submitNewPasswordService(data);
+    return result.data;
+  } catch (error) {
+    console.log("Error on submitNewPasswordAction");
+    console.log(error);
+  }
+}
+
+
 

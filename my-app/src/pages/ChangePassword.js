@@ -1,19 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Outlet, Link } from "react-router-dom";
-import { changePasswordAction, fetchDBAction } from "../tool/actions";
-import { UserIdContext} from "../Helper/Context";
+import { Outlet } from "react-router-dom";
+import { changePasswordAction } from "../tool/actions";
 
 
 const ChangePassword = ({ ...props }) => {
     const [password, setPassword] = useState(0);
     const [passwordNew, setPasswordNew] = useState(0);
     const [passwordNewAgain, setPasswordNewAgain] = useState(0);
-    const{id,setId} = useContext(UserIdContext) 
 
     async function changePassword(password,passwordNew, passwordNewAgain) {
-        console.log("Helllooo")
         if(passwordNew!==passwordNewAgain){
             alert("Yeni şifre ile yeni şifre tekrarın aynı olması gerekiyor")
         }else if(passwordNew.length<8){
@@ -23,21 +20,20 @@ const ChangePassword = ({ ...props }) => {
         }else{
             var jsonData = {
                 "data": [{
-                  "id": id,
+                  "id": sessionStorage.getItem('userId'),
                   "password": password,
                   "passwordNew": passwordNew,
                   "passwordNewAgain": passwordNewAgain
                 }]
               }
               const a = await changePasswordAction(jsonData);
-              console.log(a)
-              if(a=='Password Changed'){
+              if(a==='Password Changed'){
                   alert('Şifre Başarıyla Değiştirildi')
                   setPassword("")
                   setPasswordNew("")
                   setPasswordNewAgain("")
 
-                }else if(a=="Current Password is not correct"){
+                }else if(a==="Current Password is not correct"){
                     alert('Güncel Şifrenizi Hatalı Girdiniz')
                 }
     }

@@ -2,7 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 import { useState } from 'react';
 import React from 'react';
 import Approve from './Approve';
-import { signUpAction, fetchDBAction } from "../tool/actions";
+import { signUpAction} from "../tool/actions";
 //import { useAlert } from "react-alert";
 
 const Signup = () => {
@@ -17,10 +17,7 @@ const Signup = () => {
     const toggleApprove = () => {
       setIsOpen(!isOpen);
     }
-    //const alert = useAlert()
-
     async function submitSignUpForm(name, surname, email, phone, password) {
-        console.log("Helllooo")
         var jsonData = {
           "data": [{
             "name": name,
@@ -34,17 +31,17 @@ const Signup = () => {
             alert("Kayıt olabilmeniz için sözleşmeyi onaylamanız gerekmektedir!")
         }else{
         const a = await signUpAction(jsonData);
-        if(a=='User added Successfully'){
+        if(a==='User added Successfully'){
             alert('Hesap Başarıyla Oluşturuldu')
-        }else if(a=="Lütfen isminizi giriniz!"){
+        }else if(a==="Lütfen isminizi giriniz!"){
             alert("Lütfen isminizi giriniz!")
-        }else if(a=="Lütfen soyadınızı giriniz!"){
+        }else if(a==="Lütfen soyadınızı giriniz!"){
             alert("Lütfen soyadınızı giriniz!")
-        }else if(a=="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
+        }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
             alert("Lütfen email adresinizi ya da telefon numaranızı giriniz!")
-        }else if(a=="Lütfen bir şifre belirleyiniz!"){
+        }else if(a==="Lütfen bir şifre belirleyiniz!"){
             alert("Lütfen bir şifre belirleyiniz!")
-        }else if(a=="Şifreniz en az 8 haneli olmak zorundadır!"){
+        }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
             alert("Şifreniz en az 8 haneli olmak zorundadır!")
         }else{
             alert('Kullanıcının hesabı vardır!')

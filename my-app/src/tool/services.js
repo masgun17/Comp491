@@ -64,3 +64,12 @@ export const deleteQuestionService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.deleteQuestion, data).then(resolve).catch(reject);
   });
+
+
+  export const submitNewPasswordService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.submitNewPassword, data).then(resolve).catch(reject);
+  });
+
+
+  

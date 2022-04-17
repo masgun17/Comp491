@@ -121,7 +121,6 @@ class Users():
                 result_code = True
                 conn.commit()
             except Exception as e:
-                print("deneme")
                 print(e)
             finally:
                 conn.close()

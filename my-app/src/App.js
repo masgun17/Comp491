@@ -34,7 +34,6 @@ function App() {
   const [id, setId] = useState("");
   const [userTypeId, setUserTypeId] = useState("");
   return (
-
     <LoginContext.Provider value={{isLogin, setIsLogin}}>
     <UserNameContext.Provider value={{name, setName}}>
     <UserSurnameContext.Provider value={{surname, setSurname}}>

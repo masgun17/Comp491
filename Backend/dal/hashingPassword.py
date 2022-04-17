@@ -14,7 +14,8 @@ import pyodbc
 from dal.model_user import Users
 from base64 import b64encode
 import base64
-
+import string
+import random
 
 
 
@@ -22,60 +23,37 @@ def hashingPasswordWithSalting(password,email,phone,conn):
     recordEmail = None
     recordPhone = None
     try:
-        print("hashingPasswordWithSalt Başladı")
-        print(email)
-        print(phone)
-        print("hashingPasswordWithSalt Bitti")
         if len(email)!=0:
             recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
         if len(phone)!=0:
             recordPhone = Users.has_item_by_multipple_columns(["Phone"],[phone])
-        print(recordEmail[0])
-        print(recordPhone)
-        #userIdFromEmail = conn.execute(f"SELECT Id FROM Users where Email = {email};").fetchall()
-        #userIdFromPhone = conn.execute(f"SELECT Id FROM Users where Phone = {phone};").fetchall()
     except Exception as e:
         print(e)
     if recordEmail!=None:
         if recordPhone!=None:
             if recordEmail[0] == False and recordPhone[0] == False:
-                print("debug3")
                 salt = os.urandom(32) #Random 32-bytes long salt used in hashing
-                print(type(salt))
-                print(salt)
                 plaintext = password.encode()
-                print("debug5")
                 digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
                 hex_hashed_password = digest_password.hex()
-                print(hex_hashed_password)
                 return b64encode(salt).decode('utf-8'), hex_hashed_password
             else:
                 return False,False    
         else:
             if recordEmail[0] == False:
-                print("debug3")
                 salt = os.urandom(32) #Random 32-bytes long salt used in hashing
-                print(type(salt))
-                print(salt)
                 plaintext = password.encode()
-                print("debug5")
                 digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
                 hex_hashed_password = digest_password.hex()
-                print(hex_hashed_password)
                 return b64encode(salt).decode('utf-8'), hex_hashed_password
             else:
                 return False, False
     elif recordPhone!=None:
         if recordPhone[0] ==False:
-            print("debug3")
             salt = os.urandom(32) #Random 32-bytes long salt used in hashing
-            print(type(salt))
-            print(salt)
             plaintext = password.encode()
-            print("debug5")
             digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
             hex_hashed_password = digest_password.hex()
-            print(hex_hashed_password)
             return b64encode(salt).decode('utf-8'), hex_hashed_password
         else:
             return False, False
@@ -86,11 +64,6 @@ def hashingPasswordWithSalting(password,email,phone,conn):
 def checkingPasswordWithDatabase(password,email,phoneNumber):
     recordEmail = None
     recordPhone = None
-    print("inputlar")
-    print(email)
-    print(phoneNumber)
-    print("inputlar bitti")
-
     if len(email)==0 and len(phoneNumber)==0:
         return "This account is not in the database"
     else:
@@ -98,15 +71,11 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
             recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
         if len(phoneNumber)!=0:
             recordPhone = Users.has_item_by_multipple_columns(["Phone"],[phoneNumber])
-        #print(recordEmail[1][0])
     if recordEmail!= None and recordEmail[0]:   
         record = recordEmail[1][0]
         salt = record[6]
         salt_bytes=salt.encode('utf-8')
         salt = base64.b64decode(salt_bytes)
-        #salt = salt.decode('utf-8')
-        #salt = bytes(record[6], 'utf-8')
-        print(salt)
         plaintext = password.encode()
         digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
         hex_hashed_password = digest_password.hex()
@@ -116,9 +85,6 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
         salt = record[6]
         salt_bytes=salt.encode('utf-8')
         salt = base64.b64decode(salt_bytes)
-        #salt = salt.decode('utf-8')
-        #salt = bytes(record[6], 'utf-8')
-        print(salt)
         plaintext = password.encode()
         digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
         hex_hashed_password = digest_password.hex()
@@ -135,7 +101,6 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
             response["Surname"]=recordEmail[1][0][3]
             response["Email"]=recordEmail[1][0][4]
             response["Phone"]=recordEmail[1][0][5]
-            print(response)
             return response
         elif recordPhone!=None and recordPhone[0]:
             response = dict()
@@ -152,36 +117,52 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
     else:
         return "Login unsuccessful"
     
+def getUsersDetailFromEmail(email):
+    recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
+    record = recordEmail[1][0]
+    id = record[0]
+    name = record[2]
+    salt = record[6]
+    salt_bytes=salt.encode('utf-8')
+    salt = base64.b64decode(salt_bytes)
+    lower = string.ascii_lowercase
+    upper = string.ascii_uppercase
+    num = string.digits
+    all = lower + upper + num
+    temp = random.sample(all,8)
+    randomPassword = "".join(temp)
+    print(randomPassword)
+    print(type(randomPassword))
+    plaintext = randomPassword.encode()
+    digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
+    hex_hashed_password = digest_password.hex()
+    print(id)
+    print(hex_hashed_password)
+    recordStatus = Users.change_password(id,hex_hashed_password)
+    return randomPassword, recordStatus, name 
+
 def changingPassword(id,passwordOld,passwordNew):
     recordId = Users.has_item_by_multipple_columns(["Id"],[str(id)])
-    print(recordId)
     record = recordId[1][0]
     salt = record[6]
     salt_bytes=salt.encode('utf-8')
     salt = base64.b64decode(salt_bytes)
-    #salt = salt.decode('utf-8')
-    #salt = bytes(record[6], 'utf-8')
-    print(salt)
     plaintext = passwordOld.encode()
     digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
     hex_hashed_password = digest_password.hex()
     hex_hashed_password_from_database = record[7]
-    print(hex_hashed_password)
-    print(hex_hashed_password_from_database)
     if hex_hashed_password == hex_hashed_password_from_database:
         plaintext_new = passwordNew.encode()
-        print("debug5")
         digest_password_new = hashlib.pbkdf2_hmac('sha256', plaintext_new, salt, 10000)
         hex_hashed_password_new = digest_password_new.hex()
         recordStatus = Users.change_password(id,hex_hashed_password_new)
-        print(recordStatus)
         if recordStatus:
             return "Password changed"
         else:
             return "Password Couldn't changed"
     else:
         return "Current Password is not correct"
-        
+
     #@app.route("/creatingNewAccount",  methods=['GET', 'POST'])
     def creatingNewAccount():
         conn = connection.cursor()

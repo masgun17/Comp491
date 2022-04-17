@@ -1,26 +1,17 @@
 import { Outlet, Link } from "react-router-dom";
-import { loginAction, fetchDBAction } from "../tool/actions";
-import { useState, useContext } from 'react';
-import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "../Helper/Context";
+import { loginAction } from "../tool/actions";
+import { useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import ForgetPassword from './ForgetPassword';
 
 function Login () {
     const navigate = useNavigate();
-    const{isLogin,setIsLogin} = useContext(LoginContext) 
-    const{name,setName} = useContext(UserNameContext) 
-    const{surname,setSurname} = useContext(UserSurnameContext) 
-    const{emailForProfile,setEmailForProfile} = useContext(UserEmailContext) 
-    const{phoneForProfile,setPhoneForProfile} = useContext(UserPhoneContext) 
-    const{id,setId} = useContext(UserIdContext) 
-    const{userTypeId,setUserTypeId} = useContext(UserTypeIdContext) 
     const [email, setEmail] = useState(0);
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
     const [modalShow, setModalShow] = useState(false);
 
     async function submitLoginForm(email, phone, password) {
-        console.log("Helllooo")
         var jsonData = {
           "data": [{
             "email": email,
@@ -30,21 +21,22 @@ function Login () {
         }
         const a = await loginAction(jsonData);
         if(a["Login"]){
-            setIsLogin(true)
+            sessionStorage.setItem('isLogin', 'true')
+            sessionStorage.setItem('userName', a["Name"])
+            sessionStorage.setItem('userSurname', a["Surname"])
+            sessionStorage.setItem('userEmail', a["Email"])
+            sessionStorage.setItem('userPhone', a["Phone"])
+            sessionStorage.setItem('userId', a["Id"])
+            sessionStorage.setItem('userTypeId',a["UserTypeId"])
             navigate("/");
-            setName(a["Name"])
-            setEmailForProfile(a["Email"])
-            setSurname(a["Surname"])
-            setPhoneForProfile(a["Phone"])
-            setId(a["Id"])
-            setUserTypeId(a["UserTypeId"])
-        }else if(a=='This account is not in the database'){
+            window.location.reload(false);
+        }else if(a==='This account is not in the database'){
             alert('Lütfen önce Kayıt Olunuz!')
-        }else if(a=='Login unsuccessful'){
+        }else if(a==='Login unsuccessful'){
             alert('Şifre Hatalı!')
-        }else if(a=="Email ya da telefon numaranızı giriniz!"){
+        }else if(a==="Email ya da telefon numaranızı giriniz!"){
             alert("Email ya da telefon numaranızı giriniz!")
-        }else if(a=="Lütfen Şifrenizi Giriniz!"){
+        }else if(a==="Lütfen Şifrenizi Giriniz!"){
             alert("Lütfen Şifrenizi Giriniz!")
         }else{
             alert('Giriş Hatalı!')

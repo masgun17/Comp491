@@ -12,4 +12,5 @@ export default {
     changePassword: '/changePassword',
     deletePart: '/deletePart',
     deleteQuestion: '/deleteQuestion',
+    submitNewPassword: 'submitNewPassword'
 };

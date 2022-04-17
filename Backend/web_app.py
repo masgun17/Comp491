@@ -12,6 +12,7 @@ import pyodbc
 from dal.model_question import Question
 from dal.model_part import Part
 from dal import hashingPassword
+from dal import sendingEmail
 import codecs
 from dal.model_user import Users
 
@@ -195,13 +196,11 @@ def deleteQuestion():
 @app.route("/creatingNewAccount",  methods=['POST'])
 def creatingNewAccount():
     try:
-        print("debug1")
         result_code = False
         form = json.loads(request.data)
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        print(name)
         if len(name)==0:
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
@@ -216,8 +215,6 @@ def creatingNewAccount():
             return "Lütfen bir şifre belirleyiniz!"
         if len(password)<8:
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        print(password)
-        #kvkk = personInfo['kvkk']
         salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
         if salt!=False and hashedPassword!=False:
             result_code=Users.add_item([1,name,surname,email,phoneNumber,salt,hashedPassword,1])
@@ -234,7 +231,6 @@ def creatingNewAccount():
 @app.route("/loginAccount",  methods=['POST'])
 def loginAccount():
     form = json.loads(request.data)
-    print("debug1")
     accountInfo = form['data']
     personInfo = accountInfo[0]
     email = personInfo['email']
@@ -249,13 +245,11 @@ def loginAccount():
 @app.route("/createNewAdminAccount",  methods=['POST'])
 def createNewAdminAccount():
     try:
-        print("debug1")
         result_code = False
         form = json.loads(request.data)
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        print(name)
         if len(name)==0:
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
@@ -270,8 +264,6 @@ def createNewAdminAccount():
             return "Lütfen bir şifre belirleyiniz!"
         if len(password)<8:
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        print(password)
-        #kvkk = personInfo['kvkk']
         salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
         if salt!=False and hashedPassword!=False:
             result_code=Users.add_item([2,name,surname,email,phoneNumber,salt,hashedPassword,1])
@@ -288,13 +280,11 @@ def createNewAdminAccount():
 @app.route("/createNewSuperAdminAccount",  methods=['POST'])
 def createNewSuperAdminAccount():
     try:
-        print("debug1")
         result_code = False
         form = json.loads(request.data)
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        print(name)
         if len(name)==0:
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
@@ -309,8 +299,6 @@ def createNewSuperAdminAccount():
             return "Lütfen bir şifre belirleyiniz!"
         if len(password)<8:
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        print(password)
-        #kvkk = personInfo['kvkk']
         salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
         if salt!=False and hashedPassword!=False:
             result_code=Users.add_item([3,name,surname,email,phoneNumber,salt,hashedPassword,1])
@@ -327,7 +315,6 @@ def createNewSuperAdminAccount():
 @app.route("/changePassword",  methods=['POST'])
 def changePassword():
     try:
-        print("debug1")
         result_code = False
         form = json.loads(request.data)
         accountInfo = form['data']
@@ -336,10 +323,7 @@ def changePassword():
         password = personInfo['password']
         passwordNew = personInfo['passwordNew']
         passwordNewAgain = personInfo['passwordNewAgain']
-        print("debug2")
-        print(id)
         result_code = hashingPassword.changingPassword(id,password,passwordNew)
-        print(result_code)
         if result_code=="Current Password is not correct":
             return "Current Password is not correct"
         elif result_code:
@@ -349,4 +333,21 @@ def changePassword():
     except Exception as e:
         print(e)
         return "Bad Request"
+
+@app.route("/submitNewPassword",  methods=['POST'])
+def submitNewPassword():
+    form = json.loads(request.data)
+    print(form)
+    accountInfo = form['data']
+    print(accountInfo)
+    personInfo = accountInfo[0]
+    print(personInfo)
+    email = personInfo['email']
+    randomPassword, recordStatus, name = hashingPassword.getUsersDetailFromEmail(email)
+    sendingEmail.sendNewPassword(randomPassword,email, name)
+    if recordStatus:
+        return 'Password Changed'
+    else:
+        return 'Bad Request'
+
 app.run()

@@ -1,35 +1,18 @@
-import { Outlet, Link } from "react-router-dom";
-import { useState, useContext } from 'react';
-import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "../Helper/Context";
-import Approve from './Approve';
+import { useState } from 'react';
 import CreateNewAdmin from './CreateNewAdmin';
 import CreateNewSuperAdmin from './CreateNewSuperAdmin';
 import ChangePassword from './ChangePassword';
 
 const Profile = () => {
-    const{isLogin,setIsLogin} = useContext(LoginContext) 
-    const{name,setName} = useContext(UserNameContext) 
-    const{surname,setSurname} = useContext(UserSurnameContext) 
-    const{emailForProfile,setEmailForProfile} = useContext(UserEmailContext) 
-    const{phoneForProfile,setPhoneForProfile} = useContext(UserPhoneContext) 
-    const{id,setId} = useContext(UserIdContext) 
-    const{userTypeId,setUserTypeId} = useContext(UserTypeIdContext) 
-    const [isOpen, setIsOpen] = useState(false);
-    const [kvkk, setKvkk] = useState(0);
     const [modalShow, setModalShow] = useState(false);
-    const handleModalClose = () => setModalShow(false);
-    const handleModalShow = () => setModalShow(true);
     const [modalShow2, setModalShow2] = useState(false);
-    const handleModalClose2 = () => setModalShow2(false);
-    const handleModalShow2 = () => setModalShow2(true);
     const [modalShow3, setModalShow3] = useState(false);
-    const handleModalClose3 = () => setModalShow3(false);
-    const handleModalShow3 = () => setModalShow3(true);
-    const [isCreateNewSuperAdminOpen, setIsCreateNewSuperAdminOpen] = useState(false);
 
-    const toggleApprove = () => {
-        setIsOpen(!isOpen);
-      }
+    let userName = sessionStorage.getItem('userName');
+    let userSurname = sessionStorage.getItem('userSurname');
+    let userEmail = sessionStorage.getItem('userEmail');
+    let userPhone = sessionStorage.getItem('userPhone');
+    let userTypeId = sessionStorage.getItem('userTypeId');
 
     return (
         <div className="informationPageLayout">
@@ -40,16 +23,16 @@ const Profile = () => {
                 <form className="form">
                     <div className="innerForm" style={{ "align-self": "flex-start" }}>
                     <div className="form-group">
-                            <label htmlFor="name">İsim: {name}</label>
+                            <label htmlFor="name">İsim: {userName}</label>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="surname">Soyisim: {surname}</label>
+                            <label htmlFor="surname">Soyisim: {userSurname}</label>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="email">Email: {emailForProfile}</label>
+                            <label htmlFor="email">Email: {userEmail}</label>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="tel">Telefon Numarası: {phoneForProfile}</label>
+                            <label htmlFor="tel">Telefon Numarası: {userPhone}</label>
                         </div>
                     </div>
                 </form>
@@ -61,7 +44,7 @@ const Profile = () => {
                   }}
                   style={{ "margin-top": "10px" }}
                 >Şifremi Değiştir</button>
-                {userTypeId=='3' ? (
+                {userTypeId==='3' ? (
                 <div>
                 <button
                   className="createNewAdmin"
