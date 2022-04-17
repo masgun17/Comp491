@@ -5,11 +5,11 @@ import { Outlet, Link } from "react-router-dom";
 import { changePasswordAction, fetchDBAction } from "../tool/actions";
 import { UserIdContext} from "../Helper/Context";
 import { submitNewPasswordAction } from "../tool/actions";
-
-
+import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = ({ ...props }) => {
     const [email, setEmail] = useState(0);
+    const navigate = useNavigate();
 
     async function submitNewPassword() {
         var jsonData = {
@@ -21,6 +21,9 @@ const ForgetPassword = ({ ...props }) => {
         const a = await submitNewPasswordAction(jsonData);
         if(a==='Password Changed'){
             alert('Yeni şifreniz mailinize yönlendirilmiştir.')
+            window.location.reload(false);
+        }else if(a==='User is not registered'){
+            alert("Kullanıcının hesabı bulunamadı")
         }
     
     }

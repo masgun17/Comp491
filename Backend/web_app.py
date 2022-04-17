@@ -344,6 +344,8 @@ def submitNewPassword():
     print(personInfo)
     email = personInfo['email']
     randomPassword, recordStatus, name = hashingPassword.getUsersDetailFromEmail(email)
+    if randomPassword=='User is not registered':
+        return'User is not registered'
     sendingEmail.sendNewPassword(randomPassword,email, name)
     if recordStatus:
         return 'Password Changed'

@@ -119,6 +119,9 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
     
 def getUsersDetailFromEmail(email):
     recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
+    print(recordEmail)
+    if len(recordEmail[1])==0:
+        return 'User is not registered', False, False
     record = recordEmail[1][0]
     id = record[0]
     name = record[2]
