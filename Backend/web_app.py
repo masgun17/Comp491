@@ -1,5 +1,6 @@
 import json
 import urllib
+from xml.etree.ElementTree import tostring
 
 import flask
 from flask import Flask, request, url_for, jsonify
@@ -9,6 +10,7 @@ import requests
 from werkzeug.utils import redirect
 from sqlalchemy import create_engine, text
 import pyodbc
+from dal.model_assessment_session import AssessmentSession
 from dal.model_question import Question
 from dal.model_part import Part
 from dal import hashingPassword
@@ -348,5 +350,27 @@ def submitNewPassword():
         return 'Password Changed'
     else:
         return 'Bad Request'
+
+@app.route("/createAssessmentSession",  methods=['GET', 'POST'])
+def createAssessmentSession():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        UserId = parameters['UserId']
+
+        result_code = AssessmentSession.add_item(UserId)
+        if result_code:
+            result, item = AssessmentSession.get_last()
+            if result:
+                return str(item[0])
+            else:
+                return 'New assessment session is created / could not fetch sessionId'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
 
 app.run()

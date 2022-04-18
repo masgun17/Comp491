@@ -137,6 +137,15 @@ export const submitNewPasswordAction = async (data) => {
     return result.data;
   } catch (error) {
     console.log("Error on submitNewPasswordAction");
+  }
+}
+
+export const createAssessmentSessionAction = async (data) => {
+  try {
+    const result = await services.createAssessmentSessionService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on createAssessmentSessionAction");
     console.log(error);
   }
 }

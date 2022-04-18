@@ -1,9 +1,32 @@
-import { useEffect, useState } from "react";
-import { getAllPartsAction, getAllQuestionsAction } from "../tool/actions";
+import { useContext, useEffect, useState } from "react";
+import { UserIdContext } from "../Helper/Context";
+import { getAllPartsAction, getAllQuestionsAction, createAssessmentSessionAction } from "../tool/actions";
 import PartInformation from "./PartInformation";
 import QuestionBody from "./QuestionBody";
 
 const TakeTest = () => {
+  const{id,setId} = useContext(UserIdContext);
+  const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
+  
+  const createAssessmentSession = async () => {
+    var jsonData = {
+      data: [
+        {
+          UserId: id,
+        },
+      ],
+    };
+    const a = await createAssessmentSessionAction(jsonData);
+    setCurrentAssessmentSession(a);
+  }
+
+  useEffect(async () => {
+    console.log("ID:", id);
+    if (id) {
+      await createAssessmentSession();
+    }
+  }, [id])
+
   const [parts, setParts] = useState([]);
 
   const getParts = async () => {
