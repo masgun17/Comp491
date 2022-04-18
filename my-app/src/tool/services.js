@@ -71,9 +71,12 @@ export const deleteQuestionService = async (data) =>
     axios.post(API.submitNewPassword, data).then(resolve).catch(reject);
   });
 
-
-  
 export const createAssessmentSessionService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.createAssessmentSession, data).then(resolve).catch(reject);
   });
+
+export const editPartService = async (data) =>
+new Promise((resolve, reject) => {
+  axios.post(API.editPart, data).then(resolve).catch(reject);
+});

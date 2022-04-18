@@ -150,5 +150,15 @@ export const createAssessmentSessionAction = async (data) => {
   }
 }
 
+export const editPartAction  = async (data) => {
+  try {
+    const result = await services.editPartService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on editPartAction");
+    console.log(error);
+  }
+}
+
 
 

@@ -136,6 +136,25 @@ def deletePart():
         return 'Bad Request Exception'
 
 
+@app.route("/editPart", methods=['GET', 'POST'])
+def editPart():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        PartId = parameters['PartId']
+        PartName = parameters['PartName']
+        ScoreLimit = int(parameters['ScoreLimit'])
+
+        result_code = Part.update_item(PartId, [PartName, ScoreLimit])
+        if result_code:
+            return 'Part edited Successfully'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
 
 @app.route("/createQuestion",  methods=['GET', 'POST'])
 def createQuestion():
