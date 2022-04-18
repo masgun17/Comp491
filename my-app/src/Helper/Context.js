@@ -8,3 +8,4 @@ import { createContext } from "react";
 // export const UserPhoneContext = createContext({});
 // export const UserIdContext = createContext({});
 // export const UserTypeIdContext = createContext({});
+export const FontSizeContext = createContext({});

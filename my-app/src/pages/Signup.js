@@ -1,9 +1,13 @@
 import { Outlet, Link } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import React from 'react';
 import Approve from './Approve';
 import { signUpAction} from "../tool/actions";
+import { FontSizeContext} from "../Helper/Context";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import { useAlert } from "react-alert";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +17,9 @@ const Signup = () => {
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
     const [kvkk, setKvkk] = useState(0);
+    const{fontSize,setFontSize} = useContext(FontSizeContext) 
+    toast.configure()
+    const navigate = useNavigate();
 
     const toggleApprove = () => {
       setIsOpen(!isOpen);
@@ -28,55 +35,66 @@ const Signup = () => {
           }]
         }
         if(!kvkk){
-            alert("Kayıt olabilmeniz için sözleşmeyi onaylamanız gerekmektedir!")
+            toast.warning('Kayıt olabilmeniz için sözleşmeyi onaylamanız gerekmektedir!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else{
-        const a = await signUpAction(jsonData);
-        if(a==='User added Successfully'){
-            alert('Hesap Başarıyla Oluşturuldu')
-        }else if(a==="Lütfen isminizi giriniz!"){
-            alert("Lütfen isminizi giriniz!")
-        }else if(a==="Lütfen soyadınızı giriniz!"){
-            alert("Lütfen soyadınızı giriniz!")
-        }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
-            alert("Lütfen email adresinizi ya da telefon numaranızı giriniz!")
-        }else if(a==="Lütfen bir şifre belirleyiniz!"){
-            alert("Lütfen bir şifre belirleyiniz!")
-        }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
-            alert("Şifreniz en az 8 haneli olmak zorundadır!")
-        }else{
-            alert('Kullanıcının hesabı vardır!')
-        }}
+            const a = await signUpAction(jsonData);
+            if(a==='User added Successfully'){
+                toast.success('Hesap Başarıyla Oluşturuldu',
+            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            navigate("../Login");
+            }else if(a==="Lütfen isminizi giriniz!"){
+                toast.warning('Lütfen isminizi giriniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+                
+             }else if(a==="Lütfen soyadınızı giriniz!"){
+                toast.warning('Lütfen soyadınızı giriniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
+                toast.warning('Lütfen email adresinizi ya da telefon numaranızı giriniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else if(a==="Lütfen bir şifre belirleyiniz!"){
+                toast.warning('Lütfen bir şifre belirleyiniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
+                toast.warning('Şifreniz en az 8 haneli olmak zorundadır!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else{
+                toast.warning('Kullanıcının hesabı vardır!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }
+        }
       }
 
     return (
         // <h1>Disease Information Page</h1>
         <div className="informationPageLayout">
             <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Kayıt Ol</h1>
+                <h1 style={{"font-size": fontSize*2}}>Kayıt Ol</h1>
             </div>
-            <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
+            <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "2" }}>
                 <form >
-                    <div className="innerForm" style={{ "align-self": "flex-start" }}>
-                        <div className="form-group">
-                            <label htmlFor="name">Ad: </label>
-                            <input type="text" name="name" id="name"  onChange={(e) => setName(e.target.value)} />
+                    <div className="innerForm" style={{ "align-self": "flex-start" , "font-size": fontSize}}>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="name" style={{"font-size": fontSize}}>Ad: </label>
+                            <input type="text" name="name" id="name" style={{"font-size": fontSize}}  onChange={(e) => setName(e.target.value)} />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="surname">Soyad: </label>
-                            <input type="text" name="surname" id="surname"  onChange={(e) => setSurname(e.target.value)}/>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="surname" style={{"font-size": fontSize}}>Soyad: </label>
+                            <input type="text" name="surname" id="surname"  style={{"font-size": fontSize}} onChange={(e) => setSurname(e.target.value)}/>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email: </label>
-                            <input type="email" name="email" id="email"  onChange={(e) => setEmail(e.target.value)}/>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="email" style={{"font-size": fontSize}}>Email: </label>
+                            <input type="email" name="email" id="email" style={{"font-size": fontSize}}  onChange={(e) => setEmail(e.target.value)}/>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="tel">Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  onChange={(e) => setTel(e.target.value)}/>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="tel" style={{"font-size": fontSize}}>Telefon Numarası: </label>
+                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
 
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Şifre: </label>
-                            <input type="password" name="password" id="password"  onChange={(e) => setPassword(e.target.value)}/>
+                        <div className="form-group"style={{"font-size": fontSize}} >
+                            <label htmlFor="password" style={{"font-size": fontSize}}>Şifre: </label>
+                            <input type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladım</Link><input id="kvkkCheckbox" type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} onClick={(e) => 
@@ -94,14 +112,15 @@ You further understand and agree that the research tool is not meant, nor intend
                             />}
                         
                         </div>
-                        <button onClick={() => 
+                        
+
+                    </div >
+                </form>
+                <button style={{"font-size": fontSize}} onClick={() => 
                             {submitSignUpForm(document.getElementById("name").value,document.getElementById("surname").value,document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
                         >Kayıt Ol
                              </button>
-
-                    </div >
-                </form>
             </div>
             <Outlet style={{ "grid-row-start": "2" }} />
         </div>

@@ -3,20 +3,27 @@ import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet } from "react-router-dom";
 import { changePasswordAction } from "../tool/actions";
-
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = ({ ...props }) => {
     const [password, setPassword] = useState(0);
     const [passwordNew, setPasswordNew] = useState(0);
     const [passwordNewAgain, setPasswordNewAgain] = useState(0);
+    toast.configure()
+    const navigate = useNavigate();
 
     async function changePassword(password,passwordNew, passwordNewAgain) {
         if(passwordNew!==passwordNewAgain){
-            alert("Yeni şifre ile yeni şifre tekrarın aynı olması gerekiyor")
+            toast.warning('Yeni şifre ile yeni şifre tekrarın aynı olması gerekiyor!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(passwordNew.length<8){
-            alert("Yeni Şifreniz en az 8 haneli olmak zorundadır! ")
+            toast.warning('Yeni Şifreniz en az 8 haneli olmak zorundadır!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(password==null){
-            alert("Güncel Şifrenizi Giriniz")
+            toast.warning('Güncel Şifrenizi Giriniz',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else{
             var jsonData = {
                 "data": [{
@@ -28,13 +35,19 @@ const ChangePassword = ({ ...props }) => {
               }
               const a = await changePasswordAction(jsonData);
               if(a==='Password Changed'){
-                  alert('Şifre Başarıyla Değiştirildi')
+                  //alert('Şifre Başarıyla Değiştirildi')
+                  toast.success('Şifre Başarıyla Değiştirildi',
+                    {position: toast.POSITION.TOP_CENTER, autoClose:2000})
                   setPassword("")
                   setPasswordNew("")
                   setPasswordNewAgain("")
+                  navigate("/");
+
 
                 }else if(a==="Current Password is not correct"){
-                    alert('Güncel Şifrenizi Hatalı Girdiniz')
+                    //alert('Güncel Şifrenizi Hatalı Girdiniz')
+                    toast.warning('Güncel Şifrenizi Hatalı Girdiniz',
+                    {position: toast.POSITION.TOP_CENTER, autoClose:2000})
                 }
     }
     }

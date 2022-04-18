@@ -3,9 +3,12 @@ import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet, Link } from "react-router-dom";
 import { submitNewPasswordAction } from "../tool/actions";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgetPassword = ({ ...props }) => {
     const [email, setEmail] = useState(0);
+    toast.configure()
 
     async function submitNewPassword() {
         var jsonData = {
@@ -15,10 +18,12 @@ const ForgetPassword = ({ ...props }) => {
           }
         const a = await submitNewPasswordAction(jsonData);
         if(a==='Password Changed'){
-            alert('Yeni şifreniz mailinize yönlendirilmiştir.')
-            window.location.reload(false);
+            toast.success('Yeni şifreniz mailinize yönlendirilmiştir.',
+            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+
         }else if(a==='User is not registered'){
-            alert("Kullanıcının hesabı bulunamadı")
+            toast.warning('Kullanıcının hesabı bulunamadı',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }
     
     }

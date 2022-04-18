@@ -3,6 +3,8 @@ import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet } from "react-router-dom";
 import { createNewAdminAction } from "../tool/actions";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateNewAdmin = ({ ...props }) => {
     const [name, setName] = useState(0);
@@ -10,6 +12,7 @@ const CreateNewAdmin = ({ ...props }) => {
     const [email, setEmail] = useState(0);
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
+    toast.configure()
 
     async function createNewAdminButton(name, surname, email, phone, password) {
         var jsonData = {
@@ -24,17 +27,23 @@ const CreateNewAdmin = ({ ...props }) => {
         
         const a = await createNewAdminAction(jsonData);
         if(a==='User added Successfully'){
-            alert('Hesap Başarıyla Oluşturuldu')
+            toast.success('Hesap Başarıyla Oluşturuldu',
+            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Lütfen isminizi giriniz!"){
-            alert("Lütfen isminizi giriniz!")
+            toast.warning('Lütfen isim giriniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Lütfen soyadınızı giriniz!"){
-            alert("Lütfen soyadınızı giriniz!")
+            toast.warning('Lütfen soyad giriniz!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
-            alert("Lütfen email adresinizi ya da telefon numaranızı giriniz!")
+            toast.warning('Email ya da telefon numarası giriniz!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Lütfen bir şifre belirleyiniz!"){
-            alert("Lütfen bir şifre belirleyiniz!")
+            toast.warning('Lütfen bir şifre belirleyiniz!',
+            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
-            alert("Şifreniz en az 8 haneli olmak zorundadır!")
+            toast.warning('Şifre en az 8 haneli olmak zorundadır!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else{
             alert('Kullanıcının hesabı vardır!')
         }
