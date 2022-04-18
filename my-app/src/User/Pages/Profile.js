@@ -40,8 +40,8 @@ const Profile = () => {
                         </div>
                     </div>
                 </form>
-                <button
-                  className="changePassword"
+                <button class="btn btn-secondary"
+                  
                   // Update onClick function such that it will open a modal content structure
                   onClick={() => {
                     setModalShow3(true);
@@ -51,20 +51,20 @@ const Profile = () => {
                 {userTypeId==='3' ? (
                 <div>
                 <button 
-                  className="createNewAdmin"
+                  class="btn btn-secondary"
                   // Update onClick function such that it will open a modal content structure
                   onClick={() => {
                     setModalShow2(true);
                   }}
                   style={{ "margin-top": "10px" , "font-size": fontSize}}
                 >Yeni Admin Ekle</button>
-                <button
-                  className="createNewSuperAdmin"
+                <button 
+                  class="btn btn-secondary"
                   // Update onClick function such that it will open a modal content structure
                   onClick={() => {
                     setModalShow(true);
                   }}
-                  style={{ "margin-top": "10px" , "font-size": fontSize}}
+                  style={{ "margin-top": "10px" , "margin-left":"10px", "font-size": fontSize}}
                 >
                 Yeni Süper Admin Ekle</button>
                 </div>

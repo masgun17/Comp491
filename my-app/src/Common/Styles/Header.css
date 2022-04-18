@@ -25,10 +25,18 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  padding-left: 5%;
-  padding-right: 5%;
+  /* padding-left: 5%;
+  padding-right: 5%; */
   /* font-size: calc(10px + 2vmin); */
   font-size: 20px;
   /* color: rgb(235, 217, 217) !important; */
   color: #000;
 }
+
+.FontSizeLayout button{
+  position: relative;
+  display: inline-block;;
+  flex-direction: row;
+}
+
+

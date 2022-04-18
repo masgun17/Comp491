@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { signUpAction} from "../../tool/actions";
 //import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
+import "../Styles/Login.css";
+import "../Styles/User.css";
 
 const Signup = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -68,33 +70,33 @@ const Signup = () => {
 
     return (
         // <h1>Disease Information Page</h1>
-        <div className="informationPageLayout">
-            <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
+        <div className="LoginLayout">
+            <div className="LoginDiv1" style={{ "grid-row-start": "1" }}>
                 <h1 style={{"font-size": fontSize*2}}>Kayıt Ol</h1>
             </div>
-            <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "2" }}>
+            <div className="LoginDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "2" }}>
                 <form >
                     <div className="innerForm" style={{ "align-self": "flex-start" , "font-size": fontSize}}>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="name" style={{"font-size": fontSize}}>Ad: </label>
-                            <input type="text" name="name" id="name" style={{"font-size": fontSize}}  onChange={(e) => setName(e.target.value)} />
+                            <input class = "form-control" type="text" name="name" id="name" style={{"font-size": fontSize}}  onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="surname" style={{"font-size": fontSize}}>Soyad: </label>
-                            <input type="text" name="surname" id="surname"  style={{"font-size": fontSize}} onChange={(e) => setSurname(e.target.value)}/>
+                            <input class = "form-control" type="text" name="surname" id="surname"  style={{"font-size": fontSize}} onChange={(e) => setSurname(e.target.value)}/>
                         </div>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="email" style={{"font-size": fontSize}}>Email: </label>
-                            <input type="email" name="email" id="email" style={{"font-size": fontSize}}  onChange={(e) => setEmail(e.target.value)}/>
+                            <input class = "form-control" type="email" name="email" id="email" style={{"font-size": fontSize}}  onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="tel" style={{"font-size": fontSize}}>Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
+                            <input class = "form-control" type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
 
                         </div>
                         <div className="form-group"style={{"font-size": fontSize}} >
                             <label htmlFor="password" style={{"font-size": fontSize}}>Şifre: </label>
-                            <input type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladım</Link><input id="kvkkCheckbox" type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} onClick={(e) => 
@@ -116,7 +118,7 @@ You further understand and agree that the research tool is not meant, nor intend
 
                     </div >
                 </form>
-                <button style={{"font-size": fontSize}} onClick={() => 
+                <button class = "btn btn-primary btn-lg btn-block" style={{"font-size": fontSize}} onClick={() => 
                             {submitSignUpForm(document.getElementById("name").value,document.getElementById("surname").value,document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
                         >Kayıt Ol

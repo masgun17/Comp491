@@ -25,8 +25,10 @@ const Header = (props) => {
   return (
     <div className="headerWholePage">
       <div className="header" style={{ "grid-row-start": "1", "grid-row-end": "2" }}>
-        <button id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
-        <button id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
+        <div className="btn-group">
+        <button class="btn btn-dark btn-sm" id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
+        <button class="btn btn-dark btn-sm" id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
+          </div>
         <Link to="/">Anasayfa</Link>
         <Link to="/diseaseInformationPage">Alzheimer Hastalığı</Link>
         <Link to="/riskFactors">Risk Faktörleri</Link>
@@ -44,7 +46,7 @@ const Header = (props) => {
           null
         )}
         {userLogged==='true' ? (
-          <button type="button" onClick={() => 
+          <button class="btn btn-dark btn-lg" type="button" onClick={() => 
             {
             sessionStorage.setItem('userName', ''); 
             sessionStorage.setItem('userSurname', ''); 
@@ -56,7 +58,7 @@ const Header = (props) => {
             window.location.reload(false);
           }}><Link to="/">Çıkış</Link></button>
         ):(
-          <button type="button"><Link to="/login">Giriş</Link></button>
+          <button class="btn btn-dark btn-lg" type="button"><Link to="/login">Giriş</Link></button>
         )}
         
       </div>

@@ -67,17 +67,17 @@ function Login () {
                 <form className="form">
                     <div className="innerForm" style={{ "align-self": "flex-start", "font-size": fontSize }}>
                         <div className="form-group" style={{"font-size": fontSize}}>
-                            <label htmlFor="email" style={{"font-size": fontSize}}>Email: </label>
-                            <input type="email" name="email" id="email" style={{"font-size": fontSize}} onChange={(e) => setEmail(e.target.value)} />
+                            <label  htmlFor="email" style={{"font-size": fontSize}}>Email: </label>
+                            <input class = "form-control" type="email" name="email" id="email" style={{"font-size": fontSize}} onChange={(e) => setEmail(e.target.value)} />
                         </div>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="tel" style={{"font-size": fontSize}}>Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10" style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
+                            <input class = "form-control" type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10" style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
 
                         </div>
                         <div className="form-group" style={{"font-size": fontSize}}>
                             <label htmlFor="password" style={{"font-size": fontSize}}>Şifre: </label>
-                            <input type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div style={{ "justify-content": "center","text-align":"center"}}>
                         <Link to="/Login" style={{ "color": "red", "text-align":"center",  "position" : "center"}} 
@@ -94,7 +94,7 @@ function Login () {
              setModalShow(false);
              }}
            />
-                <button style={{"font-size": fontSize}} onClick={() => 
+                <button class = "btn btn-primary btn-lg btn-block" id="loginButton" style={{"font-size": fontSize}} onClick={() => 
                             {submitLoginForm(document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
                         >Giriş Yap
