@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { UserIdContext } from "../Helper/Context";
 import { getAllPartsAction, getAllQuestionsAction, createAssessmentSessionAction } from "../tool/actions";
 import PartInformation from "./PartInformation";
 import QuestionBody from "./QuestionBody";
 
 const TakeTest = () => {
-  const{id,setId} = useContext(UserIdContext);
+  const [id, setId] = useState(null);
   const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
   
   const createAssessmentSession = async () => {
+    console.log("id", id);
     var jsonData = {
       data: [
         {
@@ -18,12 +19,17 @@ const TakeTest = () => {
     };
     const a = await createAssessmentSessionAction(jsonData);
     setCurrentAssessmentSession(a);
+    console.log(a);
   }
 
   useEffect(async () => {
-    console.log("ID:", id);
-    if (id) {
-      await createAssessmentSession();
+    console.log("ID:", sessionStorage.getItem('userId'));
+    setId(sessionStorage.getItem('userId'));
+    if (id !== null && id !== "") {  // null check / "" check
+      // await createAssessmentSession();
+      setTimeout(() => {
+        createAssessmentSession();
+      }, 300);
     }
   }, [id])
 
@@ -52,7 +58,7 @@ const TakeTest = () => {
   useEffect(async () => {
     setTimeout(() => {
       getQuestions();
-    }, 300);
+    }, 100);
   }, []);
 
   const [firstPage, setFirstPage] = useState(true);
@@ -122,7 +128,7 @@ const TakeTest = () => {
   return (
     <div className="testPageLayout">
       <div>
-        {firstPage ? <h1>You are about to take the test</h1> : null}
+        {firstPage ? <h1>You are about to take the test {currentAssessmentSession}</h1> : null}
         {!firstPage
           ? parts.map((e, i) => (
               <div>
