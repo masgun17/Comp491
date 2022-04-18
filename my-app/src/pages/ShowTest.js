@@ -7,7 +7,7 @@ import {
   deletePartAction,
   deleteQuestionAction,
 } from "../tool/actions";
-import AddQuestion from "../AddQuestion/AddQuestion";
+import AddQuestion from "../Question/Components/AddQuestion";
 
 const ShowTest = () => {
   const navigate = useNavigate();

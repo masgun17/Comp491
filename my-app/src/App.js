@@ -23,8 +23,6 @@ import Statistics from "./pages/Statistics";
 import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "./Helper/Context";
 import { useState, useContext } from 'react';
 
-// import AddQuestion from "./pages/AddQuestion";
-
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [name, setName] = useState("");

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Dropdown } from "react-bootstrap";
-import "../AddQuestion/AddQuestion.css";
+import "../Styles/AddQuestion.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSearchParams } from "react-router-dom";
-import { createQuestionAction } from "../tool/actions";
+import { createQuestionAction } from "../../tool/actions";
 
 const AddQuestion = ({ partId, ...props }) => {
   const [freeText, setFreeText] = useState(true);
