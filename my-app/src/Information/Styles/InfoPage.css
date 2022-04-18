@@ -1,0 +1,34 @@
+.informationPageDiv1 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* max-height: 75px; */
+    height: 75px;
+    /* height: max-content; */
+  }
+  
+  .informationPageDiv2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    min-height: 260px;
+    margin: 30px 0px 30px 0px;
+    background-color: #e8f2f8;
+    border: 1px solid #556c9c;
+    /* border-radius: 90px; */
+    border-radius: 80px;
+    padding: 20px 30px 20px 30px;
+    /* font-size: 20px;
+    line-height: 1.8; */
+    /* overflow-y: scroll; */
+  }
+  
+  .informationPageLayout {
+    position: relative;
+    padding: 0% 20% 5% 20%;
+    display: grid;
+  }
