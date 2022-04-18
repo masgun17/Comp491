@@ -20,7 +20,6 @@ import Signup from "./pages/Signup";
 import Approve from "./pages/Approve";
 import Profile from "./pages/Profile";
 import Statistics from "./pages/Statistics";
-import { LoginContext, UserNameContext, UserSurnameContext,UserEmailContext, UserPhoneContext,UserIdContext,UserTypeIdContext} from "./Helper/Context";
 import { useState, useContext } from 'react';
 
 function App() {
@@ -32,14 +31,6 @@ function App() {
   const [id, setId] = useState("");
   const [userTypeId, setUserTypeId] = useState("");
   return (
-    <LoginContext.Provider value={{isLogin, setIsLogin}}>
-    <UserNameContext.Provider value={{name, setName}}>
-    <UserSurnameContext.Provider value={{surname, setSurname}}>
-    <UserEmailContext.Provider value={{emailForProfile,setEmailForProfile}}>
-    <UserPhoneContext.Provider value={{phoneForProfile,setPhoneForProfile}}>
-    <UserTypeIdContext.Provider value={{userTypeId, setUserTypeId}}>
-    <UserIdContext.Provider value={{id, setId}}>
-
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
@@ -60,13 +51,6 @@ function App() {
        </Routes>
        {/* <button path="login" element={<Login />} /> */}
     </BrowserRouter>
-      </UserIdContext.Provider>
-      </UserTypeIdContext.Provider>
-      </UserPhoneContext.Provider>
-      </UserEmailContext.Provider>
-      </UserSurnameContext.Provider>
-      </UserNameContext.Provider>
-    </LoginContext.Provider>
   );
 }
 

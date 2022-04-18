@@ -73,3 +73,7 @@ export const deleteQuestionService = async (data) =>
 
 
   
+export const createAssessmentSessionService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.createAssessmentSession, data).then(resolve).catch(reject);
+  });
