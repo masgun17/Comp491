@@ -17,6 +17,7 @@ from dal import hashingPassword
 from dal import sendingEmail
 import codecs
 from dal.model_user import Users
+from dal.model_answer import Answer
 
 app = Flask("comp491")
 
@@ -371,6 +372,35 @@ def createAssessmentSession():
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
+
+
+
+@app.route("/uploadUserAnswers",  methods=['GET', 'POST'])
+def uploadUserAnswers():
+    try:
+        errList = []
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        AssessmentSessionId = parameters['AssessmentSessionId']
+        AnswerList = parameters['AnswerList']
+        for userAnswer in AnswerList:
+            try:
+                questionId = userAnswer[0]
+                answer = userAnswer[1]
+                answerItem = [AssessmentSessionId, questionId, answer]
+                Answer.add_item(answerItem)
+            except Exception as e:
+                errItem = [e,AssessmentSessionId,userAnswer]
+                errList.append(errItem)
+    except Exception as e:
+        print(e)
+        print(request)
+        return 'Bad Request Exception'
+    print("Total error count: ", len(errList))
+    print(errList)
+    return json.dumps("Answers are uploaded for AssessmentSessionId " + AssessmentSessionId)
+
 
 
 app.run()
