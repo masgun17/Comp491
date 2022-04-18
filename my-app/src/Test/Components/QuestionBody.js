@@ -3,7 +3,7 @@ const QuestionBody = ({ question, ...props }) => {
   // TODO: Depending on the question type, either show options with radio buttons or bring an input area.
 
   return (
-    <div className="informationPageLayout">
+    <div>
       Question Type: {question[4]} <br />
       Question Text: {question[2]} <br />
       Question Choices: {question[5]} <br />

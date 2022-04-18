@@ -1,4 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
+import "../Styles/Header.css"
 
 const Header = (props) => {
   let userLogged = sessionStorage.getItem('isLogin');

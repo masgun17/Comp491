@@ -6,7 +6,8 @@ import {
   createQuestionAction,
   getAllQuestionsAction,
   getAllPartsAction,
-} from "../tool/actions";
+} from "../../tool/actions";
+import "../Styles/InfoPage.css";
 
 const Privacy = () => {
   // Add Api constants

@@ -1,25 +1,24 @@
 import React from "react";
-import './styles/styles.css';
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 import "./App.css";
-import Header from "./pages/Header";
-import DiseaseInformationPage from "./pages/DiseaseInformationPage";
-import RiskFactorsPage from "./pages/RiskFactorsPage";
-import Dashboard from "./pages/Dashboard";
-import TestInformationPage from "./pages/TestInformation";
-import Contact from "./pages/Contact";
-import Privacy from "./pages/Privacy";
-import ShowTest from "./pages/ShowTest";
-import TakeTest from "./pages/TakeTest";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Approve from "./pages/Approve";
-import Profile from "./pages/Profile";
-import Statistics from "./pages/Statistics";
+import Header from "./Common/Components/Header";
+import DiseaseInformationPage from "./Information/Pages/DiseaseInformationPage";
+import RiskFactorsPage from "./Information/Pages/RiskFactorsPage";
+import Dashboard from "./Common/Pages/Dashboard";
+import TestInformationPage from "./Test/Pages/TestInformation";
+import Contact from "./Information/Pages/Contact";
+import Privacy from "./Information/Pages/Privacy";
+import ShowTest from "./Test/Pages/ShowTest";
+import TakeTest from "./Test/Pages/TakeTest";
+import Login from "./User/Pages/Login";
+import Signup from "./User/Pages/Signup";
+import Approve from "./User/Pages/Approve";
+import Profile from "./User/Pages/Profile";
+import Statistics from "./Information/Pages/Statistics";
 import { useState, useContext } from 'react';
 
 function App() {

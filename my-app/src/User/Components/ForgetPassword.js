@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet, Link } from "react-router-dom";
-import { submitNewPasswordAction } from "../tool/actions";
+import { submitNewPasswordAction } from "../../tool/actions";
+import "../Styles/User.css";
 
 const ForgetPassword = ({ ...props }) => {
     const [email, setEmail] = useState(0);
@@ -25,8 +26,8 @@ const ForgetPassword = ({ ...props }) => {
 
   return (
     <Modal {...props} size="l" centered>
-        <div className="createNewSuperAdminPageLayout">
-            <div className="createNewSuperAdmingPageDiv1" style={{ "grid-row-start": "1" }}>
+        <div className="UserPageLayout">
+            <div className="UserPageDiv1" style={{ "grid-row-start": "1" }}>
                 <h1>Şifremi Unuttum</h1>
             </div>
                 <form >

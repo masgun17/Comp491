@@ -1,4 +1,5 @@
 import React from 'react'
+import "../Styles/Approve.css";
 
 const Approve = props => {
     return (

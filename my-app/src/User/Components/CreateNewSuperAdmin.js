@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet } from "react-router-dom";
-import { createNewAdminAction } from "../tool/actions";
+import { createNewSuperAdminAction } from "../../tool/actions"
+import "../Styles/User.css";
 
-const CreateNewAdmin = ({ ...props }) => {
+const CreateNewSuperAdmin = ({ ...props }) => {
     const [name, setName] = useState(0);
     const [surname, setSurname] = useState(0);
     const [email, setEmail] = useState(0);
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
 
-    async function createNewAdminButton(name, surname, email, phone, password) {
+    async function createNewSuperAdminButton(name, surname, email, phone, password) {
         var jsonData = {
           "data": [{
             "name": name,
@@ -22,7 +23,7 @@ const CreateNewAdmin = ({ ...props }) => {
           }]
         }
         
-        const a = await createNewAdminAction(jsonData);
+        const a = await createNewSuperAdminAction(jsonData);
         if(a==='User added Successfully'){
             alert('Hesap Başarıyla Oluşturuldu')
         }else if(a==="Lütfen isminizi giriniz!"){
@@ -42,9 +43,9 @@ const CreateNewAdmin = ({ ...props }) => {
 
   return (
     <Modal {...props} size="xl" centered>
-        <div className="createNewSuperAdminPageLayout">
-        <div className="createNewSuperAdmingPageDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Yeni Admin Ekleme</h1>
+        <div className="UserPageLayout">
+        <div className="UserPageDiv1" style={{ "grid-row-start": "1" }}>
+                <h1>Yeni Super Admin Ekleme</h1>
             </div>
                 <form >
                     <div className="innerForm" id="createNewAdminForm" style={{ "align-self": "flex-start" }}>
@@ -69,14 +70,14 @@ const CreateNewAdmin = ({ ...props }) => {
                             <label htmlFor="password">Şifre: </label>
                             <input type="password" name="password" id="password"  onChange={(e) => setPassword(e.target.value)}/>
                         </div>
-                        
+                     
 
                     </div >
                 </form>
-                <button id="newSuperAdminAdd"  onClick={() => 
-                            {createNewAdminButton(document.getElementById("name").value,document.getElementById("surname").value,document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
+                <button id="newSuperAdminAdd" onClick={() => 
+                            {createNewSuperAdminButton(document.getElementById("name").value,document.getElementById("surname").value,document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
-                        >Yeni Admin Ekle 
+                        >Yeni SuperAdmin Ekle 
                              </button>
             <Outlet style={{ "grid-row-start": "2" }} />
         </div>
@@ -84,4 +85,4 @@ const CreateNewAdmin = ({ ...props }) => {
   );
 };
 
-export default CreateNewAdmin;
+export default CreateNewSuperAdmin;

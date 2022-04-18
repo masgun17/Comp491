@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import CreateNewAdmin from './CreateNewAdmin';
-import CreateNewSuperAdmin from './CreateNewSuperAdmin';
-import ChangePassword from './ChangePassword';
+import CreateNewAdmin from '../Components/CreateNewAdmin';
+import CreateNewSuperAdmin from '../Components/CreateNewSuperAdmin';
+import ChangePassword from '../Components/ChangePassword';
+import "../Styles/Profile.css";
+import "../Styles/User.css";
 
 const Profile = () => {
     const [modalShow, setModalShow] = useState(false);
@@ -15,11 +17,11 @@ const Profile = () => {
     let userTypeId = sessionStorage.getItem('userTypeId');
 
     return (
-        <div className="informationPageLayout">
-            <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
+        <div className="ProfileLayout">
+            <div className="ProfileDiv1" style={{ "grid-row-start": "1" }}>
                 <h1>Profil</h1>
             </div>
-            <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
+            <div className="ProfileDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
                 <form className="form">
                     <div className="innerForm" style={{ "align-self": "flex-start" }}>
                     <div className="form-group">

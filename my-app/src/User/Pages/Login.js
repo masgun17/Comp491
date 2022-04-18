@@ -1,8 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import { loginAction } from "../tool/actions";
+import { loginAction } from "../../tool/actions";
 import { useState} from 'react';
 import { useNavigate } from "react-router-dom";
-import ForgetPassword from './ForgetPassword';
+import ForgetPassword from '../Components/ForgetPassword';
+import "../Styles/Login.css";
+import "../Styles/User.css";
 
 function Login () {
     const navigate = useNavigate();
@@ -47,11 +49,11 @@ function Login () {
 
 
     return (
-        <div className="informationPageLayout">
-            <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
+        <div className="LoginLayout">
+            <div className="LoginDiv1" style={{ "grid-row-start": "1" }}>
                 <h1>Giriş Yap</h1>
             </div>
-            <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
+            <div className="LoginDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
                 <form className="form">
                     <div className="innerForm" style={{ "align-self": "flex-start" }}>
                         <div className="form-group">

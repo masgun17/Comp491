@@ -1,6 +1,7 @@
 import ZoomIn from '@material-ui/icons/ZoomIn';
 import ZoomOut from '@material-ui/icons/ZoomOut';
 import React, { useState } from "react";
+import "../Styles/InfoPage.css";
 
 const DiseaseInformationPage = () => {
   const [font, setFont] = useState(20);

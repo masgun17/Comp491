@@ -1,7 +1,7 @@
 const PartInformation = ({ partInfo, ...props }) => {
   // TODO: Styling
   return (
-    <div className="informationPageLayout">
+    <div>
       Part Name : {partInfo[1]} <br />
       Part Id: {partInfo[0]} <br />
       Part Score Limit: {partInfo[2]} <br />

@@ -6,6 +6,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import Icon from '@mui/material/Icon';
 import ZoomIn from '@material-ui/icons/ZoomIn';
 import ZoomOut from '@material-ui/icons/ZoomOut';
+import "../Styles/Dashboard.css";
 
 const Dashboard = () => {
   const [font, setFont] = useState(20);

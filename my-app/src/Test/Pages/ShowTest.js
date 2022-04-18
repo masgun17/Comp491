@@ -6,8 +6,9 @@ import {
   createPartAction,
   deletePartAction,
   deleteQuestionAction,
-} from "../tool/actions";
-import AddQuestion from "../Question/Components/AddQuestion";
+} from "../../tool/actions";
+import AddQuestion from "../Components/AddQuestion";
+import "../Styles/ShowTest.css";
 
 const ShowTest = () => {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ const ShowTest = () => {
 
   return (
     <div className="showTestPageLayout">
-      <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
+      <div className="ShowTestDiv1" style={{ "grid-row-start": "1" }}>
         <h1>Test Soruları</h1>
       </div>
       {parts.map((e, i) => (
@@ -183,7 +184,7 @@ const ShowTest = () => {
             ) : null
           )}
           <button
-            className="addQuestionButton"
+            // className="addQuestionButton"
             // Update onClick function such that it will open a modal content structure
             onClick={() => {
               setSelectedPartId(e[0]);

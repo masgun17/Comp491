@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet } from "react-router-dom";
-import { changePasswordAction } from "../tool/actions";
+import { changePasswordAction } from "../../tool/actions";
+import "../Styles/User.css";
 
 
 const ChangePassword = ({ ...props }) => {
@@ -41,8 +42,8 @@ const ChangePassword = ({ ...props }) => {
 
   return (
     <Modal {...props} size="l" centered>
-        <div className="createNewSuperAdminPageLayout">
-        <div className="createNewSuperAdmingPageDiv1" style={{ "grid-row-start": "1" }}>
+        <div className="UserPageLayout">
+        <div className="UserPageDiv1" style={{ "grid-row-start": "1" }}>
                 <h1>Şifre Değiştirme</h1>
             </div>
                 <form >

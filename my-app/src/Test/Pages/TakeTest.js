@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { UserIdContext } from "../Helper/Context";
-import { getAllPartsAction, getAllQuestionsAction, createAssessmentSessionAction } from "../tool/actions";
-import PartInformation from "./PartInformation";
-import QuestionBody from "./QuestionBody";
+import { getAllPartsAction, getAllQuestionsAction, createAssessmentSessionAction } from "../../tool/actions";
+import PartInformation from "../Components/PartInformation";
+import QuestionBody from "../Components/QuestionBody";
+import "../Styles/TakeTest.css";
 
 const TakeTest = () => {
   const [id, setId] = useState(null);

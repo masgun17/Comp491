@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import "../Styles/TestInformation.css";
 
 const TestInformationPage = () => {
   const navigate = useNavigate();
   return (
     // <h1>Test Information Page</h1>
     <div className="testInformationPageLayout">
-      <div className="informationPageDiv1" style={{ "grid-row-start": "1" }}>
+      <div className="testInfoDiv1" style={{ "grid-row-start": "1" }}>
         <h1>Test Hakkında</h1>
       </div>
-      <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "1.8" }}>
+      <div className="testInfoDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "1.8" }}>
         &emsp;&emsp;&emsp;The ANU-ADRI is an evidence-based, validated tool aimed at assessing individual exposure to risk factors
         known to be associated with an increased risk of developing Alzheimer's disease in late-life, that is,
         over the age of 60 years. <br /><br />
