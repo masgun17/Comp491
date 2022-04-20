@@ -14,4 +14,5 @@ export default {
     deleteQuestion: '/deleteQuestion',
     submitNewPassword: 'submitNewPassword',
     createAssessmentSession: '/createAssessmentSession',
+    uploadUserAnswers: '/uploadUserAnswers',
 };
