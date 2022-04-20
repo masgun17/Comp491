@@ -1,0 +1,23 @@
+.checkboxContainer{
+    display: grid;
+    grid-template-columns: 45px auto;
+}
+.checkboxButton{
+    width: 30px;
+    height: 30px;
+    grid-column-start: 1;
+    background: transparent;
+    border-radius: 10px;
+    border: 2px solid black
+}
+.filledCheckboxButton{
+    width: 30px;
+    height: 30px;
+    grid-column-start: 1;
+    background: rebeccapurple;
+    border-radius: 10px;
+    border: 2px solid black
+}
+.checkboxContent{
+    grid-column-start: 2;
+}

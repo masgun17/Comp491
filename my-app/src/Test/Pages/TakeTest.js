@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAllPartsAction, getAllQuestionsAction, createAssessmentSessionAction } from "../../tool/actions";
+import {
+  getAllPartsAction,
+  getAllQuestionsAction,
+  createAssessmentSessionAction,
+} from "../../tool/actions";
 import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
 import "../Styles/TakeTest.css";
@@ -7,7 +11,13 @@ import "../Styles/TakeTest.css";
 const TakeTest = () => {
   const [id, setId] = useState(null);
   const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
-  
+  const [incomingAnswer, setIncomingAnswer] = useState("");
+  const [qID, setQid] = useState();
+
+  useEffect(async() =>{
+    console.log(incomingAnswer, "answer in parent");
+  }, [incomingAnswer]);
+
   const createAssessmentSession = async () => {
     console.log("id", id);
     var jsonData = {
@@ -20,18 +30,19 @@ const TakeTest = () => {
     const a = await createAssessmentSessionAction(jsonData);
     setCurrentAssessmentSession(a);
     console.log(a);
-  }
+  };
 
   useEffect(async () => {
-    console.log("ID:", sessionStorage.getItem('userId'));
-    setId(sessionStorage.getItem('userId'));
-    if (id !== null && id !== "") {  // null check / "" check
+    console.log("ID:", sessionStorage.getItem("userId"));
+    setId(sessionStorage.getItem("userId"));
+    if (id !== null && id !== "") {
+      // null check / "" check
       // await createAssessmentSession();
       setTimeout(() => {
         createAssessmentSession();
       }, 300);
     }
-  }, [id])
+  }, [id]);
 
   const [parts, setParts] = useState([]);
 
@@ -125,30 +136,32 @@ const TakeTest = () => {
     }
   };
 
+  function saveToLocal(){
+    localStorage.setItem(qID, incomingAnswer);
+  }
+
   return (
     <div className="testPageLayout">
-      <div>
-        {firstPage ? <h1>You are about to take the test {currentAssessmentSession}</h1> : null}
-        {!firstPage
-          ? parts.map((e, i) => (
-              <div>
-                {showPartInfo ? (
-                  partIndex === i ? (
-                    <PartInformation partInfo={e} />
-                  ) : null
-                ) : null}
+      {firstPage ? (
+        <h1>You are about to take the test {currentAssessmentSession}</h1>
+      ) : null}
+      {!firstPage
+        ? parts.map((e, i) => (
+            <div style={{ height: "100%" }}>
+              {showPartInfo ? (
+                partIndex === i ? (
+                  <PartInformation partInfo={e} />
+                ) : null
+              ) : null}
 
-                {currentQuestionArray.map((element, index) =>
-                  showQuestions &&
-                  partIndex === i &&
-                  questionIndex === index ? (
-                    <QuestionBody question={element} />
-                  ) : null
-                )}
-              </div>
-            ))
-          : null}
-      </div>
+              {currentQuestionArray.map((element, index) =>
+                showQuestions && partIndex === i && questionIndex === index ? (
+                  <QuestionBody question={element} passedAnswer={setIncomingAnswer} qID={setQid} />
+                ) : null
+              )}
+            </div>
+          ))
+        : null}
       <div>
         <button
           onClick={() => {
@@ -160,6 +173,7 @@ const TakeTest = () => {
         <button
           onClick={() => {
             nextClick();
+            saveToLocal();
           }}
         >
           Next

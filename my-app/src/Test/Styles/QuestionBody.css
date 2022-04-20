@@ -1,0 +1,17 @@
+.shownQuestionDescription{
+    grid-row-start: 1;
+    border: none;
+    font-size: 25px;
+    text-align: left; 
+    height:fit-content;  
+    margin-bottom: 20px;
+}
+.questionContainer {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 0;
+    margin-top: 10% ;
+    align-self: flex-end;
+  }

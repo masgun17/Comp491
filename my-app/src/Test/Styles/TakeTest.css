@@ -1,7 +1,7 @@
 .testPageLayout {
-    position: relative;
-    padding: 0% 20% 5% 20%;
-    display: grid;
-    grid-template-rows: 10fr 1fr;
-  }
-  
+  position: relative;
+  padding: 0% 20% 5% 20%;
+  display: grid;
+  grid-template-rows: 10fr 1fr;
+}
+
