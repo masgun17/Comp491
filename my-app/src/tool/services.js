@@ -31,27 +31,30 @@ export const getAllQuestionsService = async () =>
     axios.get(API.getAllQuestions).then(resolve).catch(reject);
   });
 
-  export const signUpService = async(data) =>
+export const signUpService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.creatingNewAccount, data).then(resolve).catch(reject);
   });
 
-  export const loginService = async(data) =>
+export const loginService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.loginAccount, data).then(resolve).catch(reject);
   });
-  
-  export const createNewAdminService = async(data) =>
+
+export const createNewAdminService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.createNewAdminAccount, data).then(resolve).catch(reject);
   });
 
-  export const createNewSuperAdminService = async(data) =>
+export const createNewSuperAdminService = async (data) =>
   new Promise((resolve, reject) => {
-    axios.post(API.createNewSuperAdminAccount, data).then(resolve).catch(reject);
+    axios
+      .post(API.createNewSuperAdminAccount, data)
+      .then(resolve)
+      .catch(reject);
   });
 
-  export const changePasswordService = async(data) =>
+export const changePasswordService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.changePassword, data).then(resolve).catch(reject);
   });
@@ -65,15 +68,17 @@ export const deleteQuestionService = async (data) =>
     axios.post(API.deleteQuestion, data).then(resolve).catch(reject);
   });
 
-
-  export const submitNewPasswordService = async (data) =>
+export const submitNewPasswordService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.submitNewPassword, data).then(resolve).catch(reject);
   });
 
-
-  
 export const createAssessmentSessionService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.createAssessmentSession, data).then(resolve).catch(reject);
+  });
+
+export const uploadUserAnswersService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.uploadUserAnswers, data).then(resolve).catch(reject);
   });

@@ -150,5 +150,13 @@ export const createAssessmentSessionAction = async (data) => {
   }
 }
 
-
+export const uploadUserAnswersAction = async (data) => {
+  try {
+    const result = await services.uploadUserAnswersService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on uploadUserAnswersAction");
+    console.log(error);
+  }
+}
 
