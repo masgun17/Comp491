@@ -3,6 +3,7 @@ import {
   getAllPartsAction,
   getAllQuestionsAction,
   createAssessmentSessionAction,
+  uploadUserAnswersAction,
 } from "../../tool/actions";
 import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
@@ -14,12 +15,11 @@ const TakeTest = () => {
   const [incomingAnswer, setIncomingAnswer] = useState("");
   const [qID, setQid] = useState();
 
-  useEffect(async() =>{
-    console.log(incomingAnswer, "answer in parent");
-  }, [incomingAnswer]);
+  // useEffect(async() =>{
+  //   console.log(incomingAnswer, "answer in parent");
+  // }, [incomingAnswer]);
 
   const createAssessmentSession = async () => {
-    console.log("id", id);
     var jsonData = {
       data: [
         {
@@ -29,11 +29,9 @@ const TakeTest = () => {
     };
     const a = await createAssessmentSessionAction(jsonData);
     setCurrentAssessmentSession(a);
-    console.log(a);
   };
 
   useEffect(async () => {
-    console.log("ID:", sessionStorage.getItem("userId"));
     setId(sessionStorage.getItem("userId"));
     if (id !== null && id !== "") {
       // null check / "" check
@@ -136,49 +134,133 @@ const TakeTest = () => {
     }
   };
 
-  function saveToLocal(){
+  function saveToLocal() {
     localStorage.setItem(qID, incomingAnswer);
   }
 
+  const [lastPartCount, setLastPartCount] = useState();
+  const [lastQuestionCount, setLastQuestionCount] = useState();
+
+  useEffect(async () => {
+    const partNumber = parts.length;
+    const lastPartId = parts[partNumber - 1][0];
+    const lastPartQuestionArray = [];
+    for (let index = 0; index < questions.length; index++) {
+      if (questions[index][1] === lastPartId) {
+        lastPartQuestionArray.push(questions[index]);
+      }
+    }
+    const lastPartQuestionCount = lastPartQuestionArray.length;
+    setLastPartCount(partNumber);
+    setLastQuestionCount(lastPartQuestionCount);
+  }, [questions]);
+
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+  useEffect(async () => {
+    if (
+      partIndex === lastPartCount - 1 &&
+      questionIndex === lastQuestionCount - 1
+    ) {
+      setIsSubmitEnabled(true);
+    } else {
+      setIsSubmitEnabled(false);
+    }
+  }, [partIndex, questionIndex, showQuestions]);
+
+  const [completed, setCompleted] = useState(false);
+
+  const saveToDb = async () => {
+    const arr = [];
+    for (let index = 0; index < questions.length; index++) {
+      const element = [];
+      const qid = questions[index][0];
+      const ans = localStorage.getItem(qid);
+      element.push(qid);
+      element.push(ans);
+      arr.push(element);
+    }
+    var jsonData = {
+      data: [
+        {
+          AssessmentSessionId: currentAssessmentSession,
+          AnswerList: arr,
+        },
+      ],
+    };
+    const a = await uploadUserAnswersAction(jsonData);
+    localStorage.clear();
+    setCompleted(true);
+  };
+
   return (
     <div className="testPageLayout">
-      {firstPage ? (
-        <h1>You are about to take the test {currentAssessmentSession}</h1>
-      ) : null}
-      {!firstPage
-        ? parts.map((e, i) => (
-            <div style={{ height: "100%" }}>
-              {showPartInfo ? (
-                partIndex === i ? (
-                  <PartInformation partInfo={e} />
-                ) : null
-              ) : null}
+      {firstPage && <h1>You are about to take the test</h1>}
+      {completed && <h1>Completed the test</h1>}
+      {!firstPage &&
+        parts.map((e, i) => (
+          <>
+            {showPartInfo && partIndex === i && (
+              <PartInformation partInfo={e} />
+            )}
 
-              {currentQuestionArray.map((element, index) =>
-                showQuestions && partIndex === i && questionIndex === index ? (
-                  <QuestionBody question={element} passedAnswer={setIncomingAnswer} qID={setQid} />
-                ) : null
-              )}
-            </div>
-          ))
-        : null}
-      <div>
-        <button
-          onClick={() => {
-            backClick();
-          }}
-        >
-          Back
-        </button>
-        <button
-          onClick={() => {
-            nextClick();
-            saveToLocal();
-          }}
-        >
-          Next
-        </button>
-      </div>
+            {currentQuestionArray.map(
+              (element, index) =>
+                showQuestions &&
+                partIndex === i &&
+                questionIndex === index && (
+                  <QuestionBody
+                    question={element}
+                    passedAnswer={setIncomingAnswer}
+                    qID={setQid}
+                  />
+                )
+            )}
+          </>
+        ))}
+      {!completed && (
+        <div>
+          <button
+            onClick={() => {
+              backClick();
+            }}
+          >
+            Back
+          </button>
+          {!isSubmitEnabled ? (
+            showQuestions && incomingAnswer === "" ? (
+              <button
+                disabled
+                onClick={() => {
+                  nextClick();
+                  saveToLocal();
+                }}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  nextClick();
+                  saveToLocal();
+                }}
+              >
+                Next
+              </button>
+            )
+          ) : (
+            <button
+              onClick={() => {
+                // nextClick();
+                saveToLocal();
+                saveToDb();
+              }}
+            >
+              Submit
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

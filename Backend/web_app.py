@@ -399,7 +399,7 @@ def uploadUserAnswers():
         return 'Bad Request Exception'
     print("Total error count: ", len(errList))
     print(errList)
-    return json.dumps("Answers are uploaded for AssessmentSessionId " + AssessmentSessionId)
+    return json.dumps("Answers are uploaded for AssessmentSessionId " + str(AssessmentSessionId))
 
 
 

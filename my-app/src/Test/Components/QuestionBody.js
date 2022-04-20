@@ -13,15 +13,15 @@ const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   const [multiChange, setMultiChange] = useState(false);
 
   useEffect(async () => {
-    console.log("in first effect");
+    // console.log("in first effect");
     setOptions(JSON.parse(question[5]));
     qID(question[0]);
   }, []);
 
   function handleSavedMultiOptions(){
     if (question[4] !== "free-text" && localStorage.getItem(question[0])) {
-      console.log("inside if");
-      console.log(options, "options");
+      // console.log("inside if");
+      // console.log(options, "options");
       const temp = opt;
       temp.fill(false);
       options.forEach((element, index) => {
@@ -37,7 +37,7 @@ const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   }
 
   useEffect(async () => {
-    console.log(answer, "answer");
+    // console.log(answer, "answer");
     passedAnswer(answer);
   }, [answer]);
 
@@ -62,12 +62,12 @@ const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   }
 
   useEffect(async () => {
-    console.log("inside optChange");
+    // console.log("inside optChange");
     handleMultipleChoiceAnswer();
   }, [optChange]);
 
   useEffect(async () => {
-    console.log("inside multiChange");
+    // console.log("inside multiChange");
     handleSavedMultiOptions();
   }, [multiChange]);
 
