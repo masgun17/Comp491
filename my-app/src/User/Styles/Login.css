@@ -16,7 +16,7 @@
     align-items: center;
     height: max-content;
     min-height: 260px;
-    margin: 30px 0px 30px 0px;
+    /*margin: 30px 0px 30px 0px;*/
     background-color: #e8f2f8;
     border: 1px solid #556c9c;
     /* border-radius: 90px; */
@@ -33,4 +33,12 @@
     display: grid;
   }
 
+  .LoginDiv2 .innerForm label{
+    font-weight: 400;
+    color: black;
+  }
+
+  form{
+    margin-bottom: 20px;
+  }
   

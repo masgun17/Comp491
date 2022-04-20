@@ -20,8 +20,10 @@ import Approve from "./User/Pages/Approve";
 import Profile from "./User/Pages/Profile";
 import Statistics from "./Information/Pages/Statistics";
 import { useState, useContext } from 'react';
+import { FontSizeContext} from "./Helper/Context";
 
 function App() {
+  const [fontSize, setFontSize] = useState(20);
   const [isLogin, setIsLogin] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -30,6 +32,7 @@ function App() {
   const [id, setId] = useState("");
   const [userTypeId, setUserTypeId] = useState("");
   return (
+    <FontSizeContext.Provider value={{fontSize, setFontSize}}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
@@ -50,6 +53,8 @@ function App() {
        </Routes>
        {/* <button path="login" element={<Login />} /> */}
     </BrowserRouter>
+    </FontSizeContext.Provider>
+
   );
 }
 

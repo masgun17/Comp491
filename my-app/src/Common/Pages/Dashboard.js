@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { FontSizeContext} from "../../Helper/Context";
 //import { IconButton, Colors } from 'react-native-paper';
 import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,24 +10,14 @@ import ZoomOut from '@material-ui/icons/ZoomOut';
 import "../Styles/Dashboard.css";
 
 const Dashboard = () => {
+  const{fontSize,setFontSize} = useContext(FontSizeContext) 
   const [font, setFont] = useState(20);
-  const increaseFont = () => {
-    setFont(font+10);
-  }
-
-  const decreaseFont = () => {
-    if(font-10>10){
-      setFont(font-10);
-    }
-  }
   return (
     // <h1>Dashboard</h1>;
-    <div>
-      <button id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
-      <button id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>        
-      <div className="dashboardLayout" style={{"font-size": font}}>
+    <div>   
+      <div className="dashboardLayout" style={{"font-size": fontSize}}>
           <div className="dashboardDiv1" style={{"grid-row-start": "1"}}>
-            <h1 >Anasayfa</h1>
+            <h1 style={{"font-size": fontSize*2}}>Anasayfa</h1>
         </div>
         <div className="dashboardDiv2" style={{"grid-row-start": "2"}}>
             Test Hakkında

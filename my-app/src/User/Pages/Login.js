@@ -1,7 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import { loginAction } from "../../tool/actions";
-import { useState} from 'react';
+import { useState, useContext} from 'react';
 import { useNavigate } from "react-router-dom";
+import { FontSizeContext} from "../../Helper/Context";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { loginAction } from "../../tool/actions";
 import ForgetPassword from '../Components/ForgetPassword';
 import "../Styles/Login.css";
 import "../Styles/User.css";
@@ -12,6 +15,8 @@ function Login () {
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
     const [modalShow, setModalShow] = useState(false);
+    const{fontSize,setFontSize} = useContext(FontSizeContext) 
+    toast.configure()
 
     async function submitLoginForm(email, phone, password) {
         var jsonData = {
@@ -33,15 +38,20 @@ function Login () {
             navigate("/");
             window.location.reload(false);
         }else if(a==='This account is not in the database'){
-            alert('Lütfen önce Kayıt Olunuz!')
+            toast.info('Lütfen önce Kayıt Olunuz!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==='Login unsuccessful'){
-            alert('Şifre Hatalı!')
+            toast.error('Şifre Hatalı!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Email ya da telefon numaranızı giriniz!"){
-            alert("Email ya da telefon numaranızı giriniz!")
+            toast.warning('Email ya da telefon numaranızı giriniz!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else if(a==="Lütfen Şifrenizi Giriniz!"){
-            alert("Lütfen Şifrenizi Giriniz!")
+            toast.warning('Lütfen Şifrenizi Giriniz!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else{
-            alert('Giriş Hatalı!')
+            toast.error('Giriş Hatalı!',
+           {position: toast.POSITION.TOP_CENTER, autoClose:2000})
 
         }
         console.log(a);
@@ -50,24 +60,24 @@ function Login () {
 
     return (
         <div className="LoginLayout">
-            <div className="LoginDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Giriş Yap</h1>
+            <div className="LoginDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
+                <h1 style={{"font-size": fontSize*2}}>Giriş Yap</h1>
             </div>
-            <div className="LoginDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "2" }}>
+            <div className="LoginDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "2" }}>
                 <form className="form">
-                    <div className="innerForm" style={{ "align-self": "flex-start" }}>
-                        <div className="form-group">
-                            <label htmlFor="email">Email: </label>
-                            <input type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} />
+                    <div className="innerForm" style={{ "align-self": "flex-start", "font-size": fontSize }}>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label  htmlFor="email" style={{"font-size": fontSize}}>Email: </label>
+                            <input class = "form-control" type="email" name="email" id="email" style={{"font-size": fontSize}} onChange={(e) => setEmail(e.target.value)} />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="tel">Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10" onChange={(e) => setTel(e.target.value)}/>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="tel" style={{"font-size": fontSize}}>Telefon Numarası: </label>
+                            <input class = "form-control" type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10" style={{"font-size": fontSize}} onChange={(e) => setTel(e.target.value)}/>
 
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Şifre: </label>
-                            <input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)}/>
+                        <div className="form-group" style={{"font-size": fontSize}}>
+                            <label htmlFor="password" style={{"font-size": fontSize}}>Şifre: </label>
+                            <input class = "form-control" type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div style={{ "justify-content": "center","text-align":"center"}}>
                         <Link to="/Login" style={{ "color": "red", "text-align":"center",  "position" : "center"}} 
@@ -84,7 +94,7 @@ function Login () {
              setModalShow(false);
              }}
            />
-                <button onClick={() => 
+                <button class = "btn btn-primary btn-lg btn-block" id="loginButton" style={{"font-size": fontSize}} onClick={() => 
                             {submitLoginForm(document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
                         >Giriş Yap

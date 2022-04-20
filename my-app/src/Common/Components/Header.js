@@ -1,13 +1,34 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, Navigate } from "react-router-dom";
+import { FontSizeContext} from "../../Helper/Context";
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import ZoomOut from '@material-ui/icons/ZoomOut';
+import React, { useState, useContext } from "react";
 import "../Styles/Header.css"
 
 const Header = (props) => {
   let userLogged = sessionStorage.getItem('isLogin');
   let userTypeId = sessionStorage.getItem('userTypeId')
+  const{fontSize,setFontSize} = useContext(FontSizeContext) 
+
+  const increaseFont = () => {
+    if(fontSize+10<50){
+      setFontSize(fontSize+10);
+    }
+  }
+
+  const decreaseFont = () => {
+    if(fontSize-10>10){
+      setFontSize(fontSize-10);
+    }
+  }
 
   return (
     <div className="headerWholePage">
       <div className="header" style={{ "grid-row-start": "1", "grid-row-end": "2" }}>
+        <div className="btn-group">
+        <button class="btn btn-dark btn-sm" id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
+        <button class="btn btn-dark btn-sm" id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
+          </div>
         <Link to="/">Anasayfa</Link>
         <Link to="/diseaseInformationPage">Alzheimer Hastalığı</Link>
         <Link to="/riskFactors">Risk Faktörleri</Link>
@@ -25,7 +46,7 @@ const Header = (props) => {
           null
         )}
         {userLogged==='true' ? (
-          <button type="button" onClick={() => 
+          <button class="btn btn-dark btn-lg" type="button" onClick={() => 
             {
             sessionStorage.setItem('userName', ''); 
             sessionStorage.setItem('userSurname', ''); 
@@ -37,7 +58,7 @@ const Header = (props) => {
             window.location.reload(false);
           }}><Link to="/">Çıkış</Link></button>
         ):(
-          <button type="button"><Link to="/login">Giriş</Link></button>
+          <button class="btn btn-dark btn-lg" type="button"><Link to="/login">Giriş</Link></button>
         )}
         
       </div>
