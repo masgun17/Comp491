@@ -3,6 +3,7 @@ import "../Styles/TestInformation.css";
 
 const TestInformationPage = () => {
   const navigate = useNavigate();
+  let userTypeId = sessionStorage.getItem('userTypeId')
   return (
     // <h1>Test Information Page</h1>
     <div className="testInformationPageLayout">
@@ -23,7 +24,11 @@ const TestInformationPage = () => {
       <div className="testInformationPageButtonLayout" style={{ "grid-row-start": "3" }}>
         {/* <Link to="/contact">İletişim</Link>
         <Link to="/privacy">Gizlilik</Link> */}
-        <button className="showTestButton" onClick={() => navigate("/showTest")}> Show Test </button>
+        {userTypeId==='3' ? (
+          <button className="showTestButton" onClick={() => navigate("/showTest")}> Show Test </button>
+        ):(
+          null
+        )}
         <button className="showTestButton" onClick={() => navigate("/takeTest")}> Take Test </button>
       </div>
     </div>
