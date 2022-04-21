@@ -80,16 +80,8 @@ const TakeTest = () => {
 
   // TODO: Styling
 
-  // TODO: Add a useState to store user selection and pass it to QuestionBody. Set it to null at each question change
-  // and ensure that it is filled on Next button click. Then store this in local storage.
-
-  // TODO: Change Next button to Submit button on last question.
-
   // Remark: Now we are fetching all questions from db upon entering the test and filter them part by part on frontend.
   // In case we encounter performance issues in the future, we might create new API calls to fetch questions part by part.
-
-  // Discuss: We can either send answers to db when test is finished, or we can send them after each part. In both cases,
-  // we will fetch the answers from local storage and then call corresponding API calls.
 
   const nextClick = () => {
     if (firstPage) {
@@ -248,8 +240,8 @@ const TakeTest = () => {
                 Next
               </button>
             )
-          ) : ( incomingAnswer === "" ? 
-          <button
+          ) : incomingAnswer === "" ? (
+            <button
               disabled
               onClick={() => {
                 // nextClick();
@@ -259,7 +251,7 @@ const TakeTest = () => {
             >
               Submit
             </button>
-            :
+          ) : (
             <button
               onClick={() => {
                 // nextClick();
