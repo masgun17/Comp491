@@ -212,13 +212,20 @@ const TakeTest = () => {
         ))}
       {!completed && (
         <div>
-          <button
+          {showPartInfo ? <button
+            disabled
             onClick={() => {
               backClick();
             }}
           >
             Back
-          </button>
+          </button> : <button
+            onClick={() => {
+              backClick();
+            }}
+          >
+            Back
+          </button>}
           {!isSubmitEnabled ? (
             showQuestions && incomingAnswer === "" ? (
               <button
