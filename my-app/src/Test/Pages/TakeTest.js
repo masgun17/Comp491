@@ -248,7 +248,18 @@ const TakeTest = () => {
                 Next
               </button>
             )
-          ) : (
+          ) : ( incomingAnswer === "" ? 
+          <button
+              disabled
+              onClick={() => {
+                // nextClick();
+                saveToLocal();
+                saveToDb();
+              }}
+            >
+              Submit
+            </button>
+            :
             <button
               onClick={() => {
                 // nextClick();
