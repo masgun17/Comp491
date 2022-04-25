@@ -103,3 +103,20 @@ class Images():
         finally:
             conn.close()
             return result_code
+
+
+    # Takes index of the Image
+    # update_item item from db
+    @classmethod
+    def update_item(cls, img_base64, index):
+        conn = connection.cursor()
+        result_code = False
+        try:
+            conn.execute(f"update Images set image = '{img_base64}' where ind ={index}")
+            result_code = True
+            conn.commit()
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code
