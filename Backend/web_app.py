@@ -475,9 +475,6 @@ def updateImageFromIndex():
         parameters = data[0]
         index = int(parameters['Index'])
         img_base64 = parameters['Img_base64']
-        print("web")
-        print(index)
-        print(img_base64[:50])
         result_code = Images.update_item(img_base64,index)
         if result_code:
             return "Image updated successfully"
