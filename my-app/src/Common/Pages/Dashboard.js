@@ -61,7 +61,7 @@ const Dashboard = () => {
       }
     }
     
-  }, [removeFlag]);
+  }, [images]);
 
   useEffect(async () => {
     if(updateFlag){
