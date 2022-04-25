@@ -397,11 +397,7 @@ def saveImage():
 
         result_code = Images.add_item(data_url,index)
         if result_code:
-            result, item = AssessmentSession.get_last()
-            if result:
-                return str(item[0])
-            else:
-                return 'New assessment session is created / could not fetch sessionId'
+            return "Image saved successfully"
         else:
             return 'Bad Request '
     except Exception as e:
@@ -426,18 +422,68 @@ def getImages():
             return json.dumps(data)
         else:
             return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/deleteImageFromIndex",  methods=['GET', 'POST'])
+def deleteImageFromIndex():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code = Images.delete_item(index)
         if result_code:
-            result, item = AssessmentSession.get_last()
-            if result:
-                return str(item[0])
-            else:
-                return 'New assessment session is created / could not fetch sessionId'
+            return "Image removed successfully"
         else:
             return 'Bad Request '
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
 
+
+
+@app.route("/getImageFromIndex",  methods=['GET', 'POST'])
+def getImageFromIndex():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code, items = Images.has_item_by_column("ind", index)
+        if result_code:
+            photo = items[0]
+            return photo
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/updateImageFromIndex",  methods=['GET', 'POST'])
+def updateImageFromIndex():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+        img_base64 = parameters['Img_base64']
+
+        result_code = Images.update_item(img_base64,index)
+        if result_code:
+            return "Image updated successfully"
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 
 @app.route("/uploadUserAnswers",  methods=['GET', 'POST'])
