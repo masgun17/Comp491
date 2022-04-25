@@ -6,6 +6,7 @@ import {
   createQuestionAction,
   getAllQuestionsAction,
   getAllPartsAction,
+  uploadUserAnswersAction,
 } from "../../tool/actions";
 import "../Styles/InfoPage.css";
 
@@ -95,8 +96,36 @@ const Privacy = () => {
     setQuestionData(a);
   }
 
+  const [assessmentSessionId, setAssessmentSessionId] = useState();
+  const [questionIDsString, setQuestionIDsString] = useState();
+  const [answersString, setAnswersString] = useState();
+
+  async function uploadUserAnswer( assessmentSessionId, questionIDsString, answersString ) {
+    const qid = questionIDsString.split(",");
+    const ans = answersString.split(",");
+    const temp = [];
+    for (let index = 0; index < qid.length; index++) {
+      const element = [];
+      element.push(qid[index]);
+      element.push(ans[index]);
+      temp.push(element);
+    }
+    console.log(temp);
+    // console.log(ans);
+    var jsonData = {
+      data: [
+        {
+          AssessmentSessionId: assessmentSessionId,
+          AnswerList: temp,
+        },
+      ],
+    };
+    const a = await uploadUserAnswersAction(jsonData);
+    console.log(a);
+  }
+
   return (
-    <body>
+    <body style={{padding: 10}}>
       <h1>Privacy</h1>
 
       <div>
@@ -259,6 +288,45 @@ const Privacy = () => {
           value={questionData}
           style={{ width: "80%", height: "100px" }}
         ></textarea>
+      </div>
+
+      <br />
+      <div>
+      Upload User Answers Api Test &emsp;&emsp;
+        <label>
+          Assessment Session ID:
+          <input
+            type="text"
+            name="name"
+            placeholder="int"
+            onChange={(e) => setAssessmentSessionId(e.target.value)}
+          />
+        </label>
+        <label>
+          Question IDs:
+          <input
+            type="text"
+            name="name"
+            placeholder="string (comma seperated)"
+            onChange={(e) => setQuestionIDsString(e.target.value)}
+          />
+        </label>
+        <label>
+          Answers:
+          <input
+            type="text"
+            name="name"
+            placeholder="string (comma seperated)"
+            onChange={(e) => setAnswersString(e.target.value)}
+          />
+        </label>
+        <button
+          onClick={() => {
+            uploadUserAnswer(assessmentSessionId, questionIDsString, answersString);
+          }}
+        >
+          Create
+        </button>
       </div>
     </body>
   );

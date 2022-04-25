@@ -1,0 +1,9 @@
+.inputArea {
+    width: 50%;
+    min-height: 100px !important;
+    grid-row-start: 2;
+    border-radius: 5px;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    align-self: center;
+}
