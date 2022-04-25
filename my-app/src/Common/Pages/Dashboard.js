@@ -10,13 +10,16 @@ import ZoomOut from '@material-ui/icons/ZoomOut';
 import "../Styles/Dashboard.css";
 import ReactDOM from "react-dom";
 import ImageUploading from "react-images-uploading";
-import { saveImageAction, getImagesAction } from "../../tool/actions"
+import { saveImageAction, getImagesAction, updateImageAction, deleteImageAction } from "../../tool/actions"
 
 const Dashboard = () => {
   const{fontSize,setFontSize} = useContext(FontSizeContext) 
   const [font, setFont] = useState(20);
   const [images, setImages] = React.useState([]);
   const maxNumber = 3;
+  const [removeFlag, setRemoveFlag] = useState(false);
+  const [updateFlag, setUpdateFlag] = useState(false);
+
   let userTypeId = sessionStorage.getItem('userTypeId') 
 
   const onChange = (imageList, addUpdateIndex) => {
@@ -51,6 +54,24 @@ const Dashboard = () => {
     await getImages();
   }, []);
 
+  useEffect(async () => {
+    if(removeFlag){
+      if(images!==null ){
+        await removeImage();
+      }
+    }
+    
+  }, [removeFlag]);
+
+  useEffect(async () => {
+    if(updateFlag){
+      if(images!==null ){
+        await updateImage();
+      }
+    }
+    
+  }, [images]);
+
   async function saveImage(image,index) {
     console.log(image.file.name);
     console.log(index);
@@ -65,6 +86,61 @@ const Dashboard = () => {
 
     const a = await saveImageAction(jsonData);
     await getImages();
+  }
+
+  async function updateImage(){
+    for (let index = 0; index < 3; index++) {
+      
+      if(images[index]){
+        console.log(images)
+        const image = images[index];
+        var jsonData = {
+          "data": [{
+            "Img_base64": image.data_url,
+            "Index": index,
+          }]
+          }
+            const a = await updateImageAction(jsonData);
+      }
+    }
+    setUpdateFlag(false);
+
+  }
+
+  async function removeImage() {
+    for (let index = 0; index < 3; index++) {
+      
+      if(images[index]){
+        const image = images[index];
+        var jsonData = {
+          "data": [{
+            "Img_base64": image.data_url,
+            "Index": index,
+          }]
+          }
+            const a = await updateImageAction(jsonData);
+      }else{
+        var jsonData = {
+          "data": [{
+            "Index": index,
+          }]
+          }
+        const a = await deleteImageAction(jsonData);
+        console.log(index);
+
+      }
+    }
+    setRemoveFlag(false);
+    console.log(images)
+    // var jsonData = {
+    //   "data": [{
+    //     "data_url": image.data_url,
+    //     "index": index,
+    //   }]
+    // }
+
+    // const a = await updateImageAction(jsonData);
+    // await getImages();
   }
 
 
@@ -127,8 +203,8 @@ const Dashboard = () => {
                 {userTypeId==='3' ? (
 
                 <div className="image-item__btn-wrapper">
-                  <button className="updateImage" onClick={() => onImageUpdate(index)}>Update</button>
-                  <button className="updateImage" onClick={() => onImageRemove(index)}>Remove</button>
+                  <button className="updateImage" onClick={() =>  {onImageUpdate(index); setUpdateFlag(true)}}>Update</button>
+                  <button className="updateImage" onClick={() => {onImageRemove(index); setRemoveFlag(true)}}>Remove</button>
                   <button onClick={() => saveImage(image,index)}>Save</button>
 
                 </div>

@@ -178,3 +178,23 @@ export const getImagesAction = async () => {
     console.log(error);
   }
 }
+
+export const updateImageAction = async (data) => {
+  try {
+    const result = await services.updateImageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on updateImageAction");
+    console.log(error);
+  }
+}
+
+export const deleteImageAction = async (data) => {
+  try {
+    const result = await services.deleteImageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on deleteImageAction");
+    console.log(error);
+  }
+}

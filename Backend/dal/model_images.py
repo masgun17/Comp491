@@ -112,7 +112,11 @@ class Images():
         conn = connection.cursor()
         result_code = False
         try:
+            print("debug1")
+            print(index)
+            print(img_base64[:50])
             conn.execute(f"update Images set image = '{img_base64}' where ind ={index}")
+            print("debug2")
             result_code = True
             conn.commit()
         except Exception as e:

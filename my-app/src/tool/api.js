@@ -17,4 +17,6 @@ export default {
     uploadUserAnswers: '/uploadUserAnswers',
     saveImage: '/saveImage',
     getImages: '/getImages',
+    updateImageFromIndex: '/updateImageFromIndex',
+    deleteImageFromIndex: '/deleteImageFromIndex',
 };

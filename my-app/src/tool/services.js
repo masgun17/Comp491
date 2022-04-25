@@ -92,4 +92,14 @@ export const uploadUserAnswersService = async (data) =>
     axios.post(API.getImages).then(resolve).catch(reject);
   });
 
+  export const updateImageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.updateImageFromIndex, data).then(resolve).catch(reject);
+  });
 
+  export const deleteImageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deleteImageFromIndex, data).then(resolve).catch(reject);
+  });
+
+  
