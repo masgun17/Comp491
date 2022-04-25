@@ -156,7 +156,25 @@ export const uploadUserAnswersAction = async (data) => {
     return result.data
   } catch (error) {
     console.log("Error on uploadUserAnswersAction");
+  }
+}
+
+export const saveImageAction = async (data) => {
+  try {
+    const result = await services.saveImageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on saveImageAction");
     console.log(error);
   }
 }
 
+export const getImagesAction = async () => {
+  try {
+    const result = await services.getImagesService();
+    return result.data
+  } catch (error) {
+    console.log("Error on getImagesAction");
+    console.log(error);
+  }
+}

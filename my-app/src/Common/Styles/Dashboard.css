@@ -1,10 +1,16 @@
 .dashboardLayout {
   /* background-color: #556c9c; */
-  padding: 0% 20% 5% 20%;
-  display: grid;
+  /* padding: 0% 15% 5% 15%;
+  display: grid; */
   /* grid-template-rows: 10% 45% 45%; */
-  height: auto;
+  /* height: auto; */
   /* height: 70vh; */
+  /* float:left;
+  width: 80%; */
+  position:absolute;
+  left:5%;
+  width: 60%;
+  height:100px;
 }
 
 .dashboardDiv1 {
@@ -36,3 +42,101 @@
   line-height: 1.8; */
   /* overflow-y: scroll; */
 }
+
+.upload__image-wrapper {
+  /* background-color: #556c9c; */
+ /*  padding: 0% 10% 5% 70%;
+  display: grid; */
+  /* position:absolute; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* height: 50%; */
+  /* height: 70vh; */
+  /* float:right;
+  width: auto; */
+  /*align-items: 'flex-end'*/
+
+  position:absolute;
+  right:0px;
+  width:30%;
+  height: 20%;
+}
+
+.image-item{
+  /* background-color: #556c9c; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* width:100%; height:100%; */
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.photo {
+  /* background-color: #556c9c; */
+ /*  padding: 0% 10% 5% 70%;
+  display: grid; */
+  /* position:absolute; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* height: 50%; */
+  /* height: 70vh; */
+  /* float:right;
+  width: auto; */
+  /*align-items: 'flex-end'*/
+
+  position:absolute;
+  right:20%;
+  width:80%;
+  height: 100%;
+  margin-top:10%;
+}
+
+.image-item__btn-wrapper{
+  margin-top: 13%;
+  margin-buttom:13%;
+
+}
+
+.updateImage{
+  margin-right:5%;
+}
+
+
+
+.secondPhoto{
+  /* background-color: #556c9c; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* width:100%; height:100%; */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+}
+
+.thirdPhotoBox {
+  /* background-color: #556c9c; */
+ /*  padding: 0% 10% 5% 70%;
+  display: grid; */
+  /* position:absolute; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* height: 50%; */
+  /* height: 70vh; */
+  /* float:right;
+  width: auto; */
+  /*align-items: 'flex-end'*/
+
+  position:absolute;
+  margin-top: 26%;
+  right:0px;
+  width:30%;
+  height: 25%;
+}
+
+.thirdPhoto{
+  /* background-color: #556c9c; */
+  /* grid-template-rows: 10% 45% 45%; */
+  /* width:100%; height:100%; */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+}
+

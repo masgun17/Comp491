@@ -19,12 +19,19 @@ const Signup = () => {
     const [phone, setTel] = useState(0);
     const [password, setPassword] = useState(0);
     const [kvkk, setKvkk] = useState(0);
+    const [kvkkRead, setKvkkRead] = useState(true);
     const{fontSize,setFontSize} = useContext(FontSizeContext) 
     toast.configure()
     const navigate = useNavigate();
-
+    
+    function onCheckBoxClick (e) {
+        if(e.target.checked && kvkkRead){
+            toggleApprove()
+        }
+    }
     const toggleApprove = () => {
       setIsOpen(!isOpen);
+      setKvkkRead(false)
     }
     async function submitSignUpForm(name, surname, email, phone, password) {
         var jsonData = {
@@ -60,6 +67,12 @@ const Signup = () => {
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
             }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
                 toast.warning('Şifreniz en az 8 haneli olmak zorundadır!',
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else if(a==="Telefon numaranız 10 haneli olmak zorundadır!"){
+                toast.warning("Telefon numaranız 10 haneli olmak zorundadır!",
+                {position: toast.POSITION.TOP_CENTER, autoClose:2000})
+            }else if(a==="Telefon numaranızı başında 0 olmadan giriniz!"){
+                toast.warning("Telefon numaranızı başında 0 olmadan giriniz!",
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
             }else{
                 toast.warning('Kullanıcının hesabı vardır!',
@@ -99,8 +112,10 @@ const Signup = () => {
                             <input class = "form-control" type="password" name="password" id="password" style={{"font-size": fontSize}} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="form-group">
-                            <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladım</Link><input id="kvkkCheckbox" type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} onClick={(e) => 
-                                setKvkk(e.target.checked)} />
+                            <Link to="/Signup" name="kvkk" id= "kvkk" onClick={toggleApprove} style={{ "color":"red"}}>Okudum, onayladım</Link><input id="kvkkCheckbox" type="checkbox" style={{ "display": "inline", "width": "20px", "height": "20px", "marginLeft": "60px" }} 
+                            onClick={(e) => {onCheckBoxClick(e)
+                                setKvkk(e.target.checked) 
+                                    }} />
                             {isOpen && <Approve
                                 content={<>
                                 <b>Sözleşme</b>

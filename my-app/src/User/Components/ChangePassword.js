@@ -58,27 +58,27 @@ const ChangePassword = ({ ...props }) => {
     <Modal {...props} size="l" centered>
         <div className="UserPageLayout">
         <div className="UserPageDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Şifre Değiştirme</h1>
+                <h1 style={{"marginBottom":"30px"}}>Şifre Değiştirme</h1>
             </div>
                 <form >
-                    <div className="innerForm" id="createNewAdminForm" style={{ "align-self": "flex-start" }}>
+                    <div className="innerForm" id="changePasswordForm" style={{ "align-self": "flex-start" }}>
                         <div className="form-group">
                             <label htmlFor="password">Güncel Şifre: </label>
-                            <input type="password" name="password" id="passwordOld"  onChange={(e) => setPassword(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="passwordOld"  onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Yeni Şifre: </label>
-                            <input type="password" name="password" id="passwordNew"  onChange={(e) => setPasswordNew(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="passwordNew"  onChange={(e) => setPasswordNew(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Yeni Şifre Tekrar: </label>
-                            <input type="password" name="password" id="passwordNewAgain"  onChange={(e) => setPasswordNewAgain(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="passwordNewAgain"  onChange={(e) => setPasswordNewAgain(e.target.value)}/>
                         </div>
                         
 
                     </div >
                 </form>
-                <button id="newSuperAdminAdd" onClick={() => 
+                <button id="changePasswordButton" class = "btn btn-primary btn-lg btn-block" onClick={() => 
                             {changePassword(document.getElementById("passwordOld").value,document.getElementById("passwordNew").value,document.getElementById("passwordNewAgain").value);
                             }}
                         >Şifremi Değiştir 

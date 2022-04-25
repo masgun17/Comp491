@@ -4,6 +4,7 @@ import ZoomIn from '@material-ui/icons/ZoomIn';
 import ZoomOut from '@material-ui/icons/ZoomOut';
 import React, { useState, useContext } from "react";
 import "../Styles/Header.css"
+import { Row, Col, Grid } from 'react-bootstrap';
 
 const Header = (props) => {
   let userLogged = sessionStorage.getItem('isLogin');
@@ -29,22 +30,27 @@ const Header = (props) => {
         <button class="btn btn-dark btn-sm" id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
         <button class="btn btn-dark btn-sm" id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
           </div>
-        <Link to="/">Anasayfa</Link>
-        <Link to="/diseaseInformationPage">Alzheimer Hastalığı</Link>
-        <Link to="/riskFactors">Risk Faktörleri</Link>
-        <Link to="/testInformation">Risk Değerlendirmesi Yapın</Link>
-        <Link to="/contact">İletişim</Link>
-        <Link to="/privacy">Gizlilik</Link>
+          <Row>
+            <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/">Anasayfa</Link></Col>
+        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/diseaseInformationPage">Alzheimer Hastalığı</Link></Col>
+        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/riskFactors">Risk Faktörleri</Link></Col>
+
+        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/testInformation">Risk Değerlendirmesi Yapın</Link></Col>
+        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/contact">İletişim</Link></Col>
+        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/privacy">Gizlilik</Link></Col>
+        
         {userTypeId==='2' || userTypeId==='3' ? (
-           <Link to="/statistics">İstatistikler</Link>
+           <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/statistics">İstatistikler</Link></Col>
         ):(
           null
         )}
         {userLogged==='true' ? (
-          <Link to="/profile">Profil</Link>
+          <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/profile">Profil</Link></Col>
         ):(
           null
         )}
+        </Row>
+
         {userLogged==='true' ? (
           <button class="btn btn-dark btn-lg" type="button" onClick={() => 
             {
@@ -60,7 +66,6 @@ const Header = (props) => {
         ):(
           <button class="btn btn-dark btn-lg" type="button"><Link to="/login">Giriş</Link></button>
         )}
-        
       </div>
 
       <Outlet style={{ "grid-row-start": "2" }} />

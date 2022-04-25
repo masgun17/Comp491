@@ -15,4 +15,6 @@ export default {
     submitNewPassword: 'submitNewPassword',
     createAssessmentSession: '/createAssessmentSession',
     uploadUserAnswers: '/uploadUserAnswers',
+    saveImage: '/saveImage',
+    getImages: '/getImages',
 };

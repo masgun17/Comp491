@@ -82,3 +82,14 @@ export const uploadUserAnswersService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.uploadUserAnswers, data).then(resolve).catch(reject);
   });
+  export const saveImageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.saveImage, data).then(resolve).catch(reject);
+  });
+
+  export const getImagesService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getImages).then(resolve).catch(reject);
+  });
+
+

@@ -54,36 +54,36 @@ const CreateNewAdmin = ({ ...props }) => {
     <Modal {...props} size="xl" centered>
         <div className="UserPageLayout">
         <div className="UserPageDiv1" style={{ "grid-row-start": "1" }}>
-                <h1>Yeni Admin Ekleme</h1>
+                <h1 style={{"marginBottom":"30px"}}>Yeni Admin Ekleme</h1>
             </div>
                 <form >
                     <div className="innerForm" id="createNewAdminForm" style={{ "align-self": "flex-start" }}>
                         <div className="form-group">
                             <label htmlFor="name">Ad: </label>
-                            <input type="text" name="name" id="name"  onChange={(e) => setName(e.target.value)} />
+                            <input class = "form-control" type="text" name="name" id="name"  onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="form-group">
                             <label htmlFor="surname">Soyad: </label>
-                            <input type="text" name="surname" id="surname"  onChange={(e) => setSurname(e.target.value)}/>
+                            <input class = "form-control" type="text" name="surname" id="surname"  onChange={(e) => setSurname(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email: </label>
-                            <input type="email" name="email" id="email"  onChange={(e) => setEmail(e.target.value)}/>
+                            <input class = "form-control" type="email" name="email" id="email"  onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="tel">Telefon Numarası: </label>
-                            <input type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  onChange={(e) => setTel(e.target.value)}/>
+                            <input class = "form-control" type="tel" name="tel" id="tel" placeholder="5*********" pattern="[0-9]{10}" maxLength="10"  onChange={(e) => setTel(e.target.value)}/>
 
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Şifre: </label>
-                            <input type="password" name="password" id="password"  onChange={(e) => setPassword(e.target.value)}/>
+                            <input class = "form-control" type="password" name="password" id="password"  onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         
 
                     </div >
                 </form>
-                <button id="newSuperAdminAdd"  onClick={() => 
+                <button class = "btn btn-primary btn-lg btn-block" id="createNewAdminButton"  onClick={() => 
                             {createNewAdminButton(document.getElementById("name").value,document.getElementById("surname").value,document.getElementById("email").value,document.getElementById("tel").value,document.getElementById("password").value);
                             }}
                         >Yeni Admin Ekle 

@@ -417,9 +417,11 @@ def getImages():
         print(result_code)
         if result_code:
             for row in images:
-                line = []
-                for x in row:
-                    line.append(x)
+                line = dict()
+                
+                line["data_url"] = row[1]
+                line["index"] = row[2]
+
                 data.append(line)
             return json.dumps(data)
         else:

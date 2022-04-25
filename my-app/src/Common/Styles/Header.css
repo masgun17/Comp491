@@ -18,9 +18,9 @@
   background-color: #9b111e;
   /* background-color: #72dfa1; */
   /* background-color: #ffff8b; */
-  height: 100px;
+  height: 150px;
   border-bottom: 1px solid black;
-  max-height: 100px;
+  max-height: 150px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -28,15 +28,17 @@
   /* padding-left: 5%;
   padding-right: 5%; */
   /* font-size: calc(10px + 2vmin); */
-  font-size: 20px;
+  font-size: 30px;
   /* color: rgb(235, 217, 217) !important; */
   color: #000;
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: center;
 }
+
 
 .FontSizeLayout button{
   position: relative;
   display: inline-block;;
   flex-direction: row;
 }
-
-
