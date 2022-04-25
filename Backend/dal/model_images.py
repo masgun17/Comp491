@@ -11,7 +11,7 @@ class Images():
     __tablename__ = 'Images'
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
     image = Column(String)
-    index = Column(BigInteger)
+    ind = Column(BigInteger)
 
     @classmethod
     def add_item(cls, image_url, index):
@@ -50,3 +50,56 @@ class Images():
         finally:
             conn.close()
             return result_code, items
+
+    @classmethod
+    def has_item(cls, image_id):
+        conn = connection.cursor()
+        query_item = None
+        result_code = False
+        try:
+            query_item = conn.execute(f"select * from Images where Id = {image_id}").fetchall()[0]
+            if query_item is not None:
+                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, query_item
+
+
+    @classmethod
+    def has_item_by_column(cls, column_name, column_value, first_n=None):
+        conn = connection.cursor()
+        items = []
+        result_code = False
+        try:
+            if column_value is not None and column_name is not None and len(column_name) > 0:
+                items = conn.execute(f"select * from Images where {column_name} = '{column_value}'").fetchall()
+                if items is not None and len(items) > 0:
+                    result_code = True
+                    if first_n is not None:
+                        items = items[:first_n]
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
+
+
+
+    # Takes index of the Image
+    # deletes given item from db
+    @classmethod
+    def delete_item(cls, index_id):
+        conn = connection.cursor()
+        result_code = False
+        try:
+            conn.execute(f"delete from Images where ind ={index_id}")
+            result_code = True
+            conn.commit()
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code
