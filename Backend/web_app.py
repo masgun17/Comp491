@@ -17,6 +17,8 @@ from dal import hashingPassword
 from dal import sendingEmail
 import codecs
 from dal.model_user import Users
+from dal.model_images import Images
+
 
 app = Flask("comp491")
 
@@ -210,8 +212,19 @@ def creatingNewAccount():
             return "Lütfen soyadınızı giriniz!"
         email = personInfo['email']
         phoneNumber = personInfo['phone']
+        if email==None and phoneNumber==None:
+            return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
         if len(email)==0 and len(phoneNumber)==0:
             return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
+        if phoneNumber!=None: 
+            if len(phoneNumber)!=0:
+                if len(phoneNumber)!=10:
+                    return "Telefon numaranız 10 haneli olmak zorundadır!"
+        if phoneNumber!=None:
+            print("debug1")
+            if len(phoneNumber)==10:
+                if phoneNumber[0]=='0':
+                    return "Telefon numaranızı başında 0 olmadan giriniz!"
         password = personInfo['password']
         if len(password)==0:
             return "Lütfen bir şifre belirleyiniz!"
@@ -360,6 +373,56 @@ def createAssessmentSession():
         UserId = parameters['UserId']
 
         result_code = AssessmentSession.add_item(UserId)
+        if result_code:
+            result, item = AssessmentSession.get_last()
+            if result:
+                return str(item[0])
+            else:
+                return 'New assessment session is created / could not fetch sessionId'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/saveImage",  methods=['GET', 'POST'])
+def saveImage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        data_url = parameters['data_url']
+        index = parameters['index']
+
+        result_code = Images.add_item(data_url,index)
+        if result_code:
+            result, item = AssessmentSession.get_last()
+            if result:
+                return str(item[0])
+            else:
+                return 'New assessment session is created / could not fetch sessionId'
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getImages",  methods=['GET', 'POST'])
+def getImages():
+    try:
+        data = []
+        result_code, images = Images.get_all()
+        print(result_code)
+        if result_code:
+            for row in images:
+                line = []
+                for x in row:
+                    line.append(x)
+                data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
         if result_code:
             result, item = AssessmentSession.get_last()
             if result:
