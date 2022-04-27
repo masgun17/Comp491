@@ -27,32 +27,32 @@ const Header = (props) => {
     <div className="headerWholePage">
       <div className="header" style={{ "grid-row-start": "1", "grid-row-end": "2" }}>
         <div className="btn-group">
-        <button class="btn btn-dark btn-sm" id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
-        <button class="btn btn-dark btn-sm" id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
+        <button class="btn btn-dark btn-lg" id="fontSizeIncrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {increaseFont(false)}}><ZoomIn style={{"font-size":"40px"}}></ZoomIn>  </button>  
+        <button class="btn btn-dark btn-lg" id="fontSizeDecrease" style={{"font-size":"20px", "margin":"0.5%"}} onClick={() => {decreaseFont(true)}}><ZoomOut style={{"font-size":"40px"}}></ZoomOut> </button>     
           </div>
-          <Row>
-            <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/">Anasayfa</Link></Col>
-        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/diseaseInformationPage">Alzheimer Hastalığı</Link></Col>
-        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/riskFactors">Risk Faktörleri</Link></Col>
+          <Row style={{"width":"80%"}}>
+            <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/">Anasayfa</Link></Col>
+        <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/diseaseInformationPage">Alzheimer Hastalığı</Link></Col>
+        <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/riskFactors">Risk Faktörleri</Link></Col>
 
-        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/testInformation">Risk Değerlendirmesi Yapın</Link></Col>
-        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/contact">İletişim</Link></Col>
-        <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/privacy">Gizlilik</Link></Col>
+        <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/testInformation">Risk Değerlendirmesi Yapın</Link></Col>
+        <Col className="d-flex justify-content-center" style={{"align-items":"center"}} ><Link style={{"color":"white"}} to="/contact">İletişim</Link></Col>
+        <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/privacy">Gizlilik</Link></Col>
         
         {userTypeId==='2' || userTypeId==='3' ? (
-           <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/statistics">İstatistikler</Link></Col>
+           <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/statistics">İstatistikler</Link></Col>
         ):(
           null
         )}
         {userLogged==='true' ? (
-          <Col className="d-flex align-items-center"><Link style={{"color":"white"}} to="/profile">Profil</Link></Col>
+          <Col className="d-flex justify-content-center" style={{"align-items":"center"}}><Link style={{"color":"white"}} to="/profile">Profil</Link></Col>
         ):(
           null
         )}
         </Row>
 
         {userLogged==='true' ? (
-          <button class="btn btn-dark btn-lg" type="button" onClick={() => 
+          <button class="btn btn-dark btn-lg"  style={{"font-size":"30px"}} type="button" onClick={() => 
             {
             sessionStorage.setItem('userName', ''); 
             sessionStorage.setItem('userSurname', ''); 
@@ -64,7 +64,7 @@ const Header = (props) => {
             window.location.reload(false);
           }}><Link to="/">Çıkış</Link></button>
         ):(
-          <button class="btn btn-dark btn-lg" type="button"><Link to="/login">Giriş</Link></button>
+          <button class="btn btn-dark btn-lg" style={{"font-size":"30px"}} type="button"><Link to="/login">Giriş</Link></button>
         )}
       </div>
 

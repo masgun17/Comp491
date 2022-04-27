@@ -19,4 +19,5 @@ export default {
     getImages: '/getImages',
     updateImageFromIndex: '/updateImageFromIndex',
     deleteImageFromIndex: '/deleteImageFromIndex',
+    removeAllImages: '/removeAllImages',
 };

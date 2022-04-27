@@ -102,4 +102,8 @@ export const uploadUserAnswersService = async (data) =>
     axios.post(API.deleteImageFromIndex, data).then(resolve).catch(reject);
   });
 
+  export const removeAllImagesService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.removeAllImages).then(resolve).catch(reject);
+  });
   

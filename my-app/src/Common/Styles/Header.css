@@ -6,6 +6,7 @@
   grid-gap: 20px;
   /* background-color: #556c9c; */
   background-color: #b8cbf3;
+  
 }
 
 .header,
@@ -19,6 +20,7 @@
   /* background-color: #72dfa1; */
   /* background-color: #ffff8b; */
   height: 150px;
+  width: 100%;
   border-bottom: 1px solid black;
   max-height: 150px;
   display: flex;

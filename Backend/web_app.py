@@ -511,6 +511,14 @@ def uploadUserAnswers():
     print(errList)
     return json.dumps("Answers are uploaded for AssessmentSessionId " + str(AssessmentSessionId))
 
-
+@app.route("/removeAllImages",  methods=['GET', 'POST'])
+def removeAllImages():
+    try:
+        result_code = Images.delete_all()
+        print(result_code)
+        return result_code
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 app.run()

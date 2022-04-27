@@ -120,3 +120,17 @@ class Images():
         finally:
             conn.close()
             return result_code
+
+    @classmethod
+    def delete_all(cls):
+        conn = connection.cursor()
+        result_code = False
+        try:
+            conn.execute(f"delete from Images")
+            result_code = True
+            conn.commit()
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code

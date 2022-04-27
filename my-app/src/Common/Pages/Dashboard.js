@@ -10,7 +10,9 @@ import ZoomOut from '@material-ui/icons/ZoomOut';
 import "../Styles/Dashboard.css";
 import ReactDOM from "react-dom";
 import ImageUploading from "react-images-uploading";
-import { saveImageAction, getImagesAction, updateImageAction, deleteImageAction } from "../../tool/actions"
+import { saveImageAction, getImagesAction, updateImageAction, deleteImageAction, removeAllImagesAction } from "../../tool/actions"
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   const{fontSize,setFontSize} = useContext(FontSizeContext) 
@@ -33,21 +35,7 @@ const Dashboard = () => {
   const getImages = async () => {
     let result = await getImagesAction();
     console.log(result)
-    // const temp2 = [];
-    // for (let index = 0; index < result.length; index++) {
-    //   const image = result[index];
-    //   const temp = [];
-    //   temp.push(image[1], image[2])
-    //   temp2.push(temp);
-    // }
-    // console.log(temp2);
     setImages(result);
-    
-   /*  setImages(
-      result.sort((a, b) => {
-        return a[1].localeCompare(b[1]);
-      })
-    ); */
   };
 
   useEffect(async () => {
@@ -86,6 +74,7 @@ const Dashboard = () => {
 
     const a = await saveImageAction(jsonData);
     await getImages();
+    
   }
 
   async function updateImage(){
@@ -132,16 +121,15 @@ const Dashboard = () => {
     }
     setRemoveFlag(false);
     console.log(images)
-    // var jsonData = {
-    //   "data": [{
-    //     "data_url": image.data_url,
-    //     "index": index,
-    //   }]
-    // }
-
-    // const a = await updateImageAction(jsonData);
-    // await getImages();
   }
+
+  async function onImageRemoveAllButton() {
+  
+    const a = await removeAllImagesAction();
+    window.location.reload(false);
+
+  }
+  
 
 
     
@@ -149,7 +137,24 @@ const Dashboard = () => {
     
   return (
     // <h1>Dashboard</h1>;
-    <div className="wrapper">   
+    <div className="wrapper">
+      <div className="leftPhotos">
+      <div className="image-item">
+          <iframe className="photoLeft" type="text/html" width="" height=""
+              src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+              frameborder="0"></iframe> 
+      </div>
+      <div className="image-item">
+            <iframe className="photoLeft" type="text/html" width="" height=""
+              src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+              frameborder="0"></iframe>       </div>
+      <div className="image-item">
+            <iframe className="photoLeft" type="text/html" width="" height=""
+              src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+              frameborder="0"></iframe>       </div>
+      
+      </div>   
+      
       <div className="dashboardLayout" style={{"font-size": fontSize}}>
           <div className="dashboardDiv1" style={{"grid-row-start": "1"}}>
             <h1 style={{"font-size": fontSize*2, "color":"#5A6168"}}>Anasayfa</h1>
@@ -193,7 +198,7 @@ const Dashboard = () => {
             )}
             &nbsp;
             {userTypeId==='3' ? (
-            <button onClick={onImageRemoveAll}>Remove all images</button>
+            <button onClick={onImageRemoveAllButton}>Remove all images</button>
             ):(
               null
             )}

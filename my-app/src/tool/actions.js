@@ -198,3 +198,13 @@ export const deleteImageAction = async (data) => {
     console.log(error);
   }
 }
+
+export const removeAllImagesAction = async () => {
+  try {
+    const result = await services.removeAllImagesService();
+    return result.data
+  } catch (error) {
+    console.log("Error on removeAllImagesAction");
+    console.log(error);
+  }
+}
