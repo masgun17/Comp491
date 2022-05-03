@@ -96,6 +96,103 @@ def BMI(anslist):
 
 
 
+## !!!!!!!!!! ABOUT YOUR HEALTH PART !!!!!!!!!!
+
+## Scoring function for Cholesterol factor
+## Returns Risk Score
+def Cholesterol(anslist):
+    try:
+        ## parse the answer dictionary
+        age = int(anslist["age"])
+        cholesterol_level = int(anslist["cholesterol_level"])
+        cholesterol = anslist["cholesterol"]
+
+        if age < 60:
+            if cholesterol == "Evet":
+                return 3
+            elif cholesterol == "Hayır":
+                return 0
+            elif cholesterol_level > 6.5:
+                return 3
+        else:
+            # this case is not covered
+            return 0
+    except Exception as e:
+        print("Exception in Cholesterol")
+        print(e)
+
+
+## Scoring function for Diabetes factor
+## Returns Risk Score
+def Diabetes(anslist):
+    try:
+        ## parse the answer dictionary
+        diabetes = anslist["diabetes"]
+        if diabetes == "Evet":
+            return 3
+        else:
+            return 0
+    except Exception as e:
+        print("Exception in Diabetes")
+        print(e)
+
+
+## Scoring function for TBI factor
+## Returns Risk Score
+def TBI(anslist):
+    try:
+        ## parse the answer dictionary
+        tbi = anslist["tbi"]
+        tbi_time = anslist["tbi_time"]
+        if tbi == "Evet":
+            return 4
+        else:
+            return 0
+    except Exception as e:
+        print("Exception in TBI")
+        print(e)
+
+
+## Scoring function for Depression factor
+## Returns Risk Score
+def Depression(anslist):
+    try:
+        ## parse the answer dictionary
+        cesd1 = int(anslist["cesd1"])
+        cesd2 = int(anslist["cesd2"])
+        cesd3 = int(anslist["cesd3"])
+        cesd4 = int(anslist["cesd4"])
+        cesd5 = int(anslist["cesd5"])
+        cesd6 = int(anslist["cesd6"])
+        cesd7 = int(anslist["cesd7"])
+        cesd8 = int(anslist["cesd8"])
+        cesd9 = int(anslist["cesd9"])
+        cesd10 = int(anslist["cesd10"])
+        cesd11 = int(anslist["cesd11"])
+        cesd12 = int(anslist["cesd12"])
+        cesd13 = int(anslist["cesd13"])
+        cesd14 = int(anslist["cesd14"])
+        cesd15 = int(anslist["cesd15"])
+        cesd16 = int(anslist["cesd16"])
+        cesd17 = int(anslist["cesd17"])
+        cesd18 = int(anslist["cesd18"])
+        cesd19 = int(anslist["cesd19"])
+        cesd20 = int(anslist["cesd20"])
+        sum = cesd1 + cesd2 + cesd3 + cesd4 + cesd5 + cesd6 + cesd7 + cesd8 + cesd9 + cesd10 + \
+              cesd11 + cesd12 + cesd13 + cesd14 + cesd15 + cesd16 + cesd17 + cesd18 + cesd19 + cesd20
+        if sum >= 16:
+            return 2
+        else:
+            return 0
+
+    except Exception as e:
+        print("Exception in Depression")
+        print(e)
+
+
+
+
+
 
 
 
