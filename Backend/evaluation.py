@@ -1,4 +1,3 @@
-
 ## !!!!!!!!!! ABOUT YOUR HEALTH PART !!!!!!!!!!
 
 ## Scoring function for Agesex factor
@@ -93,6 +92,7 @@ def BMI(anslist):
     except Exception as e:
         print("Exception in BMI")
         print(e)
+
 
 
 
@@ -192,7 +192,6 @@ def Depression(anslist):
 
 
 
-
 ## !!!!!!!!!! ABOUT YOUR ACTIVITY PART !!!!!!!!!!
 
 ## Scoring function for Physical activity factor
@@ -241,6 +240,7 @@ def Physical_Activity(anslist):
     except Exception as e:
         print("Exception in Physical_Activity")
         print(e)
+
 
 
 
@@ -318,6 +318,62 @@ def Cognitive_Activity(anslist):
     except Exception as e:
         print("Exception in Cognitive_Activity")
         print(e)
+
+
+
+
+## !!!!!!!!!! ABOUT YOUR FRIENDS AND FAMILY PART !!!!!!!!!!
+
+## Scoring function for Social network factor
+## Returns Protective Score
+def Social_Network(anslist):
+    try:
+        ## parse the answer dictionary
+        numberoffriends_str = anslist["numberoffriends"] # 68
+        satisfaction_str = anslist["satisfaction"] # 69
+        socialgroups_str = anslist["socialgroups"] # 70
+        livingstatus_str = anslist["livingstatus"] # 71
+        marital_str = anslist["marital"] # 4
+
+        if numberoffriends_str == "5-8" or numberoffriends_str == "Dokuz veya daha fazla":
+            Friend = 2
+        else:
+            Friend = 1
+
+        if marital_str == "Evli" or marital_str == "Fiili":
+            Marital = 1
+        else:
+            Marital = 0
+
+        if satisfaction_str == "Evet":
+            satisfaction = 1
+        else:
+            satisfaction = 0
+
+        if socialgroups_str == "Haftada bir kereden az":
+            socialgroups = 0
+        else:
+            socialgroups = 1
+
+        if livingstatus_str == "Yalnız veya sadece eşinizle":
+            livingstatus = 0
+        else:
+            livingstatus = 1
+            
+        sum = Friend + Marital + satisfaction + socialgroups + livingstatus
+        if sum >= 4:
+            return 0
+        elif sum == 3:
+            return 1
+        elif sum == 2:
+            return 4
+        else:
+            return 6
+
+    except Exception as e:
+        print("Exception in Social_Network")
+        print(e)
+
 
 
 
