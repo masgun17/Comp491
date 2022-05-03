@@ -244,6 +244,83 @@ def Physical_Activity(anslist):
 
 
 
+## !!!!!!!!!! ABOUT YOUR LEISURE TIME PART !!!!!!!!!!
+
+## Scoring function for Cognitive activity factor
+## Returns Protective Score
+def Cognitive_Activity(anslist):
+    try:
+        ## parse the answer dictionary
+        reading_str = anslist["reading"] # 57
+        newspaper_str = anslist["newspaper"] # 58
+        magazines_str = anslist["magazines"] # 59
+        books_str = anslist["books"] # 60
+        games_str = anslist["games"] # 61
+        brain_training_str = anslist["brain_training"] # 62
+        letters_str = anslist["letters"] # 63
+        socialnetworkactivities_str = anslist["socialnetworkactivities"] # 64
+        museum_str = anslist["museum"] # 65
+        concert_str = anslist["concert"] # 66
+        library_str = anslist["library"] # 67
+
+        domain_daily = {
+            "Hiçbiri": 1,
+            "Bir saatten az": 2,
+            "Bir ila 2 saatten az": 3,
+            "İki ila 3 saatten az": 4,
+            "Üç saat veya daha fazla": 5,
+            "Bilmiyorum": 9}
+
+        domain_yearly = {
+            "Her gün veya neredeyse her gün": 5,
+            "Haftada birkaç kez": 4,
+            "Ayda birkaç kez": 3,
+            "Yılda birkaç kez": 2,
+            "Yılda bir kez veya daha az": 1,
+            "Bilmiyorum": 9}
+
+        for k in domain_daily.keys():
+            if reading_str == k:
+                reading = domain_daily[k]
+
+        for k in domain_yearly.keys():
+            if newspaper_str == k:
+                newspaper = domain_yearly[k]
+            if magazines_str == k:
+                magazines = domain_yearly[k]
+            if books_str == k:
+                books = domain_yearly[k]
+            if games_str == k:
+                games = domain_yearly[k]
+            if brain_training_str == k:
+                brain_training = domain_yearly[k]
+            if letters_str == k:
+                letters = domain_yearly[k]
+            if socialnetworkactivities_str == k:
+                socialnetworkactivities = domain_yearly[k]
+            if museum_str == k:
+                museum = domain_yearly[k]
+            if concert_str == k:
+                concert = domain_yearly[k]
+            if library_str == k:
+                library = domain_yearly[k]
+
+        average =  ((reading + newspaper + magazines + books + games + brain_training + letters +
+                 socialnetworkactivities + museum + concert + library) / 11)
+
+        if average < 3:
+            return 0
+        elif average < 4:
+            return -7
+        else:
+            return -6
+
+    except Exception as e:
+        print("Exception in Cognitive_Activity")
+        print(e)
+
+
+
 
 
 
