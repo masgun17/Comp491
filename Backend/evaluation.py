@@ -158,26 +158,26 @@ def TBI(anslist):
 def Depression(anslist):
     try:
         ## parse the answer dictionary
-        cesd1 = int(anslist["cesd1"])
-        cesd2 = int(anslist["cesd2"])
-        cesd3 = int(anslist["cesd3"])
-        cesd4 = int(anslist["cesd4"])
-        cesd5 = int(anslist["cesd5"])
-        cesd6 = int(anslist["cesd6"])
-        cesd7 = int(anslist["cesd7"])
-        cesd8 = int(anslist["cesd8"])
-        cesd9 = int(anslist["cesd9"])
-        cesd10 = int(anslist["cesd10"])
-        cesd11 = int(anslist["cesd11"])
-        cesd12 = int(anslist["cesd12"])
-        cesd13 = int(anslist["cesd13"])
-        cesd14 = int(anslist["cesd14"])
-        cesd15 = int(anslist["cesd15"])
-        cesd16 = int(anslist["cesd16"])
-        cesd17 = int(anslist["cesd17"])
-        cesd18 = int(anslist["cesd18"])
-        cesd19 = int(anslist["cesd19"])
-        cesd20 = int(anslist["cesd20"])
+        cesd1 = int(anslist["cesd1"]) # 14
+        cesd2 = int(anslist["cesd2"]) # 15
+        cesd3 = int(anslist["cesd3"]) # 16
+        cesd4 = int(anslist["cesd4"]) # 17
+        cesd5 = int(anslist["cesd5"]) # 18
+        cesd6 = int(anslist["cesd6"]) # 19
+        cesd7 = int(anslist["cesd7"]) # 20
+        cesd8 = int(anslist["cesd8"]) # 21
+        cesd9 = int(anslist["cesd9"]) # 22
+        cesd10 = int(anslist["cesd10"]) # 23
+        cesd11 = int(anslist["cesd11"]) # 24
+        cesd12 = int(anslist["cesd12"]) # 25
+        cesd13 = int(anslist["cesd13"]) # 26
+        cesd14 = int(anslist["cesd14"]) # 27
+        cesd15 = int(anslist["cesd15"]) # 28
+        cesd16 = int(anslist["cesd16"]) # 29
+        cesd17 = int(anslist["cesd17"]) # 30
+        cesd18 = int(anslist["cesd18"]) # 31
+        cesd19 = int(anslist["cesd19"]) # 32
+        cesd20 = int(anslist["cesd20"]) # 33
         sum = cesd1 + cesd2 + cesd3 + cesd4 + cesd5 + cesd6 + cesd7 + cesd8 + cesd9 + cesd10 + \
               cesd11 + cesd12 + cesd13 + cesd14 + cesd15 + cesd16 + cesd17 + cesd18 + cesd19 + cesd20
         if sum >= 16:
@@ -188,6 +188,60 @@ def Depression(anslist):
     except Exception as e:
         print("Exception in Depression")
         print(e)
+
+
+
+
+
+## !!!!!!!!!! ABOUT YOUR ACTIVITY PART !!!!!!!!!!
+
+## Scoring function for Physical activity factor
+## Returns Protective Score
+def Physical_Activity(anslist):
+    try:
+        ## parse the answer dictionary
+        workvigorousdays = int(anslist["workvigorousdays"]) # 35
+        workvhours = int(anslist["workvhours"]) # 36
+        workmoddays = int(anslist["workmoddays"]) # 37
+        workmodhours = int(anslist["workmodhours"]) # 38
+        workwalkdays = int(anslist["workwalkdays"]) # 39
+        workwalkhours = int(anslist["workwalkhours"]) # 40
+        dayscycling = int(anslist["dayscycling"]) # 41
+        hourscycling = int(anslist["hourscycling"]) # 42
+        dayswalktrans = int(anslist["dayswalktrans"]) # 43
+        hourswalktrans = int(anslist["hourswalktrans"]) # 44
+        daysviggarden = int(anslist["daysviggarden"]) # 45
+        hoursviggarden = int(anslist["hoursviggarden"]) # 46
+        daysmodgarden = int(anslist["daysmodgarden"]) # 47
+        hoursmodgarden = int(anslist["hoursmodgarden"]) # 48
+        daysmodhome = int(anslist["daysmodhome"]) # 49
+        hoursmodhome = int(anslist["hoursmodhome"]) # 50
+        dayswalkleisure = int(anslist["dayswalkleisure"]) # 51
+        hourswalkleisure = int(anslist["hourswalkleisure"]) # 52
+        daysvigleisure = int(anslist["daysvigleisure"]) # 53
+        hoursvigleisure = int(anslist["hoursvigleisure"]) # 54
+        daysmodleisure = int(anslist["daysmodleisure"]) # 55
+        hoursmodleisure = int(anslist["hoursmodleisure"]) # 56
+
+        sum = ((workvigorousdays * workvhours * 8) + (workmoddays * workmodhours * 4) + (workwalkdays * workwalkhours * 3.3)
+               +(dayscycling * hourscycling * 6) + (dayswalktrans * hourswalktrans * 3.3) + (daysviggarden * hoursviggarden * 5.5)
+               +(daysmodgarden * hoursmodgarden * 4) + (daysmodhome * hoursmodhome * 3) + (dayswalkleisure * hourswalkleisure * 3.3)
+               +(daysvigleisure * hoursvigleisure * 8) + (daysmodleisure * hoursmodleisure * 4))
+
+        part_sum = ((workvigorousdays * workvhours * 8) + (daysvigleisure * hoursvigleisure * 8))
+        if part_sum >= 1500 and part_sum <= 4000:
+            return  -3
+        elif sum < 600:
+            return 0
+        elif sum < 3000:
+            return -2
+        else:
+            return -3
+
+    except Exception as e:
+        print("Exception in Physical_Activity")
+        print(e)
+
 
 
 
