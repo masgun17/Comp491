@@ -851,4 +851,40 @@ def getAllAnswers():
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
+@app.route("/evaluate",  methods=['GET', 'POST'])
+def Evaluate():
+    try:
+        import evaluation as eval
+        errList = []
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        questionAnswerList = parameters['questionAnswerList']
+        anslist = {}
+        partScores = {}
+        for userAnswer in questionAnswerList:
+            try:
+                questionId = userAnswer[0]
+                answer = userAnswer[1]
+                questionItem = Question.has_item(questionId)
+                anslist[questionItem[2]] = answer
+            except Exception as e:
+                errList.append(e)
+        partScores["Agesex"] = eval.Agesex(anslist)
+        # partScores["Education"] = eval.Education(anslist)
+        # partScores["BMI"] = eval.BMI(anslist)
+        # partScores["Cholesterol"] = eval.Cholesterol(anslist)
+        # partScores["Diabetes"] = eval.Diabetes(anslist)
+        return json.dumps(partScores)
+    except Exception as e:
+        print(e)
+        print(request)
+        return 'Bad Request Exception'
+    print("Total error count: ", len(errList))
+    print(errList)
+    return json.dumps("Answers are uploaded for Evaluate")
+
+
+
+
 app.run()

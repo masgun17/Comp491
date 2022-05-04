@@ -35,4 +35,5 @@ export default {
     getAssessments: '/getAssessments',
     getAllAssessments: '/getAllAssessments',
     getAllAnswers: '/getAllAnswers',
+    evaluate: '/evaluate',
 };
