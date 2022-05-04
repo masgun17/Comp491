@@ -15,8 +15,9 @@ export default function TextAnswer({ answer, questionID }) {
   }, [savedAnswer])
 
   return (
-    <textarea
-      type='text' 
+    <input
+      // pattern="^[0-9]*$"
+      type='number' 
       className="inputArea"
       placeholder="Cevabınızı giriniz..."
       onChange={(e) => setSavedAnswer(e.target.value)}
