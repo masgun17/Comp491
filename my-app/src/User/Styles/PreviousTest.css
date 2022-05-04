@@ -1,0 +1,41 @@
+.shownQuestionDescription{
+    grid-row-start: 1;
+    border: none;
+    font-size: 25px;
+    text-align: left; 
+    height:fit-content;  
+    margin-bottom: 20px;
+}
+.questionContainer {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 0;
+    margin-top: 10% ;
+    align-self: flex-start;
+  }
+
+.checkboxContainer{
+    display: grid;
+    grid-template-columns: 45px auto;
+}
+.checkboxButton{
+    width: 30px;
+    height: 30px;
+    grid-column-start: 1;
+    background: transparent;
+    border-radius: 10px;
+    border: 2px solid black
+}
+.filledCheckboxButton{
+    width: 30px;
+    height: 30px;
+    grid-column-start: 1;
+    background: rebeccapurple;
+    border-radius: 10px;
+    border: 2px solid black
+}
+.checkboxContent{
+    grid-column-start: 2;
+}

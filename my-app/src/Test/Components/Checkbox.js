@@ -17,7 +17,7 @@ export default function Checkbox({ filled, content, select, load }) {
 
   useEffect(async () => {
     load();
-    console.log("loaded the checkbox");
+    // console.log("loaded the checkbox");
   }, []);
 
   return (
