@@ -9,7 +9,7 @@ from Backend.app_globals import connection
 class Suggestions():
     __tablename__ = 'Suggestions'
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
-    PartId = Column(BigInteger)
+    SuggestionCode = Column(String)
     Suggestion = Column(String)
 
     @classmethod
@@ -86,7 +86,7 @@ class Suggestions():
             return result_code, items
 
 
-    ## Input will be: (PartId, Suggestion)
+    ## Input will be: (SuggestionCode, Suggestion)
     @classmethod
     def add_item(cls, suggestion_item):
         conn = connection.cursor()
@@ -95,10 +95,10 @@ class Suggestions():
             try:
                 conn.execute(f"""
                     insert into Suggestions
-                       ([PartId]
+                       ([SuggestionCode]
                         ,[Suggestion])
                     values
-                       ({suggestion_item[0]}
+                       ('{suggestion_item[0]}'
                        ,'{suggestion_item[1]}')""")
                 result_code = True
                 conn.commit()
@@ -127,7 +127,7 @@ class Suggestions():
             conn.close()
             return result_code
 
-    ## Input will be: Id and (PartId, Suggestion)
+    ## Input will be: Id and (SuggestionCode, Suggestion)
     @classmethod
     def update_item(cls, suggestion_id, suggestion_item):
         conn = connection.cursor()
@@ -136,7 +136,7 @@ class Suggestions():
             try:
                 conn.execute(f"""
                     update Suggestions set
-                       PartId = {suggestion_item[0]}
+                       SuggestionCode = '{suggestion_item[0]}'
                        ,Suggestion = '{suggestion_item[1]}'
                     where Id = {suggestion_id}
                        """)
