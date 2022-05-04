@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import {
   getAllPartsAction,
@@ -13,7 +13,6 @@ import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
 import "../Styles/TakeTest.css";
 
-
 const TakeTest = () => {
   const [id, setId] = useState(null);
   const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
@@ -21,7 +20,7 @@ const TakeTest = () => {
   const [qID, setQid] = useState();
 
   const navigate = useNavigate();
-  toast.configure()
+  toast.configure();
 
   const createAssessmentSession = async () => {
     var jsonData = {
@@ -157,7 +156,8 @@ const TakeTest = () => {
   useEffect(async () => {
     if (
       partIndex === lastPartCount - 1 &&
-      questionIndex === lastQuestionCount - 1 && showQuestions
+      questionIndex === lastQuestionCount - 1 &&
+      showQuestions
     ) {
       setIsSubmitEnabled(true);
     } else {
@@ -172,7 +172,7 @@ const TakeTest = () => {
   const saveToDb = async () => {
     let sessionId = currentAssessmentSession;
     if (id !== null && id !== "") {
-        sessionId = await createAssessmentSession();
+      sessionId = await createAssessmentSession();
     }
 
     setTimeout(() => {
@@ -198,43 +198,36 @@ const TakeTest = () => {
       uploadUserAnswersAction(jsonData);
       localStorage.clear();
       setCompleted(true);
-        }, 300);
-
+    }, 300);
   };
 
-
-  useEffect( async () => {
+  useEffect(async () => {
     const response = localStorage.getItem(1);
     if (response) {
       if (parseInt(response) < 65) {
-        toast.warning('Testi alabilmeniz için yaşınız 65 veya üzeri olmalıdır!',
-           {position: toast.POSITION.TOP_CENTER, autoClose:5000})
+        toast.warning(
+          "Testi alabilmeniz için yaşınız 65 veya üzeri olmalıdır!",
+          { position: toast.POSITION.TOP_CENTER, autoClose: 5000 }
+        );
         navigate("/testInformation");
         localStorage.clear();
       }
     }
-  })
+  });
 
-    useEffect( async () => {
-    // const arr = [];
-    // for (let index = 0; index < questions.length; index++) {
-    //   const element = [];
-    //   const qid = questions[index][0];
-    //   const ans = localStorage.getItem(qid);
-    //   element.push(qid);
-    //   element.push(ans);
-    //   arr.push(element);
-    // }
-    var jsonData = {
-      data: [
-        {
-          // AssessmentSessionId: currentAssessmentSession,
-          AnswerList: answerArray,
-        },
-      ],
-    };
-    const a = await evaluateAction(jsonData);
-    console.log(a);
+  useEffect(async () => {
+    setTimeout(() => {
+      var jsonData = {
+        data: [
+          {
+            // AssessmentSessionId: currentAssessmentSession,
+            AnswerList: answerArray,
+          },
+        ],
+      };
+      const a = evaluateAction(jsonData);
+      console.log(a);
+    }, 300);
   }, [completed]);
 
   return (
@@ -264,20 +257,24 @@ const TakeTest = () => {
         ))}
       {!completed && (
         <div>
-          {showPartInfo ? <button
-            disabled
-            onClick={() => {
-              backClick();
-            }}
-          >
-            Back
-          </button> : <button
-            onClick={() => {
-              backClick();
-            }}
-          >
-            Back
-          </button>}
+          {showPartInfo ? (
+            <button
+              disabled
+              onClick={() => {
+                backClick();
+              }}
+            >
+              Back
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                backClick();
+              }}
+            >
+              Back
+            </button>
+          )}
           {!isSubmitEnabled ? (
             showQuestions && incomingAnswer === "" ? (
               <button

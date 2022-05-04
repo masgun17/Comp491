@@ -859,7 +859,7 @@ def Evaluate():
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
-        questionAnswerList = parameters['questionAnswerList']
+        questionAnswerList = parameters['AnswerList']
         anslist = {}
         partScores = {}
         for userAnswer in questionAnswerList:
@@ -867,14 +867,14 @@ def Evaluate():
                 questionId = userAnswer[0]
                 answer = userAnswer[1]
                 questionItem = Question.has_item(questionId)
-                anslist[questionItem[2]] = answer
+                anslist[questionItem[1][3]] = answer
             except Exception as e:
                 errList.append(e)
         partScores["Agesex"] = eval.Agesex(anslist)
-        # partScores["Education"] = eval.Education(anslist)
-        # partScores["BMI"] = eval.BMI(anslist)
-        # partScores["Cholesterol"] = eval.Cholesterol(anslist)
-        # partScores["Diabetes"] = eval.Diabetes(anslist)
+        partScores["Education"] = eval.Education(anslist)
+        partScores["BMI"] = eval.BMI(anslist)
+        partScores["Cholesterol"] = eval.Cholesterol(anslist)
+        partScores["Diabetes"] = eval.Diabetes(anslist)
         return json.dumps(partScores)
     except Exception as e:
         print(e)
