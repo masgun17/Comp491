@@ -877,6 +877,8 @@ def Evaluate():
         partScores["BMI"] = eval.BMI(anslist)
         partScores["Cholesterol"] = eval.Cholesterol(anslist)
         partScores["Diabetes"] = eval.Diabetes(anslist)
+
+        ## todo: assessmentSession tablosuna suggestionların idleri array olarak basılacak option answer gibi
         return json.dumps(partScores)
     except Exception as e:
         print(e)
