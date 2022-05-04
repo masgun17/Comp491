@@ -1,11 +1,11 @@
 import smtplib, ssl
 
-def sendNewPassword(randomPassword,email,name):
+def sendNewPassword(randomPassword,email,name): #Oluşturulan yeni şifrenin kişinen mail adresine gönderilmesi
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
-    sender_email ="alzheimerhastaliktest@gmail.com"
+    sender_email ="alzheimerhastaliktest@gmail.com" #Maili gönderen mail adres
     receiver_email = email
-    password = "alzheimer2022"
+    password = "alzheimer2022" #Maili gönderen mail adresinin şifresi
     message = """Subject: Yeni Sifreniz
 
 Merhaba {name}

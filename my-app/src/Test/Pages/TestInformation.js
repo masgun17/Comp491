@@ -1,35 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import "../Styles/TestInformation.css";
+import React, { useState, useContext } from "react";
+import { FontSizeContext } from "../../Helper/Context";
 
 const TestInformationPage = () => {
   const navigate = useNavigate();
   let userTypeId = sessionStorage.getItem('userTypeId')
+  const { fontSize, setFontSize } = useContext(FontSizeContext)
+
   return (
     // <h1>Test Information Page</h1>
     <div className="testInformationPageLayout">
-      <div className="testInfoDiv1" style={{ "grid-row-start": "1" }}>
-        <h1>Test Hakkında</h1>
-      </div>
-      <div className="testInfoDiv2" style={{ "grid-row-start": "2", "font-size": "20px", "line-height": "1.8" }}>
-        &emsp;&emsp;&emsp;The ANU-ADRI is an evidence-based, validated tool aimed at assessing individual exposure to risk factors
-        known to be associated with an increased risk of developing Alzheimer's disease in late-life, that is,
-        over the age of 60 years. <br /><br />
+      <div className="testInfoDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "1.8" }}>
+        <h1 style={{ "font-size": fontSize*1.5 }}>Test Hakkında</h1>
+        Bu testi tamamlamak yaklaşık 10-15 dakika sürer.
+        Sağlığınız ve yaşam tarzınızla ilgili basit soruları yanıtlayarak demans açısından risk oluşturan yaşam  alanlarınızı belirleyebilirsiniz.
+        Bu testte kişisel bir risk değerlendirmesi yapılarak bazı tavsiyeler ekranda görünecektir. Riskinizi azaltmak için yapabilecekleriniz hakkında bilgi edinerek, beyin sağlığınızı korumada kendiniz için bir adım atabilirsiniz.
+        Bu teste verilen cevaplar ve sonuçlar gizli tutulacaktır.
+        Size verilen tavsiye ve risk faktörlerinin doğru şekilde değerlendirilebilmesi için testi cevaplarken verdiğiniz yanıtların doğru olması oldukça önemlidir.
+        Katılımınız için teşekkür ederiz.
 
-        &emsp;&emsp;&emsp;The ANU-ADRI is intended to provide a systematic individualised assessment and report on Alzheimer's
-        disease risk factor exposure. It may be useful for individuals who wish to know their risk profile and
-        areas where they can reduce their risk. It may also be useful to clinicians who would like their patients
-        to record their current risk profile for discussion at their next medical appointment. The ANU-ADRI is
-        also used in research projects that aim to evaluate methods of reducing risk of Alzheimer’s disease.
       </div>
       <div className="testInformationPageButtonLayout" style={{ "grid-row-start": "3" }}>
         {/* <Link to="/contact">İletişim</Link>
         <Link to="/privacy">Gizlilik</Link> */}
-        {userTypeId==='3' ? (
+        {userTypeId === '3' ? (
           <button className="showTestButton" onClick={() => navigate("/showTest")}> Show Test </button>
-        ):(
+        ) : (
           null
         )}
-        <button className="showTestButton" onClick={() => navigate("/takeTest")}> Take Test </button>
+        <button className="showTestButton" onClick={() => navigate("/takeTest")}> Teste Başla </button>
       </div>
     </div>
   );

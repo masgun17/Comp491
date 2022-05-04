@@ -3,9 +3,9 @@ import "../Styles/Approve.css";
 
 const Approve = props => {
     return (
-      <div className="approve-box">
+      <div className="approve-box" style={{"margin-top":"10%"}}>
         <div className="box">
-          <span className="close-icon" onClick={props.handleClose}>x</span>
+          <span className="close-icon" style={{"margin-top":"10%"}} onClick={props.handleClose}>x</span>
           {props.content}
         </div>
       </div>

@@ -3,5 +3,6 @@
   padding: 0% 20% 5% 20%;
   display: grid;
   grid-template-rows: 10fr 1fr;
+  margin-top: 10%;
 }
 

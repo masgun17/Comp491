@@ -199,6 +199,24 @@ class Users():
             print(len(user_id))
             return result_code, None
 
+    @classmethod
+    def get_all_by_id(cls, userId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Users where Id={userId}").fetchall()
+            conn.commit()
+            print(items)
+            if items is not None and len(items) > 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
+
+
 
 """
 result_code1, one_item = Users.has_item(2)

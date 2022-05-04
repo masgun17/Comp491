@@ -208,3 +208,159 @@ export const removeAllImagesAction = async () => {
     console.log(error);
   }
 }
+
+export const saveImageInfoPageAction = async (data) => {
+  try {
+    const result = await services.saveImageInfoPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on saveImageInfoPageAction");
+    console.log(error);
+  }
+}
+
+export const getImagesInfoPageAction = async () => {
+  try {
+    const result = await services.getImagesInfoPageService();
+    return result.data
+  } catch (error) {
+    console.log("Error on getImagesInfoPageAction");
+    console.log(error);
+  }
+}
+
+export const updateImageInfoPageAction = async (data) => {
+  try {
+    const result = await services.updateImageInfoPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on updateImageInfoPageAction");
+    console.log(error);
+  }
+}
+
+export const deleteImageInfoPageAction = async (data) => {
+  try {
+    const result = await services.deleteImageInfoPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on deleteImageInfoPageAction");
+    console.log(error);
+  }
+}
+
+export const removeAllImagesInfoPageAction = async () => {
+  try {
+    const result = await services.removeAllImagesInfoPageService();
+    return result.data
+  } catch (error) {
+    console.log("Error on removeAllImagesInfoPageAction");
+    console.log(error);
+  }
+}
+
+export const saveImageRiskPageAction = async (data) => {
+  try {
+    const result = await services.saveImageRiskPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on saveImageRiskPageAction");
+    console.log(error);
+  }
+}
+
+export const getImagesRiskPageAction = async () => {
+  try {
+    const result = await services.getImagesRiskPageService();
+    return result.data
+  } catch (error) {
+    console.log("Error on getImagesRiskPageAction");
+    console.log(error);
+  }
+}
+
+export const updateImageRiskPageAction = async (data) => {
+  try {
+    const result = await services.updateImageRiskPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on updateImageRiskPageAction");
+    console.log(error);
+  }
+}
+
+export const deleteImageRiskPageAction = async (data) => {
+  try {
+    const result = await services.deleteImageRiskPageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on deleteImageRiskPageAction");
+    console.log(error);
+  }
+}
+
+export const removeAllImagesRiskPageAction = async () => {
+  try {
+    const result = await services.removeAllImagesRiskPageService();
+    return result.data
+  } catch (error) {
+    console.log("Error on removeAllImagesRiskPageAction");
+    console.log(error);
+  }
+}
+
+export const saveVideoAction = async (data) => {
+  try {
+    const result = await services.saveVideoService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on saveVideoAction");
+    console.log(error);
+  }
+}
+
+
+export const getVideosAction = async (data) => {
+  try {
+    const result = await services.getVideosService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getVideosAction");
+    console.log(error);
+  }
+}
+
+export const getAssessmentsAction = async (data) => {
+  try {
+    const result = await services.getAssessmentsService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getAssessmentsAction");
+    console.log(error);
+  }
+}
+
+export const getAllAssessmentsAction = async () => {
+  try {
+    const result = await services.getAllAssessmentsService();
+    return result.data
+  } catch (error) {
+    console.log("Error on getAllAssessmentsAction");
+    console.log(error);
+  }
+}
+
+export const getAllAnswersAction = async (data) => {
+  try {
+    const result = await services.getAllAnswersService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getAllAnswersAction");
+    console.log(error);
+  }
+}
+
+
+
+
+

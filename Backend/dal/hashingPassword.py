@@ -19,10 +19,10 @@ import random
 
 
 
-def hashingPasswordWithSalting(password,email,phone,conn):
+def hashingPasswordWithSalting(password,email,phone,conn): #Yeni kullanıcı yaratılırken şifrenin salt ile beraber hashlenmesi
     recordEmail = None
     recordPhone = None
-    try:
+    try: 
         if len(email)!=0:
             recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
         if len(phone)!=0:
@@ -61,17 +61,17 @@ def hashingPasswordWithSalting(password,email,phone,conn):
         return False, False
 
 
-def checkingPasswordWithDatabase(password,email,phoneNumber):
+def checkingPasswordWithDatabase(password,email,phoneNumber): #Girilen şifre database'deki şifreyle uyumlu mu kontrolü
     recordEmail = None
     recordPhone = None
-    if len(email)==0 and len(phoneNumber)==0:
+    if len(email)==0 and len(phoneNumber)==0: #Email ve telefon numarası girmediyse kontrol yapılamıyor.
         return "This account is not in the database"
     else:
         if len(email)!=0:
-            recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
+            recordEmail = Users.has_item_by_multipple_columns(["Email"],[email]) #Email'i girilmişse database'den o kullanıcının dönülmesi
         if len(phoneNumber)!=0:
-            recordPhone = Users.has_item_by_multipple_columns(["Phone"],[phoneNumber])
-    if recordEmail!= None and recordEmail[0]:   
+            recordPhone = Users.has_item_by_multipple_columns(["Phone"],[phoneNumber]) #Telefon numarası girilmişse database'den o kullanıcının dönülmesi
+    if recordEmail!= None and recordEmail[0]: #Database'den dönen kullanıcı boş değilse hashli saklanan şifreyi al.
         record = recordEmail[1][0]
         salt = record[6]
         salt_bytes=salt.encode('utf-8')
@@ -80,7 +80,7 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
         digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
         hex_hashed_password = digest_password.hex()
         hex_hashed_password_from_database = record[7]
-    elif recordPhone!= None and recordPhone[0]:
+    elif recordPhone!= None and recordPhone[0]: #Database'den dönen kullanıcı boş değilse hashli saklanan şifreyi al.
         record = recordPhone[1][0]
         salt = record[6]
         salt_bytes=salt.encode('utf-8')
@@ -91,7 +91,7 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
         hex_hashed_password_from_database = record[7]
     else:
         return "This account is not in the database"
-    if hex_hashed_password == hex_hashed_password_from_database:
+    if hex_hashed_password == hex_hashed_password_from_database: #Eğer database'den dönen şifreyle girilen şifrenin hashli hali aynıysa kullanıcı bilgilerini dön
         if recordEmail!=None and recordEmail[0]:
             response = dict()
             response["Login"] = True
@@ -113,13 +113,13 @@ def checkingPasswordWithDatabase(password,email,phoneNumber):
             response["Phone"]=recordPhone[1][0][5]
             return response
         else:
-            return "Login unsuccessful"
+            return "Login unsuccessful" #Eğer database'den dönen şifreyle girilen şifrenin hashli hali aynı değilse uyarı mesajı dön
     else:
         return "Login unsuccessful"
     
-def getUsersDetailFromEmail(email):
+def getUsersDetailFromEmail(email): #Şifre sıfırlamak için girilen e-mailin adresinin validasyonunun yapılması.
     recordEmail = Users.has_item_by_multipple_columns(["Email"],[email])
-    if len(recordEmail[1])==0:
+    if len(recordEmail[1])==0: 
         return 'User is not registered', False, False
     record = recordEmail[1][0]
     id = record[0]
@@ -132,14 +132,14 @@ def getUsersDetailFromEmail(email):
     num = string.digits
     all = lower + upper + num
     temp = random.sample(all,8)
-    randomPassword = "".join(temp)
-    plaintext = randomPassword.encode()
-    digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
+    randomPassword = "".join(temp) #Random şifre oluşturulması
+    plaintext = randomPassword.encode() 
+    digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000) #Random şifrenin salt ile beraber hashlenmesi. 
     hex_hashed_password = digest_password.hex()
-    recordStatus = Users.change_password(id,hex_hashed_password)
+    recordStatus = Users.change_password(id,hex_hashed_password) #Kişinin şifresinin database'de güncellenmesi
     return randomPassword, recordStatus, name 
 
-def changingPassword(id,passwordOld,passwordNew):
+def changingPassword(id,passwordOld,passwordNew): #Profilim sayfasında şifre değiştir butonu ile çağırılan metot.
     recordId = Users.has_item_by_multipple_columns(["Id"],[str(id)])
     record = recordId[1][0]
     salt = record[6]
@@ -149,7 +149,7 @@ def changingPassword(id,passwordOld,passwordNew):
     digest_password = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000)
     hex_hashed_password = digest_password.hex()
     hex_hashed_password_from_database = record[7]
-    if hex_hashed_password == hex_hashed_password_from_database:
+    if hex_hashed_password == hex_hashed_password_from_database: #Database'den çekilen hashli şifre ile girilen güncel şifrenin hash'i aynı ise yeni şifreyi hashleyip kullanıcının şifresini güncelleme
         plaintext_new = passwordNew.encode()
         digest_password_new = hashlib.pbkdf2_hmac('sha256', plaintext_new, salt, 10000)
         hex_hashed_password_new = digest_password_new.hex()

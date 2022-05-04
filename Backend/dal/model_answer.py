@@ -155,6 +155,20 @@ class Answer():
             print(len(answer_item))
             return result_code, None
 
+    @classmethod
+    def get_all_by_assessmentId(cls, assessmentId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Answer where AssessmentSessionId = {assessmentId}").fetchall()
+            if items is not None and len(items) > 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
 
 """
 result_code1, one_item = Users.has_item(2)

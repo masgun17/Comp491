@@ -17,7 +17,7 @@
   height: max-content;
   min-height: 260px;
   margin: 30px 0px 30px 0px;
-  background-color: #e8f2f8;
+  background-color: white;
   border: 1px solid #556c9c;
   /* border-radius: 90px; */
   border-radius: 80px;
@@ -31,5 +31,6 @@
   position: relative;
   padding: 0% 20% 5% 20%;
   display: grid;
+  margin-top:10%;
 }
 

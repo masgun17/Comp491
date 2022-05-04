@@ -125,7 +125,7 @@ const Privacy = () => {
   }
 
   return (
-    <body style={{padding: 10}}>
+    <body style={{"padding": "10", "margin-top":"10%"}}>
       <h1>Privacy</h1>
 
       <div>

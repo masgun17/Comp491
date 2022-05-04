@@ -5,7 +5,7 @@
   grid-template-rows: max-content auto;
   grid-gap: 20px;
   /* background-color: #556c9c; */
-  background-color: #b8cbf3;
+  background-color: white;
   
 }
 
@@ -13,10 +13,10 @@
 .header:visited,
 .header:active,
 .header:hover {
-  position: relative;
+  position: fixed;
   /* background-color: #556c9c; */
   /* background-color: #e5bcfd; */
-  background-color: #9b111e;
+  background-color: #3E3FA5;
   /* background-color: #72dfa1; */
   /* background-color: #ffff8b; */
   height: 150px;
@@ -36,6 +36,8 @@
   margin-top: auto;
   margin-bottom: auto;
   text-align: center;
+  z-index: 10;
+
 }
 
 

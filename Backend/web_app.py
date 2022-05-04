@@ -1,7 +1,7 @@
 import json
 import urllib
 from xml.etree.ElementTree import tostring
-
+import datetime
 import flask
 from flask import Flask, request, url_for, jsonify
 import requests
@@ -18,7 +18,9 @@ from dal import sendingEmail
 import codecs
 from dal.model_user import Users
 from dal.model_images import Images
-
+from dal.model_images_info_page import ImagesInfoPage
+from dal.model_images_risk_page import ImagesRiskPage
+from dal.model_videos import Videos
 from dal.model_answer import Answer
 
 app = Flask("comp491")
@@ -70,7 +72,6 @@ def add():
 @app.route("/fetchdb",  methods=['GET'])
 def fetchDB():
     try:
-        print("debug1")
         data = []
         out = conn.execute(f"SELECT Value FROM Numbers;").fetchall()
         for row in out:
@@ -199,41 +200,40 @@ def deleteQuestion():
         return 'Bad Request Exception'
 
 @app.route("/creatingNewAccount",  methods=['POST'])
-def creatingNewAccount():
+def creatingNewAccount(): #Yeni kullanıcının oluşturulması
     try:
         result_code = False
         form = json.loads(request.data)
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        if len(name)==0:
+        if len(name)==0: #Kullanıcının isminin girilip girilmediğinin kontrolü
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
-        if len(surname)==0:
+        if len(surname)==0: #Kullanıcının soyadının girilip girilmediğinin kontrolü
             return "Lütfen soyadınızı giriniz!"
         email = personInfo['email']
         phoneNumber = personInfo['phone']
-        if email==None and phoneNumber==None:
+        if email==None and phoneNumber==None: #Kullanıcının email adresinin ya da telefon numarasının girilip girilmediğinin kontrolü
             return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
         if len(email)==0 and len(phoneNumber)==0:
             return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
         if phoneNumber!=None: 
             if len(phoneNumber)!=0:
-                if len(phoneNumber)!=10:
+                if len(phoneNumber)!=10: #Telefon numarasının 10 haline olması gerekliliğinin kontrolü
                     return "Telefon numaranız 10 haneli olmak zorundadır!"
         if phoneNumber!=None:
-            print("debug1")
             if len(phoneNumber)==10:
-                if phoneNumber[0]=='0':
+                if phoneNumber[0]=='0': #Telefon numarasının başında sıfır olmadan girilmiş olmasının kontrolü
                     return "Telefon numaranızı başında 0 olmadan giriniz!"
         password = personInfo['password']
-        if len(password)==0:
+        if len(password)==0: #Herhangi bir şifre girilip girilmediğinin kontrolü
             return "Lütfen bir şifre belirleyiniz!"
-        if len(password)<8:
+        if len(password)<8: #Şifrenin en az 8 haneden olması gerekliliğinin kontrolü
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn) #Şifrenin saltingle hashlenmesi
         if salt!=False and hashedPassword!=False:
-            result_code=Users.add_item([1,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            result_code=Users.add_item([1,name,surname,email,phoneNumber,salt,hashedPassword,1]) #Kullanıcının yaratılması
             if result_code:
                 return 'User added Successfully'
             else:
@@ -244,21 +244,21 @@ def creatingNewAccount():
         print(e)
         return "Bad Request"
    
-@app.route("/loginAccount",  methods=['POST'])
+@app.route("/loginAccount",  methods=['POST']) #Kullanıcının girilen bilgilerle sayfaya giriş yapılması
 def loginAccount():
     form = json.loads(request.data)
     accountInfo = form['data']
     personInfo = accountInfo[0]
     email = personInfo['email']
     phoneNumber = personInfo['phone']
-    if len(email)==0 and len(phoneNumber)==0 :
+    if len(email)==0 and len(phoneNumber)==0 : #Telefon ya da email adresinin girilip girilmediğinin kontrolü
         return "Email ya da telefon numaranızı giriniz!"
     password = personInfo['password']
-    if len(password)==0:
+    if len(password)==0: #Şifrenin girilip girilmediğinin kontrolü
         return "Lütfen Şifrenizi Giriniz!"
-    return hashingPassword.checkingPasswordWithDatabase(password,email,phoneNumber)
+    return hashingPassword.checkingPasswordWithDatabase(password,email,phoneNumber) #Databaseden gelen şifre ile girilen şifrenin aynı olmasının kontrolü
 
-@app.route("/createNewAdminAccount",  methods=['POST'])
+@app.route("/createNewAdminAccount",  methods=['POST']) #Super-admin tarafından admin kullanıcısının yaratılması
 def createNewAdminAccount():
     try:
         result_code = False
@@ -266,23 +266,23 @@ def createNewAdminAccount():
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        if len(name)==0:
+        if len(name)==0: #Kullanıcının isminin girilip girilmediğinin kontrolü
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
-        if len(surname)==0:
+        if len(surname)==0: #Kullanıcının soyadının girilip girilmediğinin kontrolü
             return "Lütfen soyadınızı giriniz!"
         email = personInfo['email']
         phoneNumber = personInfo['phone']
-        if len(email)==0 and len(phoneNumber)==0:
+        if len(email)==0 and len(phoneNumber)==0: #Kullanıcının email adresinin ya da telefon numarasının girilip girilmediğinin kontrolü
             return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
         password = personInfo['password']
-        if len(password)==0:
+        if len(password)==0: #Herhangi bir şifre girilip girilmediğinin kontrolü
             return "Lütfen bir şifre belirleyiniz!"
-        if len(password)<8:
+        if len(password)<8: #Şifrenin en az 8 haneden olması gerekliliğinin kontrolü
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn) #Şifrenin saltingle hashlenmesi
         if salt!=False and hashedPassword!=False:
-            result_code=Users.add_item([2,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            result_code=Users.add_item([2,name,surname,email,phoneNumber,salt,hashedPassword,1]) #Admin kullanıcının yaratılması (UserTypeID = 2)
             if result_code:
                 return 'User added Successfully'
             else:
@@ -293,7 +293,7 @@ def createNewAdminAccount():
         print(e)
         return "Bad Request"
 
-@app.route("/createNewSuperAdminAccount",  methods=['POST'])
+@app.route("/createNewSuperAdminAccount",  methods=['POST']) #Super-admin tarafından super-admin kullanıcısının yaratılması
 def createNewSuperAdminAccount():
     try:
         result_code = False
@@ -301,23 +301,23 @@ def createNewSuperAdminAccount():
         accountInfo = form['data']
         personInfo = accountInfo[0]
         name = personInfo['name']
-        if len(name)==0:
+        if len(name)==0: #Kullanıcının isminin girilip girilmediğinin kontrolü
             return "Lütfen isminizi giriniz!"
         surname = personInfo['surname']
-        if len(surname)==0:
+        if len(surname)==0: #Kullanıcının soyadının girilip girilmediğinin kontrolü
             return "Lütfen soyadınızı giriniz!"
         email = personInfo['email']
         phoneNumber = personInfo['phone']
-        if len(email)==0 and len(phoneNumber)==0:
+        if len(email)==0 and len(phoneNumber)==0: #Kullanıcının email adresinin ya da telefon numarasının girilip girilmediğinin kontrolü
             return "Lütfen email adresinizi ya da telefon numaranızı giriniz!"
         password = personInfo['password']
-        if len(password)==0:
+        if len(password)==0: #Herhangi bir şifre girilip girilmediğinin kontrolü
             return "Lütfen bir şifre belirleyiniz!"
-        if len(password)<8:
+        if len(password)<8: #Şifrenin en az 8 haneden olması gerekliliğinin kontrolü
             return "Şifreniz en az 8 haneli olmak zorundadır!"    
-        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn)
+        salt, hashedPassword = hashingPassword.hashingPasswordWithSalting(password,email,phoneNumber,conn) #Şifrenin saltingle hashlenmesi
         if salt!=False and hashedPassword!=False:
-            result_code=Users.add_item([3,name,surname,email,phoneNumber,salt,hashedPassword,1])
+            result_code=Users.add_item([3,name,surname,email,phoneNumber,salt,hashedPassword,1]) #Super-admin kullanıcının yaratılması (UserTypeID = 3)
             if result_code:
                 return 'User added Successfully'
             else:
@@ -328,7 +328,7 @@ def createNewSuperAdminAccount():
         print(e)
         return "Bad Request"
 
-@app.route("/changePassword",  methods=['POST'])
+@app.route("/changePassword",  methods=['POST']) #Şifremi değiştir butonuna tıklandığında çağrılan metot
 def changePassword():
     try:
         result_code = False
@@ -339,7 +339,7 @@ def changePassword():
         password = personInfo['password']
         passwordNew = personInfo['passwordNew']
         passwordNewAgain = personInfo['passwordNewAgain']
-        result_code = hashingPassword.changingPassword(id,password,passwordNew)
+        result_code = hashingPassword.changingPassword(id,password,passwordNew) #Güncel şifre ile database'deki şifre karşılaştırılıp aynıysa şifrenin değiştirilmesi
         if result_code=="Current Password is not correct":
             return "Current Password is not correct"
         elif result_code:
@@ -350,13 +350,13 @@ def changePassword():
         print(e)
         return "Bad Request"
 
-@app.route("/submitNewPassword",  methods=['POST'])
+@app.route("/submitNewPassword",  methods=['POST']) #Şifre sıfırlama işlemi için çağırılan metot.
 def submitNewPassword():
     form = json.loads(request.data)
     accountInfo = form['data']
     personInfo = accountInfo[0]
     email = personInfo['email']
-    randomPassword, recordStatus, name = hashingPassword.getUsersDetailFromEmail(email)
+    randomPassword, recordStatus, name = hashingPassword.getUsersDetailFromEmail(email) #Email ile şifre sıfırlama kısmında kişinin database'deki kaydının kontrol edilmesi.
     if randomPassword=='User is not registered':
         return'User is not registered'
     sendingEmail.sendNewPassword(randomPassword,email, name)
@@ -386,7 +386,7 @@ def createAssessmentSession():
         print(e)
         return 'Bad Request Exception'
 
-@app.route("/saveImage",  methods=['GET', 'POST'])
+@app.route("/saveImage",  methods=['GET', 'POST']) #Super-admin tarafından resimlerin kaydedilmesi (Anasayfa için)
 def saveImage():
     try:
         a = json.loads(request.data)
@@ -405,12 +405,11 @@ def saveImage():
         return 'Bad Request Exception'
 
 
-@app.route("/getImages",  methods=['GET', 'POST'])
+@app.route("/getImages",  methods=['GET', 'POST']) #Resimlerin database'den çekilip ön yüze aktarılması (Anasayfa için)
 def getImages():
     try:
         data = []
         result_code, images = Images.get_all()
-        print(result_code)
         if result_code:
             for row in images:
                 line = dict()
@@ -428,7 +427,7 @@ def getImages():
 
 
 
-@app.route("/deleteImageFromIndex",  methods=['GET', 'POST'])
+@app.route("/deleteImageFromIndex",  methods=['GET', 'POST']) #Index'ine göre database'den resmin silinmesi (Anasayfa için)
 def deleteImageFromIndex():
     try:
         a = json.loads(request.data)
@@ -447,7 +446,7 @@ def deleteImageFromIndex():
 
 
 
-@app.route("/getImageFromIndex",  methods=['GET', 'POST'])
+@app.route("/getImageFromIndex",  methods=['GET', 'POST']) #Index'e göre database'den resimlerin getirilmesi (Anasayfa için)
 def getImageFromIndex():
     try:
         a = json.loads(request.data)
@@ -467,7 +466,7 @@ def getImageFromIndex():
 
 
 
-@app.route("/updateImageFromIndex",  methods=['GET', 'POST'])
+@app.route("/updateImageFromIndex",  methods=['GET', 'POST']) #Index'e göre database'deki resimlerin güncellenmesi (Anasayfa için)
 def updateImageFromIndex():
     try:
         a = json.loads(request.data)
@@ -480,6 +479,15 @@ def updateImageFromIndex():
             return "Image updated successfully"
         else:
             return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/removeAllImages",  methods=['GET', 'POST']) #Tüm resimlerin database'den silinmesi (Anasayfa için)
+def removeAllImages():
+    try:
+        result_code = Images.delete_all()
+        return result_code
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
@@ -511,14 +519,336 @@ def uploadUserAnswers():
     print(errList)
     return json.dumps("Answers are uploaded for AssessmentSessionId " + str(AssessmentSessionId))
 
-@app.route("/removeAllImages",  methods=['GET', 'POST'])
-def removeAllImages():
+
+@app.route("/saveImageInfoPage",  methods=['GET', 'POST']) #Super-admin tarafından resimlerin kaydedilmesi (Demans Sayfası için)
+def saveImageInfoPage():
     try:
-        result_code = Images.delete_all()
-        print(result_code)
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        data_url = parameters['data_url']
+        index = parameters['index']
+
+        result_code = ImagesInfoPage.add_item(data_url,index)
+        if result_code:
+            return "Image saved successfully"
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getImagesInfoPage",  methods=['GET', 'POST']) #Resimlerin database'den çekilip ön yüze aktarılması (Demans Sayfası için)
+def getImagesInfoPage():
+    try:
+        data = []
+        result_code, images = ImagesInfoPage.get_all()
+        if result_code:
+            for row in images:
+                line = dict()
+                
+                line["data_url"] = row[1]
+                line["index"] = row[2]
+
+                data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/deleteImageFromIndexInfoPage",  methods=['GET', 'POST']) #Index'ine göre database'den resmin silinmesi (Demans Sayfası için)
+def deleteImageFromIndexInfoPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code = ImagesInfoPage.delete_item(index)
+        if result_code:
+            return "Image removed successfully"
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/getImageFromIndexInfoPage",  methods=['GET', 'POST']) #Index'e göre database'den resimlerin getirilmesi (Demans Sayfası için)
+def getImageFromIndexInfoPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code, items = ImagesInfoPage.has_item_by_column("ind", index)
+        if result_code:
+            photo = items[0]
+            return photo
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/updateImageFromIndexInfoPage",  methods=['GET', 'POST']) #Index'e göre database'deki resimlerin güncellenmesi (Demans Sayfası için)
+def updateImageFromIndexInfoPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+        img_base64 = parameters['Img_base64']
+        result_code = ImagesInfoPage.update_item(img_base64,index)
+        if result_code:
+            return "Image updated successfully"
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/removeAllImagesInfoPage",  methods=['GET', 'POST']) #Tüm resimlerin database'den silinmesi (Demans Sayfası için)
+def removeAllImagesInfoPage():
+    try:
+        result_code = ImagesInfoPage.delete_all()
         return result_code
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
 
+@app.route("/saveImageRiskPage",  methods=['GET', 'POST']) #Super-admin tarafından resimlerin kaydedilmesi (Risk Faktörleri Sayfası için)
+def saveImageRiskPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        data_url = parameters['data_url']
+        index = parameters['index']
+
+        result_code = ImagesRiskPage.add_item(data_url,index)
+        if result_code:
+            return "Image saved successfully"
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getImagesRiskPage",  methods=['GET', 'POST']) #Resimlerin database'den çekilip ön yüze aktarılması (Risk Faktörleri Sayfası için)
+def getImagesRiskPage():
+    try:
+        data = []
+        result_code, images = ImagesRiskPage.get_all()
+        if result_code:
+            for row in images:
+                line = dict()
+                
+                line["data_url"] = row[1]
+                line["index"] = row[2]
+
+                data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/deleteImageFromIndexRiskPage",  methods=['GET', 'POST']) #Index'e göre database'den resimlerin getirilmesi (Risk Faktörleri Sayfası için)
+def deleteImageFromIndexRiskPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code = ImagesRiskPage.delete_item(index)
+        if result_code:
+            return "Image removed successfully"
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/getImageFromIndexRiskPage",  methods=['GET', 'POST']) #Index'e göre database'den resimlerin getirilmesi (Risk Faktörleri Sayfası için)
+def getImageFromIndexRiskPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+
+        result_code, items = ImagesRiskPage.has_item_by_column("ind", index)
+        if result_code:
+            photo = items[0]
+            return photo
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+
+@app.route("/updateImageFromIndexRiskPage",  methods=['GET', 'POST']) #Index'e göre database'deki resimlerin güncellenmesi (Risk Faktörleri Sayfası için)
+def updateImageFromIndexRiskPage():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = int(parameters['Index'])
+        img_base64 = parameters['Img_base64']
+        result_code = ImagesRiskPage.update_item(img_base64,index)
+        if result_code:
+            return "Image updated successfully"
+        else:
+            return 'Bad Request'
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/removeAllImagesRiskPage",  methods=['GET', 'POST']) #Tüm resimlerin database'den silinmesi (Risk Faktörleri Sayfası için)
+def removeAllImagesRiskPage():
+    try:
+        result_code = ImagesRiskPage.delete_all()
+        return result_code
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/saveVideo",  methods=['GET', 'POST']) #Videoların youtube linkiyle database'e kaydedilmesi
+def saveVideo():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        data_url = parameters['video'] #Youtube linki
+        index = parameters['ind'] #Hangi indexte olacağı
+        page = parameters['page'] #Hangi sayfada olduğu (d=anasayfa, i=demans, r=risk faktörler)
+        result_code = Videos.add_item(data_url,index, page)
+        if result_code:
+            return "Image saved successfully"
+        else:
+            return 'Bad Request '
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/getVideos",  methods=['GET', 'POST']) #Videoların databaseden çekilmesi (sayfalara göre değişiyor)
+def getVideos():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        index = parameters['ind']
+        page = parameters['page']
+        data = []
+        result_code, video = Videos.get_all(index,page)
+        if result_code:
+            line = dict()  
+            line["data_url"] = video[0][1]
+            data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+def default(o):
+    if isinstance(o, (datetime.date, datetime.datetime)):
+        return o.isoformat()
+
+@app.route("/getAssessments",  methods=['GET', 'POST']) 
+def getAssessments():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        userId = parameters['UserId']
+        data = []
+        result_code, assessments = AssessmentSession.get_all_by_id(userId)
+        if result_code:
+            for row in assessments:
+                line = dict()
+                line["id"] = row[0]
+                line["date"] = row[2].strftime("%H:%M:%S, %d/%m/%Y")
+                data.append(line)
+            return json.dumps(data,sort_keys=True,indent=1,default=default)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/getAllAssessments",  methods=['GET', 'POST']) 
+def getAllAssessments():
+    try:
+        data = []
+        result_code, assessments = AssessmentSession.get_all()
+        if result_code:
+            for row in assessments:
+                line = dict()
+                line["id"] = row[0]
+                line["date"] = row[2].strftime("%H:%M:%S, %d/%m/%Y")
+                userIdInfo = row[1]
+                result_code_user, userInformation=Users.get_all_by_id(userIdInfo)
+                if result_code_user:
+                    for row_user_info in userInformation:
+                        line["name"]=row_user_info[2]
+                        line["surname"]=row_user_info[3]
+                        line["phone"] = row_user_info[5]
+                        line["email"]=row_user_info[4]
+
+                data.append(line)
+            return json.dumps(data,sort_keys=True,indent=1,default=default)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+@app.route("/getAllAnswers",  methods=['GET', 'POST']) 
+def getAllAnswers():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        assessmentId = parameters['assessmentId']
+        data = []
+        result_code, answers = Answer.get_all_by_assessmentId(assessmentId)
+        userAnswers=[]
+        qID = []
+        if result_code:
+            line = dict()
+
+            for row in answers:
+                qID.append(row[2])
+                userAnswers.append(row[3])
+                
+            line["qID"]=qID
+            line["userAnswers"]=userAnswers
+            data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 app.run()

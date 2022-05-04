@@ -106,4 +106,80 @@ export const uploadUserAnswersService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.removeAllImages).then(resolve).catch(reject);
   });
+
+  export const saveImageInfoPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.saveImageInfoPage, data).then(resolve).catch(reject);
+  });
+
+  export const getImagesInfoPageService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getImagesInfoPage).then(resolve).catch(reject);
+  });
+
+  export const updateImageInfoPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.updateImageFromIndexInfoPage, data).then(resolve).catch(reject);
+  });
+
+  export const deleteImageInfoPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deleteImageFromIndexInfoPage, data).then(resolve).catch(reject);
+  });
+
+  export const removeAllImagesInfoPageService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.removeAllImagesInfoPage).then(resolve).catch(reject);
+  });
+
+  export const saveImageRiskPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.saveImageRiskPage, data).then(resolve).catch(reject);
+  });
+
+  export const getImagesRiskPageService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getImagesRiskPage).then(resolve).catch(reject);
+  });
+
+  export const updateImageRiskPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.updateImageFromIndexRiskPage, data).then(resolve).catch(reject);
+  });
+
+  export const deleteImageRiskPageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.deleteImageFromIndexRiskPage, data).then(resolve).catch(reject);
+  });
+
+  export const removeAllImagesRiskPageService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.removeAllImagesRiskPage).then(resolve).catch(reject);
+  });
+
+  
+  export const saveVideoService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.saveVideo,data).then(resolve).catch(reject);
+  });
+
+  export const getVideosService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getVideos,data).then(resolve).catch(reject);
+  });
+
+  export const getAssessmentsService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getAssessments,data).then(resolve).catch(reject);
+  });
+  
+  export const getAllAssessmentsService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getAllAssessments).then(resolve).catch(reject);
+  });
+  
+  export const getAllAnswersService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getAllAnswers,data).then(resolve).catch(reject);
+  });
   
