@@ -11,7 +11,7 @@ class Question():
     __tablename__ = 'Question'
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
     PartId = Column(BigInteger)
-    Weight = Column(Float)
+    Code = Column(String)
     QuestionType = Column(String)
     Options = Column(String)
 
@@ -89,7 +89,7 @@ class Question():
             return result_code, items
 
 
-    ## Input will be: (PartId, QuestionText, Weight, QuestionType, Options)
+    ## Input will be: (PartId, QuestionText, Code, QuestionType, Options)
     @classmethod
     def add_item(cls, question_item):
         conn = connection.cursor()
@@ -100,7 +100,7 @@ class Question():
                     insert into Question
                        ([PartId]
                        ,[QuestionText]
-                       ,[Weight]
+                       ,[Code]
                        ,[QuestionType]
                        ,[Options])
                     values
@@ -136,7 +136,7 @@ class Question():
             conn.close()
             return result_code
 
-    ## Input will be: Id and (PartId, QuestionText, Weight, QuestionType, Options)
+    ## Input will be: Id and (PartId, QuestionText, Code, QuestionType, Options)
     @classmethod
     def update_item(cls, question_id, question_item):
         conn = connection.cursor()
@@ -147,7 +147,7 @@ class Question():
                     update Question set
                        PartId = {question_item[0]}
                        ,QuestionText = '{question_item[1]}'
-                       ,Weight = {question_item[2]}
+                       ,Code = {question_item[2]}
                        ,QuestionType = '{question_item[3]}'
                        ,Options = '{question_item[4]}'
                     where Id = {question_id}
