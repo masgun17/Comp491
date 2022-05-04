@@ -859,6 +859,7 @@ def Evaluate():
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
+        assessmentSessionId = parameters['AssessmentSessionId']
         questionAnswerList = parameters['AnswerList']
         anslist = {}
         partScores = {}
