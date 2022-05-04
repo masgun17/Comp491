@@ -106,7 +106,7 @@ class Question():
                     values
                        ({question_item[0]}
                        ,'{question_item[1]}'
-                       ,{question_item[2]}
+                       ,'{question_item[2]}'
                        ,'{question_item[3]}'
                        ,'{question_item[4]}')""")
                 result_code = True
@@ -147,7 +147,7 @@ class Question():
                     update Question set
                        PartId = {question_item[0]}
                        ,QuestionText = '{question_item[1]}'
-                       ,Code = {question_item[2]}
+                       ,Code = '{question_item[2]}'
                        ,QuestionType = '{question_item[3]}'
                        ,Options = '{question_item[4]}'
                     where Id = {question_id}
