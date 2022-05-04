@@ -514,7 +514,7 @@ def uploadUserAnswers():
 
 
 
-@app.route("/Evaluate",  methods=['GET', 'POST'])
+@app.route("/evaluate",  methods=['GET', 'POST'])
 def Evaluate():
     try:
         import evaluation as eval
@@ -534,10 +534,11 @@ def Evaluate():
             except Exception as e:
                 errList.append(e)
         partScores["Agesex"] = eval.Agesex(anslist)
-        partScores["Education"] = eval.Education(anslist)
-        partScores["BMI"] = eval.BMI(anslist)
-        partScores["Cholesterol"] = eval.Cholesterol(anslist)
-        partScores["Diabetes"] = eval.Diabetes(anslist)
+        # partScores["Education"] = eval.Education(anslist)
+        # partScores["BMI"] = eval.BMI(anslist)
+        # partScores["Cholesterol"] = eval.Cholesterol(anslist)
+        # partScores["Diabetes"] = eval.Diabetes(anslist)
+        return json.dumps(partScores)
     except Exception as e:
         print(e)
         print(request)

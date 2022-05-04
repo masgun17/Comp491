@@ -178,3 +178,13 @@ export const getImagesAction = async () => {
     console.log(error);
   }
 }
+
+export const evaluateAction = async (data) => {
+  try {
+    const result = await services.evaluateService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on evaluateAction");
+    console.log(error);
+  }
+}

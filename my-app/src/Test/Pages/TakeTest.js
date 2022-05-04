@@ -4,6 +4,7 @@ import {
   getAllQuestionsAction,
   createAssessmentSessionAction,
   uploadUserAnswersAction,
+  evaluateAction,
 } from "../../tool/actions";
 import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
@@ -162,6 +163,8 @@ const TakeTest = () => {
 
   const [completed, setCompleted] = useState(false);
 
+  const [answerArray, setAnswerArray] = useState([]);
+
   const saveToDb = async () => {
     const arr = [];
     for (let index = 0; index < questions.length; index++) {
@@ -172,6 +175,7 @@ const TakeTest = () => {
       element.push(ans);
       arr.push(element);
     }
+    setAnswerArray(arr);
     var jsonData = {
       data: [
         {
@@ -184,6 +188,28 @@ const TakeTest = () => {
     localStorage.clear();
     setCompleted(true);
   };
+
+  useEffect( async () => {
+    // const arr = [];
+    // for (let index = 0; index < questions.length; index++) {
+    //   const element = [];
+    //   const qid = questions[index][0];
+    //   const ans = localStorage.getItem(qid);
+    //   element.push(qid);
+    //   element.push(ans);
+    //   arr.push(element);
+    // }
+    var jsonData = {
+      data: [
+        {
+          // AssessmentSessionId: currentAssessmentSession,
+          AnswerList: answerArray,
+        },
+      ],
+    };
+    const a = await evaluateAction(jsonData);
+    console.log(a);
+  }, [completed]);
 
   return (
     <div className="testPageLayout">

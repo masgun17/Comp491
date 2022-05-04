@@ -17,4 +17,5 @@ export default {
     uploadUserAnswers: '/uploadUserAnswers',
     saveImage: '/saveImage',
     getImages: '/getImages',
+    evaluate: '/evaluate',
 };
