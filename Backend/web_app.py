@@ -851,6 +851,7 @@ def getAllAnswers():
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
+
 @app.route("/evaluate",  methods=['GET', 'POST'])
 def Evaluate():
     try:
@@ -884,7 +885,6 @@ def Evaluate():
     print("Total error count: ", len(errList))
     print(errList)
     return json.dumps("Answers are uploaded for Evaluate")
-
 
 
 

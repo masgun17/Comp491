@@ -220,7 +220,7 @@ const TakeTest = () => {
       var jsonData = {
         data: [
           {
-            // AssessmentSessionId: currentAssessmentSession,
+            AssessmentSessionId: currentAssessmentSession,
             AnswerList: answerArray,
           },
         ],
