@@ -10,7 +10,7 @@ class Part():
     __tablename__ = 'Part'
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
     PartName = Column(String)
-    ScoreLimit = Column(Integer)
+    PartDescription = Column(String)
 
     @classmethod
     def has_item(cls, part_id):
@@ -96,10 +96,10 @@ class Part():
                 conn.execute(f"""
                     insert into Part
                        ([PartName]
-                        ,[ScoreLimit])
+                        ,[PartDescription])
                     values
                        ('{part_item[0]}'
-                       ,{part_item[1]})""")
+                       ,'{part_item[1]}')""")
                 result_code = True
                 conn.commit()
             except Exception as e:
@@ -137,7 +137,7 @@ class Part():
                 conn.execute(f"""
                     update Part set
                        PartName = '{part_item[0]}'
-                       ,ScoreLimit = {part_item[1]}
+                       ,PartDescription = '{part_item[1]}'
                     where Id = {part_id}
                        """)
                 result_code = True
