@@ -52,11 +52,11 @@ def Agesex(anslist):
 def Education(anslist):
     try:
         ## parse the answer dictionary
-        education_p = int(anslist["[education_p]"])
-        education_h = int(anslist["[education_h]"])
-        education_t = int(anslist["[education_t]"])
-        education_u = int(anslist["[education_u]"])
-        education_o = int(anslist["[education_o]"])
+        education_p = int(anslist["education_p"])
+        education_h = int(anslist["education_h"])
+        education_t = int(anslist["education_t"])
+        education_u = int(anslist["education_u"])
+        education_o = int(anslist["education_o"])
         sum = education_p + education_h + education_t + education_u + education_o
         if sum < 8:
             return 6
