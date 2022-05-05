@@ -26,7 +26,7 @@ const AddQuestion = ({ partId, ...props }) => {
 
   async function createQuestion() {
     const questionText = document.getElementById("questionText").value;
-    const weight = parseFloat(document.getElementById("questionWeight").value);
+    const weight = document.getElementById("questionWeight").value;
     const questionType = freeText ? "free-text" : "multi-select";
     const optArray = [];
     if (questionType === "multi-select") {

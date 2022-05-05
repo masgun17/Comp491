@@ -150,7 +150,7 @@ def createQuestion():
         parameters = data[0]
         PartId = int(parameters['PartId'])
         QuestionText = parameters['QuestionText']
-        Weight = float(parameters['Weight'])
+        Weight = parameters['Weight']
         QuestionType = parameters['QuestionType']
         Options = json.dumps(parameters['Options'], ensure_ascii=False)
 
