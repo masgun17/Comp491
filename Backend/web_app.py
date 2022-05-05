@@ -92,9 +92,9 @@ def createPart():
         data = a['data']
         parameters = data[0]
         PartName = parameters['PartName']
-        ScoreLimit = int(parameters['ScoreLimit'])
+        PartDescription = parameters['PartDescription']
 
-        result_code = Part.add_item([PartName, ScoreLimit])
+        result_code = Part.add_item([PartName, PartDescription])
         if result_code:
             return 'Part added Successfully'
         else:
