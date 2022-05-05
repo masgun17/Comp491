@@ -25,7 +25,7 @@ const PreviousTestQuestionBody = ({ questionNum, question, passedAnswer, assessm
 
   return (
     <div className="questionContainer">
-      <div className="shownQuestionDescription">{questionNum + " - " + question[2] }</div>
+      <div className="shownQuestionDescription">{questionNum + " - " + question[2] }<hr></hr></div>
       {question[4] === "free-text" ? (
         <TextAnswer answer={passedAnswer} />
       ) : (

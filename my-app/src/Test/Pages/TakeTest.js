@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,14 @@ import {
 import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
 import "../Styles/TakeTest.css";
+import { FontSizeContext } from "../../Helper/Context";
 
 const TakeTest = () => {
   const [id, setId] = useState(null);
   const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
   const [incomingAnswer, setIncomingAnswer] = useState("");
   const [qID, setQid] = useState();
-
+  const { fontSize, setFontSize } = useContext(FontSizeContext);
   const navigate = useNavigate();
   toast.configure();
 
@@ -232,8 +233,8 @@ const TakeTest = () => {
 
   return (
     <div className="testPageLayout">
-      {firstPage && <h1>You are about to take the test</h1>}
-      {completed && <h1>Completed the test</h1>}
+      {firstPage && <h1 style={{"font-size":fontSize*2}}>You are about to take the test</h1>}
+      {completed && <h1 style={{"font-size":fontSize*2}}>Completed the test</h1>}
       {!firstPage &&
         parts.map((e, i) => (
           <>
@@ -258,46 +259,46 @@ const TakeTest = () => {
       {!completed && (
         <div>
           {showPartInfo ? (
-            <button
+            <button class="btn btn-secondary btn-lg" 
               disabled
               onClick={() => {
                 backClick();
               }}
             >
-              Back
+              Geri
             </button>
           ) : (
-            <button
+            <button class="btn btn-secondary btn-lg" 
               onClick={() => {
                 backClick();
               }}
             >
-              Back
+              Geri
             </button>
           )}
           {!isSubmitEnabled ? (
             showQuestions && incomingAnswer === "" ? (
-              <button
+              <button class="btn btn-secondary btn-lg" style={{float: 'right'}}
                 disabled
                 onClick={() => {
                   nextClick();
                   saveToLocal();
                 }}
               >
-                Next
+                İleri
               </button>
             ) : (
-              <button
+              <button class="btn btn-secondary btn-lg" style={{float: 'right'}}
                 onClick={() => {
                   nextClick();
                   saveToLocal();
                 }}
               >
-                Next
+                İleri
               </button>
             )
           ) : incomingAnswer === "" ? (
-            <button
+            <button class="btn btn-success btn-lg" style={{float: 'center'}}
               disabled
               onClick={() => {
                 // nextClick();
@@ -305,17 +306,17 @@ const TakeTest = () => {
                 saveToDb();
               }}
             >
-              Submit
+              Testi Bitir
             </button>
           ) : (
-            <button
+            <button class="btn btn-success btn-lg" style={{float: 'center'}}
               onClick={() => {
                 // nextClick();
                 saveToLocal();
                 saveToDb();
               }}
             >
-              Submit
+              Testi Bitir
             </button>
           )}
         </div>

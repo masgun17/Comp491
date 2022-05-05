@@ -27,6 +27,21 @@
   /* overflow-y: scroll; */
 }
 
+.ProfileDiv3 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: max-content;
+  min-height: 50px;
+  background-color: white;
+  /* border-radius: 90px; */
+  /* font-size: 20px;
+    line-height: 1.8; */
+  /* overflow-y: scroll; */
+}
+
 .ProfileLayout {
   position: relative;
   padding: 0% 20% 5% 20%;

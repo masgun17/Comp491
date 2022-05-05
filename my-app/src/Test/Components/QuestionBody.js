@@ -1,7 +1,8 @@
 import "../Styles/QuestionBody.css";
 import Checkbox from "../Components/Checkbox";
 import TextAnswer from "../Components/TextAnswer";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import { FontSizeContext } from "../../Helper/Context";
 
 const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   // TODO: Styling
@@ -11,6 +12,7 @@ const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   const [optChange, setOptChange] = useState(false);
   const [answer, setAnswer] = useState("");
   const [multiChange, setMultiChange] = useState(false);
+  const { fontSize, setFontSize } = useContext(FontSizeContext);
 
   useEffect(async () => {
     // console.log("in first effect");
@@ -76,8 +78,8 @@ const QuestionBody = ({ question, passedAnswer, qID, ...props }) => {
   }, [options]);
   
   return (
-    <div className="questionContainer">
-      <div className="shownQuestionDescription">{question[2]}</div>
+    <div className="questionContainer" style={{"font-size":fontSize}}>
+      <div className="shownQuestionDescription" style={{"font-size":fontSize}}>{question[2]}<hr></hr></div>
       {question[4] === "free-text" ? (
         <TextAnswer answer={setAnswer} questionID={question[0]} />
       ) : (
