@@ -12,6 +12,7 @@ from sqlalchemy import create_engine, text
 import pyodbc
 from dal.model_assessment_session import AssessmentSession
 from dal.model_question import Question
+from dal.model_suggestions import Suggestions
 from dal.model_part import Part
 from dal import hashingPassword
 from dal import sendingEmail
@@ -878,7 +879,20 @@ def Evaluate():
         partScores["Cholesterol"] = eval.Cholesterol(anslist)
         partScores["Diabetes"] = eval.Diabetes(anslist)
 
-        ## todo: assessmentSession tablosuna suggestionların idleri array olarak basılacak option answer gibi
+
+        # if score is less than PartScore Limit Suggestions will be assigned to AssessmentSession
+        assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+        if partScores["Agesex"] > 20:
+            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
+
+        if suggestionIds is not None and len(suggestionIds):
+            for suggestionId in suggestionIds:
+                assessmentSessionItem[2] = json.dumps(json.loads(assessmentSessionItem[2]).append(suggestionId))
+                AssessmentSession.update_item(assessmentSessionId, assessmentSessionItem[1:])
+
         return json.dumps(partScores)
     except Exception as e:
         print(e)
