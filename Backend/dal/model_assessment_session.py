@@ -11,6 +11,7 @@ class AssessmentSession():
     Id = Column(BigInteger, primary_key=True, autoincrement=True)
     UserId = Column(BigInteger)
     AddDate = Column(DateTime)
+    Suggestions = Column(String)
 
     """def __init__(self):
         self.Id = -1
@@ -134,6 +135,36 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
+
+    ## Input will be: Id and (UserId, AddDate, Suggestions)
+    @classmethod
+    def update_item(cls, assessmentSesison_id, assessmentSesison_item):
+        conn = connection.cursor()
+        result_code = False
+        if assessmentSesison_id is not None and assessmentSesison_item is not None and len(assessmentSesison_item)==5:
+            try:
+                conn.execute(f"""
+                    update AssessmentSession set
+                       UserId = {assessmentSesison_item[0]}
+                       ,AddDate = '{assessmentSesison_item[1]}'
+                       ,Suggestions = '{assessmentSesison_item[2]}'
+                    where Id = {assessmentSesison_id}
+                       """)
+                result_code = True
+                conn.commit()
+            except Exception as e:
+                print(e)
+            finally:
+                conn.close()
+                return result_code
+        else:
+            print(len(assessmentSesison_item))
+            return result_code, None
+
+
+
+
+
 """
 result_code1, one_item = AssessmentSession.has_item(2)
 result_code1, all_items = AssessmentSession.has_item_by_column("UserId",1)
