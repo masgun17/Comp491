@@ -883,10 +883,10 @@ def Evaluate():
         # if score is less than PartScore Limit Suggestions will be assigned to AssessmentSession
         assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
         if partScores["Agesex"] > 20:
-            suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
+            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
         else:
             assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
-            suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
+            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
 
         if suggestionIds is not None and len(suggestionIds):
             for suggestionId in suggestionIds:
