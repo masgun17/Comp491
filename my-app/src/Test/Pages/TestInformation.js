@@ -25,7 +25,7 @@ const TestInformationPage = () => {
         {/* <Link to="/contact">İletişim</Link>
         <Link to="/privacy">Gizlilik</Link> */}
         {userTypeId === '3' ? (
-          <button className="showTestButton" onClick={() => navigate("/showTest")}> Show Test </button>
+          <button className="showTestButton" onClick={() => navigate("/showTest")}> Testi Düzenle </button>
         ) : (
           null
         )}

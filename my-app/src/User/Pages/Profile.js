@@ -150,14 +150,14 @@ const Profile = () => {
       <div className="PreviousTest" style={{ "grid-row-start": "3", "font-size": fontSize, "line-height": "2" }}>
         <div className="ProfileDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
           {userTypeId === '3' ? (
-            <h1 style={{ "font-size": fontSize * 2, "margin-top":"5%" }}>Hastaların Test Bilgileri <hr></hr></h1>
+            <h1 style={{ "font-size": fontSize * 2, "margin-top":"5%", "margin-bottom":"2%" }}>Hastaların Test Bilgileri <hr></hr></h1>
 
           ) : (
-            <h1 style={{ "font-size": fontSize * 2, "margin-top":"5%" }}>Önceki Test Bilgilerim<hr></hr></h1>
+            <h1 style={{ "font-size": fontSize * 2, "margin-top":"5%", "margin-bottom":"2%"}}>Önceki Test Bilgilerim<hr></hr></h1>
           )}
         </div>
         {showTable ? (
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{"margin-top":"2%"}}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
@@ -263,8 +263,8 @@ const Profile = () => {
             </Table>
           </TableContainer>
         ) : (
-          <div className = "ProfileDiv3" style={{ "font-size": fontSize}} >
-            <label htmlFor="text" style={{ "font-size": fontSize, "margin-right":"2%", "text-align":"center" }}>Daha önceden çözmüş olduğunuz bir test bulunmamaktadır. </label>
+          <div className = "ProfileDiv3" style={{ "font-size": fontSize, "margin-top":"2%" }} >
+            <label htmlFor="text" style={{ "font-size": fontSize, "margin-right":"2%", "text-align":"center"}}>Daha önceden çözmüş olduğunuz bir test bulunmamaktadır. </label>
             <button class="btn btn-outline-dark btn-lg" style={{ "font-size": fontSize}} onClick={() => { navigate("/testInformation"); }}>Testi Çözmek için Tıklayınız.</button>
           </div>
         )}
