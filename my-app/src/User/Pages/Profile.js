@@ -3,6 +3,7 @@ import CreateNewAdmin from '../Components/CreateNewAdmin';
 import CreateNewSuperAdmin from '../Components/CreateNewSuperAdmin';
 import ChangePassword from '../Components/ChangePassword';
 import PreviousTestAnswers from '../Components/PreviousTestAnswers';
+import Suggestions from '../Components/Suggestions';
 
 import "../Styles/Profile.css";
 import "../Styles/User.css";
@@ -24,6 +25,7 @@ const Profile = () => {
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const [modalShow4, setModalShow4] = useState(false);
+  const [modalShow5, setModalShow5] = useState(false);
   const [buttonIndex, setButtonIndex] = useState(0);
   const [chosenAssessmentId, setChosenAssessmentId] = useState(null);
   const { fontSize, setFontSize } = useContext(FontSizeContext);
@@ -247,13 +249,13 @@ const Profile = () => {
 
                       <StyledTableCell align="center">
                         <button class="btn btn-secondary"
-                          onClick={() => { setModalShow2(true); }}>Öneriler
+                          onClick={() => { setModalShow5(true); setChosenAssessmentId(rows[index]["id"]);}}>Öneriler
                         </button>
                       </StyledTableCell>
                     ) : (
                       <StyledTableCell align="center">
                         <button class="btn btn-secondary"
-                          onClick={() => { setModalShow2(true); }}>Önerilerim
+                          onClick={() => { setModalShow5(true); setChosenAssessmentId(rows[index]["id"]);}}>Önerilerim
                         </button>
                       </StyledTableCell>
                     )}
@@ -278,6 +280,17 @@ const Profile = () => {
             show={modalShow4}
             onHide={() => {
               setModalShow4(false);
+              setChosenAssessmentId(null);
+            }}
+          />
+        </div>
+        <div>
+          <Suggestions
+            assessmentId={chosenAssessmentId}
+            modalShow={modalShow5}
+            show={modalShow5}
+            onHide={() => {
+              setModalShow5(false);
               setChosenAssessmentId(null);
             }}
           />

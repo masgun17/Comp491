@@ -1,3 +1,4 @@
+from ast import For
 import json
 import urllib
 from xml.etree.ElementTree import tostring
@@ -902,6 +903,34 @@ def Evaluate():
     print(errList)
     return json.dumps("Answers are uploaded for Evaluate")
 
-
+@app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) 
+def getSuggestionsByAssessmentId():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        assessmentId = parameters['assessmentId']
+        data = []
+        result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId)
+        suggestions = []
+        if result_code:
+            for suggestionId in suggestionsIds:
+                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(suggestionId)
+                print(suggestion)
+                if result_code2:
+                    suggestions.append(suggestion[0])
+        userAnswers=[]
+        qID = []
+        if result_code:
+            # line = dict()
+            # line["qID"]=qID
+            # line["userAnswers"]=userAnswers
+            # data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 app.run()

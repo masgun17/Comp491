@@ -162,6 +162,25 @@ class AssessmentSession():
             return result_code, None
 
 
+    @classmethod
+    def get_suggestions_by_assessmentId(cls, assessmentId, first_n=None):
+        conn = connection.cursor()
+        items = []
+        result_code = False
+        try:
+            if assessmentId is not None :
+                items = conn.execute(f"select Suggestions from AssessmentSession where Id = '{assessmentId}'").fetchall()
+                if items is not None and len(items) > 0:
+                    result_code = True
+                    if first_n is not None:
+                        items = items[:first_n]
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
+
+
 
 
 

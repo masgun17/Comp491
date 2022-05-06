@@ -151,6 +151,23 @@ class Suggestions():
             print(len(suggestion_item))
             return result_code, None
 
+    @classmethod
+    def get_suggestion_description_by_id(cls, suggestionId, first_n=None):
+        conn = connection.cursor()
+        items = []
+        result_code = False
+        try:
+            if suggestionId is not None:
+                items = conn.execute(f"select Suggestion from Suggestions where Id = {suggestionId}").fetchall()
+                if items is not None and len(items) > 0:
+                    result_code = True
+                    if first_n is not None:
+                        items = items[:first_n]
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
 
 """
 result_code1, one_item = Users.has_item(2)
