@@ -955,7 +955,12 @@ def Evaluate():
             suggestions = json.dumps(suggestionIds, ensure_ascii=False)
             AssessmentSession.save_suggestionIds(assessmentSessionId, suggestions)
 
-        return json.dumps(partScores)
+        suggestions2 = []
+        for sid in suggestionIds:
+            result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid)
+            if result_code2:
+                suggestions2.append(suggestion[0][0])
+        return json.dumps(suggestions2)
     except Exception as e:
         print(e)
         print(request)
@@ -981,26 +986,15 @@ def getSuggestionsByAssessmentId():
         print(suggestionsIdsArray)
         suggestions = []
         if result_code:
-            for i in range(len(suggestionsIdsArray)):
-                print(len(suggestionsIdsArray))
-                print(i)
-                print(int(suggestionsIdsArray[i]))
-                #print(suggestionsIds[0][0][i])
-                #print(suggestionId)
-                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(suggestionsIds[0][0][i])
-                #print(suggestion[0][0])
-                #if result_code2:
-                    #suggestions.append(suggestion[0])
-        #userAnswers=[]
-        # qID = []
-        if result_code:
-            # line = dict()
-            # line["qID"]=qID
-            # line["userAnswers"]=userAnswers
-            # data.append(line)
-            return json.dumps(data)
+            for sid in suggestionsIdsArray:
+                sid_int = int(sid.strip())
+                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int)
+                if result_code2:
+                    suggestions.append(suggestion[0][0])
+                
+            return json.dumps(suggestions)
         else:
-            return json.dumps(data)
+            return json.dumps(suggestions)
     except Exception as e:
         print(e)
         return 'Bad Request Exception'

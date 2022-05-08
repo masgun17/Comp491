@@ -1,4 +1,4 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import {
   createAssessmentSessionAction,
   uploadUserAnswersAction,
   evaluateAction,
+  getSuggestionsByAssessmentIdAction,
 } from "../../tool/actions";
 import PartInformation from "../Components/PartInformation";
 import QuestionBody from "../Components/QuestionBody";
@@ -82,6 +83,7 @@ const TakeTest = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [currentPartQuestionCount, setCurrentPartQuestionCount] = useState(0);
   const [currentQuestionArray, setCurrentQuestionArray] = useState([]);
+  const [suggestions, SetSuggestions] = useState([]);
 
   // TODO: Styling
 
@@ -167,6 +169,10 @@ const TakeTest = () => {
   }, [partIndex, questionIndex, showQuestions]);
 
   const [completed, setCompleted] = useState(false);
+  const [suggestionStart, setSuggestionStart] = useState(false);
+  const [suggestionIsDone, setSuggestionIsDone] = useState(false);
+
+
 
   const [answerArray, setAnswerArray] = useState([]);
 
@@ -217,25 +223,85 @@ const TakeTest = () => {
   });
 
   useEffect(async () => {
-    setTimeout(() => {
-      var jsonData = {
+    if (completed) {
+      setTimeout(() => {
+        var jsonData = {
+          data: [
+            {
+              AssessmentSessionId: currentAssessmentSession,
+              AnswerList: answerArray,
+            },
+          ],
+        };
+        console.log(answerArray)
+        const a = evaluateAction(jsonData).then(
+          (onResolved) => {
+            // setSuggestionIsDone(true);
+            setSuggestionStart(true);
+
+            // Some task on success
+          });
+        console.log(a);
+        //SetSuggestions(a);
+        // setSuggestionIsDone(true);
+
+      }, 300);
+    }
+
+    // if (currentAssessmentSession !== null) {
+    //   var jsonData2 = {
+    //     data: [
+    //       {
+    //         assessmentId: currentAssessmentSession,
+    //       },
+    //     ],
+    //   };
+    //   let suggestionsByAssessmentId = getSuggestionsByAssessmentIdAction(jsonData2);
+    //   console.log(suggestionsByAssessmentId);
+    //   SetSuggestions(suggestionsByAssessmentId);
+    //   setSuggestionIsDone(true);
+
+    // }
+  }, [completed]);
+
+  useEffect(async () => {
+
+    if (currentAssessmentSession !== null && suggestionStart) {
+      var jsonData2 = {
         data: [
           {
-            AssessmentSessionId: currentAssessmentSession,
-            AnswerList: answerArray,
+            assessmentId: currentAssessmentSession,
           },
         ],
       };
-      const a = evaluateAction(jsonData);
-      console.log(a);
-    }, 300);
-  }, [completed]);
+      let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData2);
+      console.log(suggestionsByAssessmentId);
+      SetSuggestions(suggestionsByAssessmentId);
+      setSuggestionIsDone(true);
+
+    }
+
+  }, [suggestionStart]);
 
   return (
     <div className="testPageLayout">
-      {firstPage && <h1 style={{"font-size":fontSize*2}}>You are about to take the test</h1>}
-      {completed && <h1 style={{"font-size":fontSize*2}}>Completed the test</h1>}
-      {!firstPage &&
+      {firstPage && <h1 style={{ "font-size": fontSize * 2 }}>You are about to take the test</h1>}
+      {/* {completed && <h1 style={{ "font-size": fontSize * 2 }}>Completed the test</h1>} */}
+      {completed && suggestionIsDone &&
+        suggestions && suggestions.length !== 0 &&
+        <div  style={{
+          margin: "0% 10% 10% 10%",
+          "justify-content": "center",
+          "align-items": "center",
+        }}>
+          <h1 style={{ "font-size": fontSize * 2,"align-content": "center", "text-align": "center"  }}>Önerileriniz</h1>
+        <ul style={{ "font-size": fontSize * 1.5 }}>
+          {suggestions && suggestions.length !== 0 &&
+            suggestions.map(suggestion => <li> {suggestion}</li>)}
+        </ul>
+      </div>}
+
+      {!firstPage && !completed &&
         parts.map((e, i) => (
           <>
             {showPartInfo && partIndex === i && (
@@ -259,7 +325,7 @@ const TakeTest = () => {
       {!completed && (
         <div>
           {showPartInfo ? (
-            <button class="btn btn-secondary btn-lg" 
+            <button class="btn btn-secondary btn-lg"
               disabled
               onClick={() => {
                 backClick();
@@ -268,7 +334,7 @@ const TakeTest = () => {
               Geri
             </button>
           ) : (
-            <button class="btn btn-secondary btn-lg" 
+            <button class="btn btn-secondary btn-lg"
               onClick={() => {
                 backClick();
               }}
@@ -278,7 +344,7 @@ const TakeTest = () => {
           )}
           {!isSubmitEnabled ? (
             showQuestions && incomingAnswer === "" ? (
-              <button class="btn btn-secondary btn-lg" style={{float: 'right'}}
+              <button class="btn btn-secondary btn-lg" style={{ float: 'right' }}
                 disabled
                 onClick={() => {
                   nextClick();
@@ -288,7 +354,7 @@ const TakeTest = () => {
                 İleri
               </button>
             ) : (
-              <button class="btn btn-secondary btn-lg" style={{float: 'right'}}
+              <button class="btn btn-secondary btn-lg" style={{ float: 'right' }}
                 onClick={() => {
                   nextClick();
                   saveToLocal();
@@ -298,7 +364,7 @@ const TakeTest = () => {
               </button>
             )
           ) : incomingAnswer === "" ? (
-            <button class="btn btn-success btn-lg" style={{float: 'center'}}
+            <button class="btn btn-success btn-lg" style={{ float: 'center' }}
               disabled
               onClick={() => {
                 // nextClick();
@@ -309,7 +375,7 @@ const TakeTest = () => {
               Testi Bitir
             </button>
           ) : (
-            <button class="btn btn-success btn-lg" style={{float: 'center'}}
+            <button class="btn btn-success btn-lg" style={{ float: 'center' }}
               onClick={() => {
                 // nextClick();
                 saveToLocal();

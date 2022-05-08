@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
-import {getSuggestionsByAssessmentIdAction,getSuggestionsContentAction} from "../../tool/actions";
+import { getSuggestionsByAssessmentIdAction, getSuggestionsContentAction } from "../../tool/actions";
 import { Modal } from "react-bootstrap";
 
 const Suggestions = ({ assessmentId, modalShow, ...props }) => {
   const [suggestions, SetSuggestions] = useState([]);
 
   const getSuggestions = async () => {
-    var jsonData = {
-      data: [
-        {
-          assessmentId: assessmentId,
-        },
-      ],
-    };
-    let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData);
-    let suggestionsContent = []
-    //console.log(suggestionsByAssessmentId)
-    for(let sid in suggestionsByAssessmentId){
-      var jsonData2 = {
+    if (assessmentId !== null) {
+      var jsonData = {
         data: [
           {
-            suggestionId: sid,
+            assessmentId: assessmentId,
           },
         ],
       };
-      //const suggestionContent = await getSuggestionsContentAction(jsonData2);
-      //console.log(suggestionContent)
+      let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData);
+      console.log(suggestionsByAssessmentId);
+      SetSuggestions(suggestionsByAssessmentId);
     }
-    //SetSuggestions(suggestionsByAssessmentId[0]);
   };
 
   useEffect(async () => {
@@ -47,8 +37,14 @@ const Suggestions = ({ assessmentId, modalShow, ...props }) => {
         }}
       >
         <h1 style={{ "align-content": "center", "text-align": "center" }}>
-          Önerileriniz {assessmentId}
+          Önerileriniz
         </h1>
+        <div>
+          <ul>
+            {suggestions && suggestions.length !== 0 &&
+              suggestions.map(suggestion => <li> {suggestion}</li>)}
+          </ul>
+        </div>
       </div>
     </Modal>
   );
