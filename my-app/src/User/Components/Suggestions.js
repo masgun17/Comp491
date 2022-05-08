@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import {getSuggestionsByAssessmentIdAction} from "../../tool/actions";
+import {getSuggestionsByAssessmentIdAction,getSuggestionsContentAction} from "../../tool/actions";
 import { Modal } from "react-bootstrap";
 
-const Suggestions = ({ assessmentId, modalShowSuggestions, ...props }) => {
+const Suggestions = ({ assessmentId, modalShow, ...props }) => {
   const [suggestions, SetSuggestions] = useState([]);
 
   const getSuggestions = async () => {
@@ -14,6 +14,19 @@ const Suggestions = ({ assessmentId, modalShowSuggestions, ...props }) => {
       ],
     };
     let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData);
+    let suggestionsContent = []
+    //console.log(suggestionsByAssessmentId)
+    for(let sid in suggestionsByAssessmentId){
+      var jsonData2 = {
+        data: [
+          {
+            suggestionId: sid,
+          },
+        ],
+      };
+      //const suggestionContent = await getSuggestionsContentAction(jsonData2);
+      //console.log(suggestionContent)
+    }
     //SetSuggestions(suggestionsByAssessmentId[0]);
   };
 
@@ -21,7 +34,7 @@ const Suggestions = ({ assessmentId, modalShowSuggestions, ...props }) => {
     setTimeout(() => {
       getSuggestions();
     }, 100);
-  }, [modalShowSuggestions]);
+  }, [modalShow]);
 
   return (
     <Modal {...props} size="l" centered>
@@ -34,7 +47,7 @@ const Suggestions = ({ assessmentId, modalShowSuggestions, ...props }) => {
         }}
       >
         <h1 style={{ "align-content": "center", "text-align": "center" }}>
-          Önerileriniz{" "}
+          Önerileriniz {assessmentId}
         </h1>
       </div>
     </Modal>

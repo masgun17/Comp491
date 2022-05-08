@@ -163,17 +163,16 @@ class AssessmentSession():
 
 
     @classmethod
-    def get_suggestions_by_assessmentId(cls, assessmentId, first_n=None):
+    def get_suggestions_by_assessmentId(cls, assessmentId):
         conn = connection.cursor()
         items = []
         result_code = False
         try:
             if assessmentId is not None :
-                items = conn.execute(f"select Suggestions from AssessmentSession where Id = '{assessmentId}'").fetchall()
+                items = conn.execute(f"select Suggestions from AssessmentSession where Id = {assessmentId}").fetchall()
                 if items is not None and len(items) > 0:
                     result_code = True
-                    if first_n is not None:
-                        items = items[:first_n]
+                    
         except Exception as e:
             print(e)
         finally:
@@ -182,7 +181,27 @@ class AssessmentSession():
 
 
 
-
+    @classmethod
+    def save_suggestionIds(cls, assessmentSesison_id, suggestionIds):
+        conn = connection.cursor()
+        result_code = False
+        if assessmentSesison_id is not None and suggestionIds is not None and len(suggestionIds)>0:
+            try:
+                conn.execute(f"""
+                    update AssessmentSession set
+                       Suggestions = '{suggestionIds}'
+                    where Id = {assessmentSesison_id}
+                       """)
+                result_code = True
+                conn.commit()
+            except Exception as e:
+                print(e)
+            finally:
+                conn.close()
+                return result_code
+        else:
+            print(len(assessmentSesison_item))
+            return result_code, None
 
 """
 result_code1, one_item = AssessmentSession.has_item(2)
