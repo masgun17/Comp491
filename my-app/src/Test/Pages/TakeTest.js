@@ -202,7 +202,7 @@ const TakeTest = () => {
         ],
       };
       uploadUserAnswersAction(jsonData);
-      //localStorage.clear();
+      localStorage.clear();
       setCompleted(true);
     }, 300);
   };
