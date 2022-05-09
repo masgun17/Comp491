@@ -36,4 +36,6 @@ export default {
     getAllAssessments: '/getAllAssessments',
     getAllAnswers: '/getAllAnswers',
     evaluate: '/evaluate',
+    getSuggestionsByAssessmentId: '/getSuggestionsByAssessmentId',
+    getSuggestionsContent: '/getSuggestionsContent',
 };

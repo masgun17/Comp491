@@ -1,10 +1,12 @@
 const PartInformation = ({ partInfo, ...props }) => {
   // TODO: Styling
   return (
-    <div>
-      Part Name : {partInfo[1]} <br />
-      Part Id: {partInfo[0]} <br />
-      Part Score Limit: {partInfo[2]} <br />
+    <div style={{"font-size":"40px", "text-align":"center"}}>
+     <b> {partInfo[1]}</b>  <br />
+     <hr></hr>
+      {/* Part Id: {partInfo[0]} <br />
+      Part Score Limit: {partInfo[2]} <br /> */}
+      {partInfo[2]} <br />
     </div>
   );
 };

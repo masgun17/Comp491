@@ -1,6 +1,7 @@
 import { LocalDining } from "@material-ui/icons";
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useContext } from "react";
 import "../Styles/Checkbox.css";
+import { FontSizeContext } from "../../Helper/Context";
 
 export default function Checkbox({ filled, content, select, load }) {
   // Clickable is sent FROM parent, filled is sent TO parent, content is sent FROM parent
@@ -9,6 +10,7 @@ export default function Checkbox({ filled, content, select, load }) {
   // useEffect(async () => {
   //   filled(true);
   // }, [checked]);
+  const { fontSize, setFontSize } = useContext(FontSizeContext);
 
   function handleClick() {
     // setChecked(!filled);
@@ -21,8 +23,8 @@ export default function Checkbox({ filled, content, select, load }) {
   }, []);
 
   return (
-    <div className="checkboxContainer">
-      <button
+    <div className="checkboxContainer" style={{"font-size":fontSize}}>
+      <button style={{"font-size":fontSize}}
         className={filled ? "filledCheckboxButton" : "checkboxButton"}
         onClick={() => {
           handleClick();

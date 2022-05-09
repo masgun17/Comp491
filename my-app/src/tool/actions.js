@@ -373,3 +373,23 @@ export const evaluateAction = async (data) => {
     console.log(error);
   }
 }
+
+export const getSuggestionsByAssessmentIdAction = async (data) => {
+  try {
+    const result = await services.getSuggestionsByAssessmentIdService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getSuggestionsByAssessmentIdAction");
+    console.log(error);
+  }
+}
+
+export const getSuggestionsContentAction = async (data) => {
+  try {
+    const result = await services.getSuggestionsContentService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getSuggestionsContentAction");
+    console.log(error);
+  }
+}

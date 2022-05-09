@@ -1,3 +1,4 @@
+from ast import For
 import json
 import urllib
 from xml.etree.ElementTree import tostring
@@ -860,6 +861,33 @@ def getAllAnswers():
         print(e)
         return 'Bad Request Exception'
 
+@app.route("/getSuggestionsContent",  methods=['GET', 'POST']) 
+def getSuggestionsContent():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        suggestionId = parameters['suggestionId']
+        data = []
+        result_code, suggestion = Suggestions.get_suggestion_description_by_id(suggestionId)
+        #print(suggestion)
+        if result_code:
+            # line = dict()
+
+            # for row in answers:
+            #     qID.append(row[2])
+            #     userAnswers.append(row[3])
+                
+            # line["qID"]=qID
+            # line["userAnswers"]=userAnswers
+            # data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
 @app.route("/evaluate",  methods=['GET', 'POST'])
 def Evaluate():
     try:
@@ -886,21 +914,60 @@ def Evaluate():
         partScores["Cholesterol"] = eval.Cholesterol(anslist)
         partScores["Diabetes"] = eval.Diabetes(anslist)
 
-
+        suggestionIds = []
         # if score is less than PartScore Limit Suggestions will be assigned to AssessmentSession
         assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
         if partScores["Agesex"] > 20:
-            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
+            result_code_agesex, suggestionIdAgeSex = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
         else:
             assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
-            result_code, suggestionIds = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
+            result_code_agesex, suggestionIdAgeSex = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
+        if result_code_agesex:
+            suggestionIds.append(suggestionIdAgeSex[0][0])
 
+        if partScores["Education"] > 6:
+            result_code_education, suggestionIdEducation = Suggestions.has_item_by_column("SuggestionCode", "Education - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_education, suggestionIdEducation = Suggestions.has_item_by_column("SuggestionCode", "Education - Good")
+        if result_code_education:
+            suggestionIds.append(suggestionIdEducation[0][0])
+
+        if partScores["BMI"] > 30:
+            result_code_bmi, suggestionIdBMI = Suggestions.has_item_by_column("SuggestionCode", "BMI - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_bmi, suggestionIdBMI = Suggestions.has_item_by_column("SuggestionCode", "BMI - Good")
+        if result_code_bmi:
+            suggestionIds.append(suggestionIdBMI[0][0])
+
+        if partScores["Cholesterol"] > 30:
+            result_code_cholesterol, suggestionIdCholesterol = Suggestions.has_item_by_column("SuggestionCode", "Cholesterol - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_cholesterol, suggestionIdCholesterol = Suggestions.has_item_by_column("SuggestionCode", "Cholesterol - Good")
+        if result_code_cholesterol:
+            suggestionIds.append(suggestionIdCholesterol[0][0])
+
+        if partScores["Diabetes"] > 2:
+            result_code_diabetes, suggestionIddiabetes = Suggestions.has_item_by_column("SuggestionCode", "Diabetes - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_diabetes, suggestionIddiabetes = Suggestions.has_item_by_column("SuggestionCode", "Diabetes - Good")
+        if result_code_diabetes:
+            suggestionIds.append(suggestionIddiabetes[0][0])
+
+        print(suggestionIds)
         if suggestionIds is not None and len(suggestionIds):
-            for suggestionId in suggestionIds:
-                assessmentSessionItem[2] = json.dumps(json.loads(assessmentSessionItem[2]).append(suggestionId))
-                AssessmentSession.update_item(assessmentSessionId, assessmentSessionItem[1:])
+            suggestions = json.dumps(suggestionIds, ensure_ascii=False)
+            AssessmentSession.save_suggestionIds(assessmentSessionId, suggestions)
 
-        return json.dumps(partScores)
+        suggestions2 = []
+        for sid in suggestionIds:
+            result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid)
+            if result_code2:
+                suggestions2.append(suggestion[0][0])
+        return json.dumps(suggestions2)
     except Exception as e:
         print(e)
         print(request)
@@ -909,6 +976,34 @@ def Evaluate():
     print(errList)
     return json.dumps("Answers are uploaded for Evaluate")
 
-
+@app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) 
+def getSuggestionsByAssessmentId():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        assessmentId = parameters['assessmentId']
+        data = []
+        result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId)
+        print(type(suggestionsIds[0][0]))
+        print(suggestionsIds[0][0])
+        suggestionsIds = suggestionsIds[0][0][1:-1]
+        suggestionsIdsArray = suggestionsIds.split(",")
+        print(type(suggestionsIdsArray))
+        print(suggestionsIdsArray)
+        suggestions = []
+        if result_code:
+            for sid in suggestionsIdsArray:
+                sid_int = int(sid.strip())
+                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int)
+                if result_code2:
+                    suggestions.append(suggestion[0][0])
+                
+            return json.dumps(suggestions)
+        else:
+            return json.dumps(suggestions)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 app.run()
