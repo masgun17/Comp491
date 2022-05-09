@@ -369,11 +369,18 @@ def submitNewPassword():
 @app.route("/createAssessmentSession",  methods=['GET', 'POST'])
 def createAssessmentSession():
     try:
+        import uuid
+        uuid_surname = uuid.uuid4()
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
         UserId = parameters['UserId']
-
+        if UserId is None or UserId < 1:
+            Users.add_item([1, "Anonim", uuid_surname, "Anonim", "Anonim", "Anonim", 1])
+            result_code_2, new_anonim_user = Users.has_item_by_column("Surname", uuid_surname)
+            if result_code_2 and new_anonim_user is not None:
+                new_anonim_user_id = new_anonim_user[0]
+                UserId = new_anonim_user_id
         result_code = AssessmentSession.add_item(UserId)
         if result_code:
             result, item = AssessmentSession.get_last()
