@@ -62,7 +62,15 @@ const Profile = () => {
   }));
 
   function createData(id, name, surname, phone, email, date) {
-    return { id, name, surname, phone, email, date };
+    console.log(typeof(name));
+    if(name==="Anonim"){
+      surname = name;
+      return { id, name, surname, phone, email, date };
+
+    }else{
+      return { id, name, surname, phone, email, date };
+
+    }
   }
 
   useEffect(async () => {

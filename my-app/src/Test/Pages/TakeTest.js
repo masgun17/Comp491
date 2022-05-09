@@ -178,9 +178,8 @@ const TakeTest = () => {
 
   const saveToDb = async () => {
     let sessionId = currentAssessmentSession;
-    if (id !== null && id !== "") {
-      sessionId = await createAssessmentSession();
-    }
+    sessionId = await createAssessmentSession();
+    
 
     setTimeout(() => {
       const arr = [];
@@ -203,7 +202,7 @@ const TakeTest = () => {
         ],
       };
       uploadUserAnswersAction(jsonData);
-      localStorage.clear();
+      //localStorage.clear();
       setCompleted(true);
     }, 300);
   };
