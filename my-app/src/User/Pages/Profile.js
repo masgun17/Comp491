@@ -18,6 +18,8 @@ import { getAssessmentsAction, getAllAssessmentsAction, saveDataAsExcelAction } 
 import React, { useState, useEffect, useContext } from "react";
 import { Assessment, AssessmentSharp } from "@material-ui/icons";
 import { CSVDownload } from 'react-csv';
+import ExportCSV from "../Components/ExportCSV";
+
 
 const Profile = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -27,6 +29,7 @@ const Profile = () => {
   const [buttonIndex, setButtonIndex] = useState(0);
   const [chosenAssessmentId, setChosenAssessmentId] = useState(null);
   const { fontSize, setFontSize } = useContext(FontSizeContext);
+
 
   let userName = sessionStorage.getItem('userName');
   let userSurname = sessionStorage.getItem('userSurname');
@@ -47,10 +50,14 @@ const Profile = () => {
     {label: "answer", key: "answer"},
   ]
   const [excelData, setExcelData] = React.useState([]);
+  const [excelStart, setExcelStart] = useState(false);
 
   async function saveDataAsExcel(){
     const save = await saveDataAsExcelAction();
+    console.log(save);
     setExcelData(save);
+    setExcelStart(true);
+    setExcelStart(false);
   }
 
   const csvLink = {
@@ -85,6 +92,7 @@ const Profile = () => {
 
   useEffect(async () => {
     await createRows();
+    // saveDataAsExcel();
   }, []);
 
   async function createRows() {
@@ -111,6 +119,7 @@ const Profile = () => {
     setRows(temprows);
   }
 
+  
   return (
     
     <div className="ProfileLayout">
@@ -177,12 +186,24 @@ const Profile = () => {
         <button class="btn btn-success" style={{"float":"right"}}
         onClick={() => {
           saveDataAsExcel();
-        }}>  <CSVDownload
+
+
+        }}>  
+        {excelStart  &&
+     
+      <CSVDownload
         headers={headersExcel}
         data={excelData}
         target="_blank"
-        />Verileri Excel'e Aktar</button>
-
+        />
+        
+        }Verileri CSV'ye Aktar</button>
+         
+         <ExportCSV
+            csvData={excelData}
+            fileName="Patient_Records_xlsx"
+          />
+  
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
