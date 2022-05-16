@@ -200,6 +200,26 @@ class Answer():
             conn.close()
             return result_code, len(items)
 
+    @classmethod
+    def get_average_by_questionId(cls, questionId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        runningSum=0
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+                for item in items:
+                    answer = int(item[3])
+                    runningSum += answer
+            # print(items)    
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, runningSum
+
 """
 result_code1, one_item = Users.has_item(2)
 result_code1, all_items = Users.has_item_by_column("KvkkCheck",1)

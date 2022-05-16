@@ -1015,26 +1015,20 @@ def getAnswerPercentage():
         data = a['data']
         parameters = data[0]
         Request = parameters['dict']
-        # QuestionId = parameters['QuestionId']
-        # AnswerList = parameters['AnswerList']
 
         data = []
         line1 = dict()
         for req in Request.items():
-            # print(req)
-            # print(req[0])
-            # print(req[1])
-
             QuestionId = req[0]
             Answers = req[1]
-
             inlineData = []
+
+            try:
+                resultCode, totalCount = Answer.get_count_by_questionId(QuestionId)
+            except Exception as e:
+                print("Exception on reading totalCount")
+
             if len(Answers) != 0:
-                try:
-                    resultCode, totalCount = Answer.get_count_by_questionId(QuestionId)
-                except Exception as e:
-                    print("Exception on reading totalCount")
-                
                 if resultCode:
                     line2 = dict()
                     for answer in Answers:
@@ -1048,41 +1042,22 @@ def getAnswerPercentage():
                             errList.append(errItem)
                     inlineData.append(line2)
             
+            else: 
+                if resultCode:
+                    try:
+                        resultCode2, runningSum = Answer.get_average_by_questionId(QuestionId)
+                        if resultCode2:
+                            inlineData.append(runningSum/totalCount)
+                    except Exception as e:
+                        print("Exception on reading runningSum")
+            
             line1[QuestionId] = inlineData
         return json.dumps(line1)
-
-            
-            
-
-        # data=[]
-
-        # try:
-        #     resultCode, totalCount = Answer.get_count_by_questionId(QuestionId)
-        # except Exception as e:
-        #     errItem = [e,QuestionId]
-        #     errList.append(errItem)
-
-        # if resultCode:
-        #     for answer in AnswerList:
-        #         try:
-        #             resultCode2, answerCount = Answer.get_count_by_questionId_and_answer(QuestionId, answer)
-        #             if resultCode2:
-        #                 line = dict()
-        #                 line[answer] = answerCount/totalCount
-        #                 data.append(line)
-
-        #         except Exception as e:
-        #             errItem = [e,QuestionId,answer]
-        #             errList.append(errItem)
-        #     return json.dumps(data)
             
     except Exception as e:
         print(e)
         print(request)
         return 'Bad Request Exception'
-    print("Total error count: ", len(errList))
-    print(errList)
-    return json.dumps("Answer percentages are fetched for QuestionId: " )
 
 
 app.run()

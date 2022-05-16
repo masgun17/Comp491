@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getAllQuestionsAction, getAnswerPercentageAction } from "../../tool/actions";
+import {
+  getAllQuestionsAction,
+  getAnswerPercentageAction,
+} from "../../tool/actions";
 
 const Statistics = () => {
   const [questions, setQuestions] = useState([]);
@@ -10,15 +13,14 @@ const Statistics = () => {
     setQuestions(result);
 
     let dict = {};
-    result.forEach(element => {
+    result.forEach((element) => {
       let ansArr = [];
-      if(element[4] === "multi-select") {
-        JSON.parse(element[5]).forEach(answer => {
-          ansArr.push(answer)
+      if (element[4] === "multi-select") {
+        JSON.parse(element[5]).forEach((answer) => {
+          ansArr.push(answer);
         });
       }
-      // dict.push({element[0]: ansArr})
-      dict[element[0]] = ansArr
+      dict[element[0]] = ansArr;
     });
     setqIDandAnswers(dict);
   };
@@ -31,18 +33,15 @@ const Statistics = () => {
 
   const [percentageDict, setPercentageDict] = useState();
 
-  const getAnswerPercentages = async () => {  
-    if(qIDandAnswers) {
+  const getAnswerPercentages = async () => {
+    if (qIDandAnswers) {
       var jsonData = {
-        data: [
-          {dict: qIDandAnswers}
-        ]
-      }
+        data: [{ dict: qIDandAnswers }],
+      };
       const a = await getAnswerPercentageAction(jsonData);
-      // console.log(a);
       setPercentageDict(a);
     }
-  }
+  };
 
   useEffect(async () => {
     setTimeout(() => {
@@ -53,19 +52,19 @@ const Statistics = () => {
   return (
     // <h1 style={{ "margin-top": "10%" }}>Statistics</h1>
     <div style={{ "margin-top": "150px" }}>
-      {questions.map((e,i) => (
+      {questions.map((e, i) => (
         <>
-          <div>
-            {e[2]}
-          </div>
-          {e[4] === "multi-select" &&   JSON.parse(e[5]).map((answer,index) => (
-            <div>
-              &nbsp;&nbsp;&nbsp;&nbsp;{answer}
-              {/* {percentageDict && console.log(percentageDict[e[0]][0][answer])} */}
-              {percentageDict && 
-              percentageDict[e[0]][0][answer]}
-            </div>
-          ))}
+          <div>{e[2]}</div>
+          {e[4] === "multi-select" ?
+            (JSON.parse(e[5]).map((answer, index) => (
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;{answer}
+                {percentageDict &&
+                  percentageDict[e[0]][0][answer]}
+              </div>
+            )))  : <> 
+            {percentageDict && percentageDict[e[0]][0]} 
+            </>}
         </>
       ))}
     </div>
