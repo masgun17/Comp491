@@ -24,6 +24,7 @@ from dal.model_images_info_page import ImagesInfoPage
 from dal.model_images_risk_page import ImagesRiskPage
 from dal.model_videos import Videos
 from dal.model_answer import Answer
+import pandas as pd
 
 app = Flask("comp491")
 
@@ -1046,8 +1047,10 @@ def getAnswerPercentage():
                 if resultCode:
                     try:
                         resultCode2, runningSum = Answer.get_average_by_questionId(QuestionId)
+                        resultCode3, counts = Answer.get_binned_averages(QuestionId)
                         if resultCode2:
                             inlineData.append(runningSum/totalCount)
+                            inlineData.append(counts.to_json())
                     except Exception as e:
                         print("Exception on reading runningSum")
             
