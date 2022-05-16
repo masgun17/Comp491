@@ -134,6 +134,25 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
+
+    @classmethod
+    def getAllDataAsExcel(cls):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"""select AssessmentSession.Id, AddDate, Users.Name, Users.Surname,Users.Email, Users.Phone,  QuestionText, Options, UserAnswer from [Comp491].[dbo].[AssessmentSession] join [Comp491].[dbo].[Answer] on AssessmentSession.Id = Answer.AssessmentSessionId
+  join Question on Question.Id=Answer.QuestionId join Users on Users.Id=AssessmentSession.UserId""").fetchall()
+            if items is not None and len(items) > 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, items
+
+
+
 """
 result_code1, one_item = AssessmentSession.has_item(2)
 result_code1, all_items = AssessmentSession.has_item_by_column("UserId",1)

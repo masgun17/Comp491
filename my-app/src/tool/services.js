@@ -187,4 +187,11 @@ export const uploadUserAnswersService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.getAllAnswers,data).then(resolve).catch(reject);
   });
+
+  export const saveDataAsExcelService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.saveDataAsExcel).then(resolve).catch(reject);
+  });
+  
+
   

@@ -14,9 +14,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { getAssessmentsAction, getAllAssessmentsAction } from "../../tool/actions";
+import { getAssessmentsAction, getAllAssessmentsAction, saveDataAsExcelAction } from "../../tool/actions";
 import React, { useState, useEffect, useContext } from "react";
 import { Assessment, AssessmentSharp } from "@material-ui/icons";
+import { CSVDownload } from 'react-csv';
 
 const Profile = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -34,7 +35,29 @@ const Profile = () => {
   let userTypeId = sessionStorage.getItem('userTypeId');
   let userId = sessionStorage.getItem('userId');
   const [rows, setRows] = React.useState([]);
+  const headersExcel = [
+    {label: "id", key: "id"},
+    {label: "date", key: "date"},
+    {label: "name", key: "name"},
+    {label: "surname", key: "surname"},
+    {label: "email", key: "email"},
+    {label: "phone", key: "phone"},
+    {label: "question", key: "question"},
+    {label: "options", key: "options"},
+    {label: "answer", key: "answer"},
+  ]
+  const [excelData, setExcelData] = React.useState([]);
 
+  async function saveDataAsExcel(){
+    const save = await saveDataAsExcelAction();
+    setExcelData(save);
+  }
+
+  const csvLink = {
+    fileName: "patientRecords.csv",
+    headers: headersExcel,
+    data: excelData,
+  }
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.primary.dark,
@@ -89,6 +112,7 @@ const Profile = () => {
   }
 
   return (
+    
     <div className="ProfileLayout">
       <div className="ProfileDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
         <h1 style={{ "font-size": fontSize * 2 }}>Profil</h1>
@@ -145,12 +169,20 @@ const Profile = () => {
       <div className="PreviousTest" style={{ "grid-row-start": "3", "font-size": fontSize, "line-height": "2" }}>
         <div className="ProfileDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
           {userTypeId === '3' ? (
-            <h1 style={{ "font-size": fontSize * 2 }}>Hastaların Test Bilgileri</h1>
-
+            <h1 style={{ "font-size": fontSize * 2}}>Hastaların Test Bilgileri</h1> 
           ) : (
             <h1 style={{ "font-size": fontSize * 2 }}>Önceki Test Bilgilerim</h1>
           )}
         </div>
+        <button class="btn btn-success" style={{"float":"right"}}
+        onClick={() => {
+          saveDataAsExcel();
+        }}>  <CSVDownload
+        headers={headersExcel}
+        data={excelData}
+        target="_blank"
+        />Verileri Excel'e Aktar</button>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>

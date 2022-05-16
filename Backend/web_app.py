@@ -884,7 +884,32 @@ def Evaluate():
     print(errList)
     return json.dumps("Answers are uploaded for Evaluate")
 
-
+@app.route("/saveDataAsExcel",  methods=['GET', 'POST'])
+def saveDataAsExcel():
+    try:
+        data = []
+        result_code, excelData = AssessmentSession.getAllDataAsExcel()
+        print(excelData[0])
+        if result_code:
+            for row in excelData:
+                line = dict()
+                line["id"] = row[0]
+                line["date"] = row[1].strftime("%H:%M:%S, %d/%m/%Y")
+                line["name"] = row[2]
+                line["surname"] = row[3]
+                line["email"] = row[4]
+                line["phone"] = row[5]
+                line["question"] = row[6]
+                line["options"] = row[7]
+                line["answer"] = row[8]
+                data.append(line)
+            #print(excelData)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 
 
 app.run()

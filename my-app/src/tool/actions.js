@@ -373,3 +373,15 @@ export const evaluateAction = async (data) => {
     console.log(error);
   }
 }
+
+
+export const saveDataAsExcelAction = async () => {
+  try {
+    const result = await services.saveDataAsExcelService();
+    return result.data
+  } catch (error) {
+    console.log("Error on saveDataAsExcelAction");
+    console.log(error);
+  }
+}
+
