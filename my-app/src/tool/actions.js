@@ -393,3 +393,14 @@ export const getSuggestionsContentAction = async (data) => {
     console.log(error);
   }
 }
+
+export const getAnswerPercentageAction = async (data) => {
+  try {
+    const result = await services.getAnswerPercentageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getAnswerPercentageAction");
+    console.log(error);
+  }
+}
+

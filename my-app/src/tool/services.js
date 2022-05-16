@@ -197,7 +197,12 @@ export const uploadUserAnswersService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.getSuggestionsContent,data).then(resolve).catch(reject);
   });
-  
-  
 
+  export const getAnswerPercentageService = async (data) =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getAnswerPercentage,data).then(resolve).catch(reject);
+  });
+  
+  
+  
   

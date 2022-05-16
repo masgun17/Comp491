@@ -169,6 +169,36 @@ class Answer():
         finally:
             conn.close()
             return result_code, items
+    
+    @classmethod
+    def get_count_by_questionId(cls, questionId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, len(items)
+    
+    @classmethod
+    def get_count_by_questionId_and_answer(cls, questionId, answer):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId} and UserAnswer = '{answer}' ").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, len(items)
 
 """
 result_code1, one_item = Users.has_item(2)

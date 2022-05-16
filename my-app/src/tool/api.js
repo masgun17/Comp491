@@ -38,4 +38,5 @@ export default {
     evaluate: '/evaluate',
     getSuggestionsByAssessmentId: '/getSuggestionsByAssessmentId',
     getSuggestionsContent: '/getSuggestionsContent',
+    getAnswerPercentage: '/getAnswerPercentage',
 };
