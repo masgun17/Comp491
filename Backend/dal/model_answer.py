@@ -5,6 +5,8 @@ from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, Float, \
 from sqlalchemy.dialects.mysql import pymysql
 
 from app_globals import connection
+import pandas as pd
+import numpy as np
 
 class Answer():
     __tablename__ = 'Answer'
@@ -169,6 +171,81 @@ class Answer():
         finally:
             conn.close()
             return result_code, items
+    
+    @classmethod
+    def get_count_by_questionId(cls, questionId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, len(items)
+    
+    @classmethod
+    def get_count_by_questionId_and_answer(cls, questionId, answer):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId} and UserAnswer = '{answer}' ").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, len(items)
+
+    @classmethod
+    def get_average_by_questionId(cls, questionId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        runningSum=0
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+                for item in items:
+                    answer = int(item[3])
+                    runningSum += answer
+            # print(items)    
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, runningSum
+
+    @classmethod
+    def get_binned_averages(cls, questionId):
+        conn = connection.cursor()
+        items = None
+        result_code = False
+        answerArr = []
+        try:
+            items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
+            if items is not None and len(items) >= 0:
+                result_code = True
+                for item in items:
+                    answer = int(item[3])
+                    answerArr.append(answer)
+            # print(items)
+            pd_res = pd.cut(answerArr, bins=3) 
+            print(pd_res.value_counts())
+            # print(pd_res)   
+        except Exception as e:
+            print(e)
+        finally:
+            conn.close()
+            return result_code, pd_res.value_counts()
+
+
 
 """
 result_code1, one_item = Users.has_item(2)

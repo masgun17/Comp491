@@ -3,6 +3,7 @@ import CreateNewAdmin from '../Components/CreateNewAdmin';
 import CreateNewSuperAdmin from '../Components/CreateNewSuperAdmin';
 import ChangePassword from '../Components/ChangePassword';
 import PreviousTestAnswers from '../Components/PreviousTestAnswers';
+import Suggestions from '../Components/Suggestions';
 
 import "../Styles/Profile.css";
 import "../Styles/User.css";
@@ -20,15 +21,19 @@ import { Assessment, AssessmentSharp } from "@material-ui/icons";
 import { CSVDownload } from 'react-csv';
 import ExportCSV from "../Components/ExportCSV";
 
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const [modalShow4, setModalShow4] = useState(false);
+  const [modalShow5, setModalShow5] = useState(false);
   const [buttonIndex, setButtonIndex] = useState(0);
   const [chosenAssessmentId, setChosenAssessmentId] = useState(null);
   const { fontSize, setFontSize } = useContext(FontSizeContext);
+  const [showTable, setShowTable] = useState(false);
+  const navigate = useNavigate();
 
 
   let userName = sessionStorage.getItem('userName');
@@ -39,25 +44,24 @@ const Profile = () => {
   let userId = sessionStorage.getItem('userId');
   const [rows, setRows] = React.useState([]);
   const headersExcel = [
-    {label: "id", key: "id"},
-    {label: "date", key: "date"},
-    {label: "name", key: "name"},
-    {label: "surname", key: "surname"},
-    {label: "email", key: "email"},
-    {label: "phone", key: "phone"},
-    {label: "question", key: "question"},
-    {label: "options", key: "options"},
-    {label: "answer", key: "answer"},
+    { label: "id", key: "id" },
+    { label: "date", key: "date" },
+    { label: "name", key: "name" },
+    { label: "surname", key: "surname" },
+    { label: "email", key: "email" },
+    { label: "phone", key: "phone" },
+    { label: "question", key: "question" },
+    { label: "options", key: "options" },
+    { label: "answer", key: "answer" },
   ]
   const [excelData, setExcelData] = React.useState([]);
   const [excelStart, setExcelStart] = useState(false);
 
-  async function saveDataAsExcel(){
+  async function saveDataAsExcel() {
     const save = await saveDataAsExcelAction();
     console.log(save);
     setExcelData(save);
-    setExcelStart(true);
-    setExcelStart(false);
+
   }
 
   const csvLink = {
@@ -87,12 +91,20 @@ const Profile = () => {
   }));
 
   function createData(id, name, surname, phone, email, date) {
-    return { id, name, surname, phone, email, date };
+    console.log(typeof (name));
+    if (name === "Anonim") {
+      surname = name;
+      return { id, name, surname, phone, email, date };
+
+    } else {
+      return { id, name, surname, phone, email, date };
+
+    }
   }
 
   useEffect(async () => {
     await createRows();
-    // saveDataAsExcel();
+    saveDataAsExcel();
   }, []);
 
   async function createRows() {
@@ -115,17 +127,18 @@ const Profile = () => {
         temprows.push(createData(assessments[i]["id"], userName, userSurname, userPhone, userEmail, assessments[i]["date"]));
       }
     }
-
+    if (temprows.length > 0) {
+      setShowTable(true);
+    } else {
+      setShowTable(false);
+    }
     setRows(temprows);
   }
 
-  
+
   return (
-    
+
     <div className="ProfileLayout">
-      <div className="ProfileDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
-        <h1 style={{ "font-size": fontSize * 2 }}>Profil</h1>
-      </div>
       <div className="ProfileDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "2" }}>
         <form className="form" style={{ "font-size": fontSize }}>
           <div className="innerForm" style={{ "align-self": "flex-start", "font-size": fontSize }}>
@@ -175,141 +188,154 @@ const Profile = () => {
           null
         )}
       </div>
+
       <div className="PreviousTest" style={{ "grid-row-start": "3", "font-size": fontSize, "line-height": "2" }}>
         <div className="ProfileDiv1" style={{ "grid-row-start": "1", "font-size": fontSize }}>
           {userTypeId === '3' ? (
-            <h1 style={{ "font-size": fontSize * 2}}>Hastaların Test Bilgileri</h1> 
+            <h1 style={{ "font-size": fontSize * 2 }}>Hastaların Test Bilgileri</h1>
           ) : (
-            <h1 style={{ "font-size": fontSize * 2 }}>Önceki Test Bilgilerim</h1>
+            <h1 style={{ "font-size": fontSize * 2, "margin-top": "5%", "margin-bottom": "2%" }}>Önceki Test Bilgilerim<hr></hr></h1>
           )}
         </div>
-        <button class="btn btn-success" style={{"float":"right"}}
-        onClick={() => {
-          saveDataAsExcel();
+        {userTypeId === '3' ? (
+        <>
+        <button class="btn btn-success" style={{ "float": "right" }}
+          onClick={() => {
+            setExcelStart(true);
+          }}>
+          
+          {excelStart &&
+            <CSVDownload
+              headers={headersExcel}
+              data={excelData}
+              target="_blank"
+            />
 
+          }Verileri CSV'ye Aktar</button>
 
-        }}>  
-        {excelStart  &&
-     
-      <CSVDownload
-        headers={headersExcel}
-        data={excelData}
-        target="_blank"
+        <ExportCSV
+          csvData={excelData}
+          fileName="Patient_Records"
         />
-        
-        }Verileri CSV'ye Aktar</button>
-         
-         <ExportCSV
-            csvData={excelData}
-            fileName="Patient_Records_xlsx"
-          />
-  
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                {userTypeId === '3' ? (
-
-                  <StyledTableCell >Id</StyledTableCell>
-                ) : (
-                  null
-                )}
-                {userTypeId === '3' ? (
-
-                  <StyledTableCell align="center">İsim</StyledTableCell>
-                ) : (
-                  null
-                )}
-                {userTypeId === '3' ? (
-
-                  <StyledTableCell align="center">Soyisim</StyledTableCell>
-                ) : (
-                  null
-                )}
-                {userTypeId === '3' ? (
-                  <StyledTableCell align="center">Telefon</StyledTableCell>
-                ) : (
-                  null
-                )}
-                {userTypeId === '3' ? (
-                  <StyledTableCell align="center">Email</StyledTableCell>
-                ) : (
-                  null
-                )}
-                <StyledTableCell align="center">Tarih</StyledTableCell>
-                <StyledTableCell align="center">Test Cevapları</StyledTableCell>
-                <StyledTableCell align="center">Öneriler</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <StyledTableRow key={row.name}>
+        </>
+         ) : (
+          null
+        )}
+        {showTable ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
                   {userTypeId === '3' ? (
 
-                    <StyledTableCell component="th" scope="row">
-                      {row.id}
-                    </StyledTableCell>
+                    <StyledTableCell >Id</StyledTableCell>
                   ) : (
                     null
                   )}
                   {userTypeId === '3' ? (
 
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">İsim</StyledTableCell>
                   ) : (
                     null
                   )}
                   {userTypeId === '3' ? (
 
-                    <StyledTableCell align="center">{row.surname}</StyledTableCell>
+                    <StyledTableCell align="center">Soyisim</StyledTableCell>
                   ) : (
                     null
                   )}
                   {userTypeId === '3' ? (
-                    <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                    <StyledTableCell align="center">Telefon</StyledTableCell>
                   ) : (
                     null
                   )}
                   {userTypeId === '3' ? (
-                    <StyledTableCell align="center">{row.email}</StyledTableCell>
+                    <StyledTableCell align="center">Email</StyledTableCell>
                   ) : (
                     null
                   )}
-                  <StyledTableCell align="center">{row.date}</StyledTableCell>
-                  {userTypeId === '3' ? (
-                    <StyledTableCell align="center">
-                      <button class="btn btn-secondary"
-                        onClick={() => { setModalShow4(true); setChosenAssessmentId(rows[index]["id"]); }}>
-                        Cevaplar
-                      </button>
-                    </StyledTableCell>
-                  ) : (
-                    <StyledTableCell align="center">
-                      <button class="btn btn-secondary"
-                        onClick={() => { setModalShow4(true); setChosenAssessmentId(rows[index]["id"]); }}>
-                        Cevaplarım
-                      </button>
-                    </StyledTableCell>
-                  )}
-                  {userTypeId === '3' ? (
+                  <StyledTableCell align="center">Tarih</StyledTableCell>
+                  <StyledTableCell align="center">Test Cevapları</StyledTableCell>
+                  <StyledTableCell align="center">Öneriler</StyledTableCell>
+                </TableRow>
+              </TableHead>
 
-                    <StyledTableCell align="center">
-                      <button class="btn btn-secondary"
-                        onClick={() => { setModalShow2(true); }}>Öneriler
-                      </button>
-                    </StyledTableCell>
-                  ) : (
-                    <StyledTableCell align="center">
-                      <button class="btn btn-secondary"
-                        onClick={() => { setModalShow2(true); }}>Önerilerim
-                      </button>
-                    </StyledTableCell>
-                  )}
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <StyledTableRow key={row.name}>
+                    {userTypeId === '3' ? (
+
+                      <StyledTableCell component="th" scope="row">
+                        {row.id}
+                      </StyledTableCell>
+                    ) : (
+                      null
+                    )}
+                    {userTypeId === '3' ? (
+
+                      <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    ) : (
+                      null
+                    )}
+                    {userTypeId === '3' ? (
+
+                      <StyledTableCell align="center">{row.surname}</StyledTableCell>
+                    ) : (
+                      null
+                    )}
+                    {userTypeId === '3' ? (
+                      <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                    ) : (
+                      null
+                    )}
+                    {userTypeId === '3' ? (
+                      <StyledTableCell align="center">{row.email}</StyledTableCell>
+                    ) : (
+                      null
+                    )}
+                    <StyledTableCell align="center">{row.date}</StyledTableCell>
+                    {userTypeId === '3' ? (
+                      <StyledTableCell align="center">
+                        <button class="btn btn-secondary"
+                          onClick={() => { setModalShow4(true); setChosenAssessmentId(rows[index]["id"]); }}>
+                          Cevaplar
+                        </button>
+                      </StyledTableCell>
+                    ) : (
+                      <StyledTableCell align="center">
+                        <button class="btn btn-secondary"
+                          onClick={() => { setModalShow4(true); setChosenAssessmentId(rows[index]["id"]); }}>
+                          Cevaplarım
+                        </button>
+                      </StyledTableCell>
+                    )}
+                    {userTypeId === '3' ? (
+
+                      <StyledTableCell align="center">
+                        <button class="btn btn-secondary"
+                          onClick={() => { setModalShow5(true); setChosenAssessmentId(rows[index]["id"]); }}>Öneriler
+                        </button>
+                      </StyledTableCell>
+                    ) : (
+                      <StyledTableCell align="center">
+                        <button class="btn btn-secondary"
+                          onClick={() => { setModalShow5(true); setChosenAssessmentId(rows[index]["id"]); }}>Önerilerim
+                        </button>
+                      </StyledTableCell>
+                    )}
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <div className="ProfileDiv3" style={{ "font-size": fontSize, "margin-top": "2%" }} >
+            <label htmlFor="text" style={{ "font-size": fontSize, "margin-right": "2%", "text-align": "center" }}>Daha önceden çözmüş olduğunuz bir test bulunmamaktadır. </label>
+            <button class="btn btn-outline-dark btn-lg" style={{ "font-size": fontSize }} onClick={() => { navigate("/testInformation"); }}>Testi Çözmek için Tıklayınız.</button>
+          </div>
+        )}
       </div>
+
       <div>
         <div>
           <PreviousTestAnswers
@@ -318,6 +344,17 @@ const Profile = () => {
             show={modalShow4}
             onHide={() => {
               setModalShow4(false);
+              setChosenAssessmentId(null);
+            }}
+          />
+        </div>
+        <div>
+          <Suggestions
+            assessmentId={chosenAssessmentId}
+            modalShow={modalShow5}
+            show={modalShow5}
+            onHide={() => {
+              setModalShow5(false);
               setChosenAssessmentId(null);
             }}
           />

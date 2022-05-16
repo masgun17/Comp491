@@ -61,7 +61,7 @@ const ShowTest = () => {
       data: [
         {
           PartName: name,
-          ScoreLimit: limit,
+          PartDescription: limit,
         },
       ],
     };
@@ -222,8 +222,8 @@ const ShowTest = () => {
               <input type="text" id="partName" placeholder="string" />
             </label>
             <label>
-              ScoreLimit:
-              <input type="text" id="scoreLimit" placeholder="int" />
+              PartDescription:
+              <input type="text" id="scoreLimit" placeholder="string" />
             </label>
             <button
               onClick={() => {

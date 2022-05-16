@@ -1,3 +1,4 @@
+from ast import For
 import json
 import urllib
 from xml.etree.ElementTree import tostring
@@ -12,6 +13,7 @@ from sqlalchemy import create_engine, text
 import pyodbc
 from dal.model_assessment_session import AssessmentSession
 from dal.model_question import Question
+from dal.model_suggestions import Suggestions
 from dal.model_part import Part
 from dal import hashingPassword
 from dal import sendingEmail
@@ -22,6 +24,7 @@ from dal.model_images_info_page import ImagesInfoPage
 from dal.model_images_risk_page import ImagesRiskPage
 from dal.model_videos import Videos
 from dal.model_answer import Answer
+import pandas as pd
 
 app = Flask("comp491")
 
@@ -91,9 +94,9 @@ def createPart():
         data = a['data']
         parameters = data[0]
         PartName = parameters['PartName']
-        ScoreLimit = int(parameters['ScoreLimit'])
+        PartDescription = parameters['PartDescription']
 
-        result_code = Part.add_item([PartName, ScoreLimit])
+        result_code = Part.add_item([PartName, PartDescription])
         if result_code:
             return 'Part added Successfully'
         else:
@@ -149,7 +152,7 @@ def createQuestion():
         parameters = data[0]
         PartId = int(parameters['PartId'])
         QuestionText = parameters['QuestionText']
-        Weight = float(parameters['Weight'])
+        Weight = parameters['Weight']
         QuestionType = parameters['QuestionType']
         Options = json.dumps(parameters['Options'], ensure_ascii=False)
 
@@ -368,11 +371,18 @@ def submitNewPassword():
 @app.route("/createAssessmentSession",  methods=['GET', 'POST'])
 def createAssessmentSession():
     try:
+        import uuid
+        uuid_surname = uuid.uuid4()
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
         UserId = parameters['UserId']
-
+        if UserId is None or UserId=="":
+            Users.add_item([1, "Anonim", uuid_surname, "Anonim", "Anonim", "Anonim", "Anonim", 1])
+            result_code_2, new_anonim_user = Users.has_item_by_column("Surname", uuid_surname)
+            if result_code_2 and new_anonim_user is not None:
+                new_anonim_user_id = new_anonim_user[0][0]
+                UserId = new_anonim_user_id
         result_code = AssessmentSession.add_item(UserId)
         if result_code:
             result, item = AssessmentSession.get_last()
@@ -851,6 +861,34 @@ def getAllAnswers():
     except Exception as e:
         print(e)
         return 'Bad Request Exception'
+
+@app.route("/getSuggestionsContent",  methods=['GET', 'POST']) 
+def getSuggestionsContent():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        suggestionId = parameters['suggestionId']
+        data = []
+        result_code, suggestion = Suggestions.get_suggestion_description_by_id(suggestionId)
+        #print(suggestion)
+        if result_code:
+            # line = dict()
+
+            # for row in answers:
+            #     qID.append(row[2])
+            #     userAnswers.append(row[3])
+                
+            # line["qID"]=qID
+            # line["userAnswers"]=userAnswers
+            # data.append(line)
+            return json.dumps(data)
+        else:
+            return json.dumps(data)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
 @app.route("/evaluate",  methods=['GET', 'POST'])
 def Evaluate():
     try:
@@ -859,6 +897,7 @@ def Evaluate():
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
+        assessmentSessionId = parameters['AssessmentSessionId']
         questionAnswerList = parameters['AnswerList']
         anslist = {}
         partScores = {}
@@ -875,7 +914,61 @@ def Evaluate():
         partScores["BMI"] = eval.BMI(anslist)
         partScores["Cholesterol"] = eval.Cholesterol(anslist)
         partScores["Diabetes"] = eval.Diabetes(anslist)
-        return json.dumps(partScores)
+
+        suggestionIds = []
+        # if score is less than PartScore Limit Suggestions will be assigned to AssessmentSession
+        assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+        if partScores["Agesex"] > 20:
+            result_code_agesex, suggestionIdAgeSex = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_agesex, suggestionIdAgeSex = Suggestions.has_item_by_column("SuggestionCode", "Agesex - Good")
+        if result_code_agesex:
+            suggestionIds.append(suggestionIdAgeSex[0][0])
+
+        if partScores["Education"] > 6:
+            result_code_education, suggestionIdEducation = Suggestions.has_item_by_column("SuggestionCode", "Education - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_education, suggestionIdEducation = Suggestions.has_item_by_column("SuggestionCode", "Education - Good")
+        if result_code_education:
+            suggestionIds.append(suggestionIdEducation[0][0])
+
+        if partScores["BMI"] > 30:
+            result_code_bmi, suggestionIdBMI = Suggestions.has_item_by_column("SuggestionCode", "BMI - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_bmi, suggestionIdBMI = Suggestions.has_item_by_column("SuggestionCode", "BMI - Good")
+        if result_code_bmi:
+            suggestionIds.append(suggestionIdBMI[0][0])
+
+        if partScores["Cholesterol"] > 30:
+            result_code_cholesterol, suggestionIdCholesterol = Suggestions.has_item_by_column("SuggestionCode", "Cholesterol - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_cholesterol, suggestionIdCholesterol = Suggestions.has_item_by_column("SuggestionCode", "Cholesterol - Good")
+        if result_code_cholesterol:
+            suggestionIds.append(suggestionIdCholesterol[0][0])
+
+        if partScores["Diabetes"] > 2:
+            result_code_diabetes, suggestionIddiabetes = Suggestions.has_item_by_column("SuggestionCode", "Diabetes - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_diabetes, suggestionIddiabetes = Suggestions.has_item_by_column("SuggestionCode", "Diabetes - Good")
+        if result_code_diabetes:
+            suggestionIds.append(suggestionIddiabetes[0][0])
+
+        print(suggestionIds)
+        if suggestionIds is not None and len(suggestionIds):
+            suggestions = json.dumps(suggestionIds, ensure_ascii=False)
+            AssessmentSession.save_suggestionIds(assessmentSessionId, suggestions)
+
+        suggestions2 = []
+        for sid in suggestionIds:
+            result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid)
+            if result_code2:
+                suggestions2.append(suggestion[0][0])
+        return json.dumps(suggestions2)
     except Exception as e:
         print(e)
         print(request)
@@ -909,6 +1002,92 @@ def saveDataAsExcel():
             return json.dumps(data)
     except Exception as e:
         print(e)
+        return 'Bad Request Exception'
+        
+@app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) 
+def getSuggestionsByAssessmentId():
+    try:
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        assessmentId = parameters['assessmentId']
+        data = []
+        result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId)
+        print(type(suggestionsIds[0][0]))
+        print(suggestionsIds[0][0])
+        suggestionsIds = suggestionsIds[0][0][1:-1]
+        suggestionsIdsArray = suggestionsIds.split(",")
+        print(type(suggestionsIdsArray))
+        print(suggestionsIdsArray)
+        suggestions = []
+        if result_code:
+            for sid in suggestionsIdsArray:
+                sid_int = int(sid.strip())
+                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int)
+                if result_code2:
+                    suggestions.append(suggestion[0][0])
+                
+            return json.dumps(suggestions)
+        else:
+            return json.dumps(suggestions)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
+
+
+@app.route("/getAnswerPercentage",  methods=['GET', 'POST'])
+def getAnswerPercentage():
+    try:
+        errList = []
+        a = json.loads(request.data)
+        data = a['data']
+        parameters = data[0]
+        Request = parameters['dict']
+
+        data = []
+        line1 = dict()
+        for req in Request.items():
+            QuestionId = req[0]
+            Answers = req[1]
+            inlineData = []
+
+            try:
+                resultCode, totalCount = Answer.get_count_by_questionId(QuestionId)
+            except Exception as e:
+                print("Exception on reading totalCount")
+
+            if len(Answers) != 0:
+                if resultCode:
+                    line2 = dict()
+                    for answer in Answers:
+                        try:
+                            resultCode2, answerCount = Answer.get_count_by_questionId_and_answer(QuestionId, answer)
+                            if resultCode2:
+                                line2[answer] = answerCount/totalCount
+
+                        except Exception as e:
+                            errItem = [e,QuestionId,answer]
+                            errList.append(errItem)
+                    inlineData.append(line2)
+            
+            else: 
+                if resultCode:
+                    try:
+                        resultCode2, runningSum = Answer.get_average_by_questionId(QuestionId)
+                        resultCode3, counts = Answer.get_binned_averages(QuestionId)
+                        if resultCode2:
+                            inlineData.append(runningSum/totalCount)
+                            inlineData.append(counts.to_json())
+                            inlineData.append(totalCount)
+                    except Exception as e:
+                        print("Exception on reading runningSum")
+            
+            line1[QuestionId] = inlineData
+        return json.dumps(line1)
+            
+    except Exception as e:
+        print(e)
+        print(request)
         return 'Bad Request Exception'
 
 

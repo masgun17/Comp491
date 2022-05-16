@@ -385,3 +385,33 @@ export const saveDataAsExcelAction = async () => {
   }
 }
 
+export const getSuggestionsByAssessmentIdAction = async (data) => {
+  try {
+    const result = await services.getSuggestionsByAssessmentIdService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getSuggestionsByAssessmentIdAction");
+    console.log(error);
+  }
+}
+
+export const getSuggestionsContentAction = async (data) => {
+  try {
+    const result = await services.getSuggestionsContentService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getSuggestionsContentAction");
+    console.log(error);
+  }
+}
+
+export const getAnswerPercentageAction = async (data) => {
+  try {
+    const result = await services.getAnswerPercentageService(data);
+    return result.data
+  } catch (error) {
+    console.log("Error on getAnswerPercentageAction");
+    console.log(error);
+  }
+}
+

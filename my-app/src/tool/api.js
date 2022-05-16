@@ -37,4 +37,7 @@ export default {
     getAllAnswers: '/getAllAnswers',
     evaluate: '/evaluate',
     saveDataAsExcel: '/saveDataAsExcel',
+    getSuggestionsByAssessmentId: '/getSuggestionsByAssessmentId',
+    getSuggestionsContent: '/getSuggestionsContent',
+    getAnswerPercentage: '/getAnswerPercentage',
 };
