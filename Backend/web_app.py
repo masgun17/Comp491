@@ -1051,6 +1051,7 @@ def getAnswerPercentage():
                         if resultCode2:
                             inlineData.append(runningSum/totalCount)
                             inlineData.append(counts.to_json())
+                            inlineData.append(totalCount)
                     except Exception as e:
                         print("Exception on reading runningSum")
             
