@@ -4,6 +4,7 @@ import CreateNewSuperAdmin from '../Components/CreateNewSuperAdmin';
 import ChangePassword from '../Components/ChangePassword';
 import PreviousTestAnswers from '../Components/PreviousTestAnswers';
 import Suggestions from '../Components/Suggestions';
+import { Button } from "react-bootstrap";
 
 import "../Styles/Profile.css";
 import "../Styles/User.css";
@@ -198,8 +199,8 @@ const Profile = () => {
           )}
         </div>
         {userTypeId === '3' ? (
-        <>
-        <button class="btn btn-success" style={{ "float": "right" }}
+        <div style={{display:"flex"}}>
+        <Button id="CSVButton" variant="warning" style={{ marginRight: "auto" }}
           onClick={() => {
             setExcelStart(true);
           }}>
@@ -211,13 +212,14 @@ const Profile = () => {
               target="_blank"
             />
 
-          }Verileri CSV'ye Aktar</button>
+
+          }Verileri CSV'ye Aktar</Button>
 
         <ExportCSV
           csvData={excelData}
           fileName="Patient_Records"
         />
-        </>
+        </div>
          ) : (
           null
         )}

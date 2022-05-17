@@ -57,7 +57,7 @@ const ExportCSV = ({ csvData, fileName, wscols }) => {
 
   return (
     <Button
-      variant="warning"
+      variant="warning" style={{ marginLeft: "auto" }}
       onClick={e => exportToCSV(csvData, fileName, wscols)}
     >
       Verileri Excel'e Aktar
