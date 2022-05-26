@@ -118,12 +118,11 @@ const Signup = () => {
                                     }} />
                             {isOpen && <Approve
                                 content={<>
-                                <b>Sözleşme</b>
-                                <p>Disclaimer
-c
-You may provide consent for us to use your Personal Information and responses for educational and research purposes. 
-
-You further understand and agree that the research tool is not meant, nor intended to be, a substitute for professional, medical, or psychiatric advice and that by accessing the research tool you agree to hold harmless the ANU and the Centre in relation to the responses you provide and the results of the research tool's assessment.</p>
+                                <b>Gizlilik</b>
+                                <p>Türk toplumunda demans ile ilişkili yaşam tarzı risklerinin belirlenmesi kapsamında yapılan bu çalışmada sizden kayıt esnasında istenen e-posta adresiniz veya bilgilerin asla araştırma amacı dışında kullanılmayacağını belirtmek isteriz. 
+Bu web-sitesinde sizin yaşam şeklinize yönelik demans riski oluşturabilecek bazı sorular sorulmaktadır. Bu sorularla ilgili verilen cevaplar yalnızca araştırma amacıyla kullanılacak olup gizliliği ve kişilerin mahremiyeti etik kurallar çerçevesinde sağlanacaktır. 
+Kişisel yanıtlarınızdan sonra verilen tavsiyeler profesyonel ve tıbbi tavsiyenin yerine geçmediğini kabul ederek çalışmaya katılmaya onay verdiğinizi kabul etmeniz gerekmektedir. 
+</p>
                                 </>}
                                 handleClose={toggleApprove}
                             />}
