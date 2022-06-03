@@ -1069,7 +1069,7 @@ def getAnswerPercentage():
                             errItem = [e,QuestionId,answer]
                             errList.append(errItem)
                     inlineData.append(line2)
-            
+
             else: 
                 if resultCode:
                     try:
@@ -1081,7 +1081,7 @@ def getAnswerPercentage():
                             inlineData.append(totalCount)
                     except Exception as e:
                         print("Exception on reading runningSum")
-            
+            inlineData.append(totalCount)
             line1[QuestionId] = inlineData
         return json.dumps(line1)
             

@@ -4,13 +4,16 @@ import "../Styles/AddQuestion.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSearchParams } from "react-router-dom";
 import { createQuestionAction } from "../../tool/actions";
+import { toast } from 'react-toastify';
 
 const AddQuestion = ({ partId, ...props }) => {
+  
   const [freeText, setFreeText] = useState(true);
   const [optionNo, setOptionNo] = useState(0);
   const [options, setOptions] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [weight, setWeight] = useState(0);
+  toast.configure()
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -50,6 +53,10 @@ const AddQuestion = ({ partId, ...props }) => {
     };
     const a = await createQuestionAction(jsonData);
     console.log(a);
+    if (a === 'Question added Successfully') {
+      toast.success('Soru Başarıyla Eklendi!',
+        { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+    }
 
   }
 
@@ -68,7 +75,7 @@ const AddQuestion = ({ partId, ...props }) => {
       }}
     >
       <div className="modal-grid">
-        <h className="modal-header">Add a New Question</h>
+        <h className="modal-header">Yeni Soru Ekle</h>
         <div className="modal-question-type">
           <Dropdown className="modal-dropdown">
             <Dropdown.Toggle className="modal-toggle">
@@ -102,7 +109,7 @@ const AddQuestion = ({ partId, ...props }) => {
           <input
             className="questionWeight"
             id='questionWeight'
-            placeholder="Sorunun ağırlığını giriniz..."
+            placeholder="Sorunun algoritma değişken adını giriniz..."
             onChange={(e) => {
               setWeight(e);
             }}
@@ -114,7 +121,7 @@ const AddQuestion = ({ partId, ...props }) => {
             <input
               id="optionNo"
               className="optionNo"
-              placeholder="Eklemek istediğiniz soru şıkkı sayısını giriniz..."
+              placeholder="Eklemek istediğiniz soru şıkkı sayısını giriniz... (Sayıyı yazıktan sonra enter tuşuna basınız)"
               onKeyDown={handleKeyDown}
             />
           )}
@@ -128,7 +135,11 @@ const AddQuestion = ({ partId, ...props }) => {
             ))}
         </div>
 
-        <button className="add-question" onClick={createQuestion} >Add Question</button>
+        {/* <button className="add-question" onClick={createQuestion} >Soru Ekle</button> */}
+        <div class="modal-footer">
+          <button type="button" className="add-question" onClick={createQuestion}>Soru Ekle</button>
+          <button type="button" class="add-question" data-dismiss="modal" onClick={props.onHide}>Kapat</button>
+        </div>
       </div>
     </Modal>
   );

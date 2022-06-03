@@ -117,10 +117,6 @@ const ShowTest = () => {
           <div className="partHeader">
             <h2>{e[1]}</h2>
             <div className="partButtons">
-              <button
-                className="partEditButton"
-                onClick={(val) => console.log("clicked")}
-              />
               <button 
                 className="partDeleteButton" 
                 onClick={async () => {deletePart(e[0]);}}
@@ -140,10 +136,6 @@ const ShowTest = () => {
                   <div className="questionDetailsTopRow">
                     <div style={{ "margin-left": "10px" }}>{element[2]}</div>
                     <div className="questionButtonLayout" onClick={(val) => {}}>
-                      <button
-                        className="editButton"
-                        onClick={(val) => console.log("clicked")}
-                      />
                       <button 
                         className="deleteButton" 
                         onClick={() => deleteQuestion(element[0])}
@@ -170,10 +162,6 @@ const ShowTest = () => {
                 >
                   <div style={{ "margin-left": "10px" }}>{element[2]}</div>
                   <div className="questionButtonLayout">
-                    <button
-                      className="editButton"
-                      onClick={(val) => console.log("clicked")}
-                    />
                     <button 
                       className="deleteButton" 
                       onClick={() => deleteQuestion(element[0])}
@@ -183,7 +171,7 @@ const ShowTest = () => {
               )
             ) : null
           )}
-          <button
+          <button class = "btn btn-primary btn-lg btn-block"
             // className="addQuestionButton"
             // Update onClick function such that it will open a modal content structure
             onClick={() => {
@@ -192,49 +180,49 @@ const ShowTest = () => {
             }}
             style={{ "margin-top": "10px" }}
           >
-            Add Question
+            Soru Ekle
           </button>
         </div>
       ))}
 
       <div className="addPartButtonDiv">
-        <button
-          className="addPartButton"
+        <button className = "btn btn-primary btn-lg btn-block"
           // Update onClick function such that it will open a modal content structure
           onClick={() => {
             setShowAddNewPart(!showAddNewPart);
           }}
-          style={{ "margin-top": "10px" }}
+          style={{ "margin-top": "10px", "margin-bottom":"10px" }}
         >
-          Add a New Part
+          Yeni Part Ekle
         </button>
       </div>
 
       {showAddNewPart ? (
         <div className="AddPartDiv">
           <div className="AddPartInfoText">
-            Here you can add a new part for the test
+            Buradan yeni part ekleyebilirsiniz!
           </div>
 
           <div>
             <label>
-              PartName:
-              <input type="text" id="partName" placeholder="string" />
+              Part Adı:
+              <input type="text" id="partName" placeholder="Part Adı"  style={{ "margin-right": "10px" }} />
             </label>
             <label>
-              PartDescription:
-              <input type="text" id="scoreLimit" placeholder="string" />
+              Part Açıklaması:
+              <input type="text" id="scoreLimit" placeholder="Part Açıklaması" style={{ "margin-right": "10px" }}/>
             </label>
-            <button
+            <button class = "btn btn-primary btn-block"
               onClick={() => {
                 createPart(
                   document.getElementById("partName").value,
                   document.getElementById("scoreLimit").value
                 );
-                
+                setShowAddNewPart(!showAddNewPart);
+
               }}
             >
-              Create
+              Ekle
             </button>
           </div>
         </div>
@@ -247,6 +235,7 @@ const ShowTest = () => {
           getQuestions();
         }}
         partId={selectedPartId}
+        //handleClose={handleModalClose()}
       />
     </div>
   );

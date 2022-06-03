@@ -12,6 +12,7 @@ const Statistics = () => {
   const getQuestions = async () => {
     let result = await getAllQuestionsAction();
     setQuestions(result);
+    console.log(result);
 
     let dict = {};
     result.forEach((element) => {
@@ -41,6 +42,8 @@ const Statistics = () => {
       };
       const a = await getAnswerPercentageAction(jsonData);
       setPercentageDict(a);
+      console.log(a)
+
     }
   };
 
@@ -76,10 +79,27 @@ const Statistics = () => {
 
   return (
     <div style={{ "margin-top": "150px" }}>
+      <div className="statQuestionWrapper">
+          <div className="statQuestionContent"> 
+              <b>Testi Cevaplayan Toplam Kişi Sayısı: </b>
+          </div>
+      </div>
       {questions.map((e, i) => (
         <div className="statQuestionWrapper">
-          <div className="statQuestionContent">{e[2]}</div>
+          <div className="statQuestionContent">{e[2]}
+          </div>
           {e[4] === "multi-select" ? (
+            <div  style={{ margin: "5px", fontSize: "18px", color:"black" }}>
+              <b>Soruyu Cevaplayan Toplam Kişi Sayısı: </b>
+              <span>{percentageDict && percentageDict[e[0]][1]}</span>
+            </div>
+          ) : (
+            <div  style={{ fontSize: "18px", color:"black" }}>
+            <b>Soruyu Cevaplayan Toplam Kişi Sayısı: </b>
+            <span>{percentageDict && percentageDict[e[0]][3]}</span>
+          </div>          )}
+          {e[4] === "multi-select" ? (
+
             JSON.parse(e[5]).map((answer, index) => (
               <div style={{ margin: "5px", fontSize: "18px" }}>
                 <b>{`Seçenek ${index + 1}: `}</b>
@@ -91,7 +111,9 @@ const Statistics = () => {
                 <br />
                 <br />
               </div>
+
             ))
+
           ) : (
             <pre className="statAnswerContent">
               <b className="statHeader">Ortalama Cevap: </b>
@@ -111,16 +133,15 @@ const Statistics = () => {
               <div>
                 {percentageDict
                   ? formatBins(percentageDict[e[0]][1])[0].map((e2, i2) => (
-                      <div className="contentGrid">
-                        <span className="statBin">{`${e2}-${
-                          formatBins(percentageDict[e[0]][1])[1][i2]
+                    <div className="contentGrid">
+                      <span className="statBin">{`${e2}-${formatBins(percentageDict[e[0]][1])[1][i2]
                         }`}</span>
-                        <span className="statVal">
-                          {percentageDict &&
-                            (formatBins(percentageDict[e[0]][1])[2][i2]/percentageDict[e[0]][2]*100 ).toFixed(2)}
-                        </span>
-                      </div>
-                    ))
+                      <span className="statVal">
+                        {percentageDict && 
+                          (formatBins(percentageDict[e[0]][1])[2][i2] / percentageDict[e[0]][2] * 100).toFixed(2)}
+                      </span>
+                    </div>
+                  ))
                   : console.log("jhgj")}
               </div>
             </pre>
