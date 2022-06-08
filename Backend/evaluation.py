@@ -78,7 +78,7 @@ def BMI(anslist):
         height_meters = int(anslist["height_meters"])
         weight_kg = int(anslist["weight_kg"])
 
-        if (age>=18) and (age<=59):
+        if (age>=18) and (age<=120):
             ratio = (weight_kg / (height_meters / 100 * height_meters / 100))
             if ratio <= 25:
                 return 0
@@ -107,12 +107,12 @@ def Cholesterol(anslist):
         cholesterol_level = int(anslist["cholesterol_level"])
         cholesterol = anslist["cholesterol"]
 
-        if age < 60:
+        if age > 60:
             if cholesterol == "Evet":
                 return 3
             elif cholesterol == "Hayır":
                 return 0
-            elif cholesterol_level > 6.5:
+            elif cholesterol_level > 200:
                 return 3
         else:
             # this case is not covered

@@ -926,7 +926,7 @@ def Evaluate():
         if result_code_agesex:
             suggestionIds.append(suggestionIdAgeSex[0][0])
 
-        if partScores["Education"] > 6:
+        if partScores["Education"] > 3:
             result_code_education, suggestionIdEducation = Suggestions.has_item_by_column("SuggestionCode", "Education - Bad")
         else:
             assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
@@ -934,7 +934,7 @@ def Evaluate():
         if result_code_education:
             suggestionIds.append(suggestionIdEducation[0][0])
 
-        if partScores["BMI"] > 30:
+        if partScores["BMI"] > 3:
             result_code_bmi, suggestionIdBMI = Suggestions.has_item_by_column("SuggestionCode", "BMI - Bad")
         else:
             assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
@@ -942,7 +942,7 @@ def Evaluate():
         if result_code_bmi:
             suggestionIds.append(suggestionIdBMI[0][0])
 
-        if partScores["Cholesterol"] > 30:
+        if partScores["Cholesterol"] > 2:
             result_code_cholesterol, suggestionIdCholesterol = Suggestions.has_item_by_column("SuggestionCode", "Cholesterol - Bad")
         else:
             assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
@@ -1063,7 +1063,10 @@ def getAnswerPercentage():
                         try:
                             resultCode2, answerCount = Answer.get_count_by_questionId_and_answer(QuestionId, answer)
                             if resultCode2:
-                                line2[answer] = answerCount/totalCount
+                                if totalCount!=0:
+                                    line2[answer] = answerCount/totalCount
+                                else: 
+                                    line2[answer] = 0
 
                         except Exception as e:
                             errItem = [e,QuestionId,answer]
@@ -1091,4 +1094,17 @@ def getAnswerPercentage():
         return 'Bad Request Exception'
 
 
+@app.route("/getTotalPeopleCount",  methods=['GET', 'POST'])
+def getTotalPeopleCount():
+    try:
+        totalCount = 0
+        result_code, response = AssessmentSession.total_participants()
+        totalCount =response[0][0]
+        if result_code:
+            return json.dumps(totalCount)
+        else:
+            return json.dumps(totalCount)
+    except Exception as e:
+        print(e)
+        return 'Bad Request Exception'
 app.run()

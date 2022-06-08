@@ -40,4 +40,5 @@ export default {
     getSuggestionsByAssessmentId: '/getSuggestionsByAssessmentId',
     getSuggestionsContent: '/getSuggestionsContent',
     getAnswerPercentage: '/getAnswerPercentage',
+    getTotalPeopleCount:'/getTotalPeopleCount',
 };

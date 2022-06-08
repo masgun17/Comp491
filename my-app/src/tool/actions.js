@@ -415,3 +415,14 @@ export const getAnswerPercentageAction = async (data) => {
   }
 }
 
+export const getTotalPeopleCountAction = async () => {
+  try {
+    const result = await services.getTotalPeopleCountService();
+    return result.data
+  } catch (error) {
+    console.log("Error on getAnswerPercentageAction");
+    console.log(error);
+  }
+}
+
+

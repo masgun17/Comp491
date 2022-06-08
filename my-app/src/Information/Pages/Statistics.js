@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import {
   getAllQuestionsAction,
   getAnswerPercentageAction,
+  getTotalPeopleCountAction,
 } from "../../tool/actions";
 import "../Styles/Statistics.css";
 
 const Statistics = () => {
   const [questions, setQuestions] = useState([]);
   const [qIDandAnswers, setqIDandAnswers] = useState();
-
+  const [totalPeopleCount, setTotalPeopleCount] = useState(0);
   const getQuestions = async () => {
     let result = await getAllQuestionsAction();
     setQuestions(result);
@@ -42,7 +43,7 @@ const Statistics = () => {
       };
       const a = await getAnswerPercentageAction(jsonData);
       setPercentageDict(a);
-      console.log(a)
+      console.log(a[16])
 
     }
   };
@@ -52,6 +53,12 @@ const Statistics = () => {
       getAnswerPercentages();
     }, 300);
   }, [qIDandAnswers]);
+
+  useEffect(async() => {
+    const a = await getTotalPeopleCountAction();
+    setTotalPeopleCount(a);
+}, [percentageDict]);
+
 
   function formatBins(string) {
     let result = JSON.parse(string);
@@ -81,7 +88,7 @@ const Statistics = () => {
     <div style={{ "margin-top": "150px" }}>
       <div className="statQuestionWrapper">
           <div className="statQuestionContent"> 
-              <b>Testi Cevaplayan Toplam Kişi Sayısı: </b>
+              <b>Testi Cevaplayan Toplam Kişi Sayısı: </b> {totalPeopleCount}
           </div>
       </div>
       {questions.map((e, i) => (
@@ -95,7 +102,7 @@ const Statistics = () => {
             </div>
           ) : (
             <div  style={{ fontSize: "18px", color:"black" }}>
-            <b>Soruyu Cevaplayan Toplam Kişi Sayısı: </b>
+            <b>Soruyu Cevaplayan Toplam Kişi Sayısı: </b> 
             <span>{percentageDict && percentageDict[e[0]][3]}</span>
           </div>          )}
           {e[4] === "multi-select" ? (
@@ -116,6 +123,7 @@ const Statistics = () => {
 
           ) : (
             <pre className="statAnswerContent">
+             
               <b className="statHeader">Ortalama Cevap: </b>
               <span>
                 {percentageDict && percentageDict[e[0]][0].toFixed(2)}
@@ -131,7 +139,7 @@ const Statistics = () => {
                 </div>
               </div>
               <div>
-                {percentageDict
+                {percentageDict 
                   ? formatBins(percentageDict[e[0]][1])[0].map((e2, i2) => (
                     <div className="contentGrid">
                       <span className="statBin">{`${e2}-${formatBins(percentageDict[e[0]][1])[1][i2]
@@ -144,9 +152,11 @@ const Statistics = () => {
                   ))
                   : console.log("jhgj")}
               </div>
+           
             </pre>
           )}
         </div>
+         
       ))}
     </div>
   );

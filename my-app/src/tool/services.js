@@ -209,6 +209,9 @@ export const uploadUserAnswersService = async (data) =>
     axios.post(API.getAnswerPercentage,data).then(resolve).catch(reject);
   });
   
-  
+  export const getTotalPeopleCountService = async () =>
+  new Promise((resolve, reject) => {
+    axios.post(API.getTotalPeopleCount).then(resolve).catch(reject);
+  });
   
   

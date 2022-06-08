@@ -284,7 +284,7 @@ const TakeTest = () => {
 
   return (
     <div className="testPageLayout">
-      {firstPage && <h1 style={{ "font-size": fontSize * 2 }}>You are about to take the test</h1>}
+      {firstPage && <h1 style={{ "font-size": fontSize * 2 }}>Teste başlamak üzeresiniz!</h1>}
       {/* {completed && <h1 style={{ "font-size": fontSize * 2 }}>Completed the test</h1>} */}
       {completed && suggestionIsDone &&
         suggestions && suggestions.length !== 0 &&
@@ -294,9 +294,9 @@ const TakeTest = () => {
           "align-items": "center",
         }}>
           <h1 style={{ "font-size": fontSize * 2,"align-content": "center", "text-align": "center"  }}>Önerileriniz</h1>
-        <ul style={{ "font-size": fontSize * 1.5 }}>
+        <ul style={{ "font-size": fontSize * 1.5, "text-align": "justify"}}>
           {suggestions && suggestions.length !== 0 &&
-            suggestions.map(suggestion => <li> {suggestion}</li>)}
+            suggestions.map(suggestion => <li> {suggestion}<hr></hr></li>)}
         </ul>
       </div>}
 
