@@ -914,6 +914,7 @@ def Evaluate():
         partScores["BMI"] = eval.BMI(anslist)
         partScores["Cholesterol"] = eval.Cholesterol(anslist)
         partScores["Diabetes"] = eval.Diabetes(anslist)
+        partScores["TBI"] = eval.TBI(anslist)
 
         suggestionIds = []
         # if score is less than PartScore Limit Suggestions will be assigned to AssessmentSession
@@ -957,6 +958,14 @@ def Evaluate():
             result_code_diabetes, suggestionIddiabetes = Suggestions.has_item_by_column("SuggestionCode", "Diabetes - Good")
         if result_code_diabetes:
             suggestionIds.append(suggestionIddiabetes[0][0])
+
+        if partScores["TBI"] > 2:
+            result_code_tbi, suggestionIdTBI = Suggestions.has_item_by_column("SuggestionCode", "TBI - Bad")
+        else:
+            assessmentSessionItem = AssessmentSession.has_item(assessmentSessionId)
+            result_code_tbi, suggestionIdTBI = Suggestions.has_item_by_column("SuggestionCode", "TBI - Good")
+        if result_code_tbi:
+            suggestionIds.append(suggestionIdTBI[0][0])
 
         print(suggestionIds)
         if suggestionIds is not None and len(suggestionIds):
@@ -1078,11 +1087,23 @@ def getAnswerPercentage():
                     try:
                         resultCode2, runningSum = Answer.get_average_by_questionId(QuestionId)
                         resultCode3, counts = Answer.get_binned_averages(QuestionId)
-                        if resultCode2:
+                        print("resultCode2",resultCode2)
+                        print("resultCode3",resultCode3)
+                        print("runningSum",runningSum)
+                        print("counts",counts)
+
+                        if resultCode2 and resultCode3:
+                            print("-----------------")
+                            print(totalCount)
                             inlineData.append(runningSum/totalCount)
+                            print(runningSum/totalCount)
                             inlineData.append(counts.to_json())
+                            print(counts.to_json())
                             inlineData.append(totalCount)
+                            print("-----------------")
+
                     except Exception as e:
+                        print(e)
                         print("Exception on reading runningSum")
             inlineData.append(totalCount)
             line1[QuestionId] = inlineData

@@ -41,9 +41,9 @@ const Suggestions = ({ assessmentId, modalShow, ...props }) => {
           Önerileriniz
         </h1>
         <div>
-          <ul>
+          <ul style={{ "text-align": "justify"}}>
             {suggestions && suggestions.length !== 0 &&
-              suggestions.map(suggestion => <li> {suggestion}</li>)}
+              suggestions.map(suggestion => <li> {suggestion}<hr></hr></li>)}
           </ul>
         </div>
       </div>

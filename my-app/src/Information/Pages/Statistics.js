@@ -43,7 +43,7 @@ const Statistics = () => {
       };
       const a = await getAnswerPercentageAction(jsonData);
       setPercentageDict(a);
-      console.log(a[16])
+      console.log(a)
 
     }
   };
@@ -55,8 +55,8 @@ const Statistics = () => {
   }, [qIDandAnswers]);
 
   useEffect(async() => {
-    const a = await getTotalPeopleCountAction();
-    setTotalPeopleCount(a);
+    const a =  await getTotalPeopleCountAction();
+    setTotalPeopleCount(a);    
 }, [percentageDict]);
 
 
@@ -123,10 +123,10 @@ const Statistics = () => {
 
           ) : (
             <pre className="statAnswerContent">
-             
+             {(percentageDict && percentageDict[e[0]][0]!==0) ? (<> 
               <b className="statHeader">Ortalama Cevap: </b>
               <span>
-                {percentageDict && percentageDict[e[0]][0].toFixed(2)}
+                {percentageDict && percentageDict[e[0]][0]!==0 && percentageDict[e[0]][0].toFixed(2)}
               </span>
               <br />
               {/* <b>{`Cevap Aralığı            Seçilme Yüzdesi`}</b> */}
@@ -139,7 +139,7 @@ const Statistics = () => {
                 </div>
               </div>
               <div>
-                {percentageDict 
+                {(percentageDict && percentageDict[e[0]][0]!==0)
                   ? formatBins(percentageDict[e[0]][1])[0].map((e2, i2) => (
                     <div className="contentGrid">
                       <span className="statBin">{`${e2}-${formatBins(percentageDict[e[0]][1])[1][i2]
@@ -152,7 +152,7 @@ const Statistics = () => {
                   ))
                   : console.log("jhgj")}
               </div>
-           
+              </>):(<>Bu soru daha cevaplanmamıştır.</>)}
             </pre>
           )}
         </div>
