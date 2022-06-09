@@ -9,6 +9,8 @@ import ZoomIn from "@material-ui/icons/ZoomIn";
 import ZoomOut from "@material-ui/icons/ZoomOut";
 import "../Styles/Dashboard.css";
 import ReactDOM from "react-dom";
+import { Modal } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import ImageUploading from "react-images-uploading";
 import {
   saveImageAction,
@@ -26,11 +28,14 @@ const Dashboard = () => {
   const { fontSize, setFontSize } = useContext(FontSizeContext);
   const [font, setFont] = useState(20);
   const [images, setImages] = React.useState([]);
+  const [tempImages, setTempImages] = useState([]);
   const [video1, setVideo1] = React.useState([]);
   const [video2, setVideo2] = React.useState([]);
   const maxNumber = 2;
   const [removeFlag, setRemoveFlag] = useState(false);
   const [updateFlag, setUpdateFlag] = useState(false);
+  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState();
 
   let userTypeId = sessionStorage.getItem("userTypeId");
 
@@ -120,6 +125,10 @@ const Dashboard = () => {
     setUpdateFlag(false);
   }
 
+  function restoreImage() {
+    setImages(tempImages);
+  }
+
   async function removeImage() {
     for (let index = 0; index < 3; index++) {
       if (images[index]) {
@@ -180,7 +189,6 @@ const Dashboard = () => {
     const a = await saveVideoAction(jsonData);
     window.location.reload(false);
   }
-
   return (
     // <h1>Dashboard</h1>;
     <div className="wrapper">
@@ -193,7 +201,7 @@ const Dashboard = () => {
                 name="video1"
                 id="video1"
                 placeholder="Videonun Youtube Linkini Giriniz"
-                style={{ "margin-left": "10%", width: "70%"}}
+                style={{ "margin-left": "10%", width: "70%" }}
               ></input>
               <button
                 style={{ "margin-left": "1%" }}
@@ -336,8 +344,10 @@ const Dashboard = () => {
                     <button
                       className="updateImage"
                       onClick={() => {
-                        onImageRemove(index);
-                        setRemoveFlag(true);
+                        setCurrentIndex(index);
+                        setConfirmDeleteShow(true);
+                        // onImageRemove(index);
+                        // setRemoveFlag(true);
                       }}
                     >
                       Kaldır
@@ -349,6 +359,41 @@ const Dashboard = () => {
                 ) : null}
               </div>
             ))}
+            {confirmDeleteShow && (
+              <Modal
+                centered
+                contentClassName="confirmDeleteModal"
+                // contentClassName="custom-modal-content"
+                // dialogClassName="custom-modal-dialogue"
+                show={confirmDeleteShow}
+              >
+                <div className="confirmText">
+                  Bu resmi silmek istediğinize emin misiniz?
+                </div>
+                <div className="confirmPopup">
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteShow(false);
+                    }}
+                  >
+                    Vazgeç
+                  </button>
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteShow(false);
+                      onImageRemove(currentIndex);
+                      setRemoveFlag(true);
+                    }}
+                  >
+                    Sil
+                  </button>
+                </div>
+              </Modal>
+            )}
           </div>
         )}
       </ImageUploading>
