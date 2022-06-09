@@ -13,6 +13,8 @@ class Images():
     image = Column(String)
     ind = Column(BigInteger)
 
+    ## model_answer and model_assessment_session documents have similar functions with more comments
+
     @classmethod
     def add_item(cls, image_url, index):
         conn = connection.cursor()
@@ -59,7 +61,6 @@ class Images():
         try:
             query_item = conn.execute(f"select * from Images where Id = {image_id}").fetchall()[0]
             if query_item is not None:
-                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
