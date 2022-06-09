@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { FontSizeContext } from "../../Helper/Context";
 import "../Styles/InfoPage.css";
+import { Modal } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import ImageUploading from "react-images-uploading";
 import { saveImageRiskPageAction, getImagesRiskPageAction, updateImageRiskPageAction, deleteImageRiskPageAction, removeAllImagesRiskPageAction , saveVideoAction, getVideosAction} from "../../tool/actions"
 
@@ -12,6 +14,8 @@ const RiskFactorsPage = () => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [video1, setVideo1] = React.useState([]);
   const [video2, setVideo2] = React.useState([]);
+  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState();
   let userTypeId = sessionStorage.getItem('userTypeId')
 
   const onChange = (imageList, addUpdateIndex) => {
@@ -298,7 +302,7 @@ const RiskFactorsPage = () => {
 
                   <div className="image-item__btn-wrapper">
                     <button className="updateImage" onClick={() => { onImageUpdate(index); setUpdateFlag(true) }}>Güncelle</button>
-                    <button className="updateImage" onClick={() => { onImageRemove(index); setRemoveFlag(true) }}>Kaldır</button>
+                    <button className="updateImage" onClick={() => { setCurrentIndex(index); setConfirmDeleteShow(true) }}>Kaldır</button>
                     <button onClick={() => saveImage(image, index)}>Kaydet</button>
 
                   </div>
@@ -307,6 +311,41 @@ const RiskFactorsPage = () => {
                 )}
               </div>
             ))}
+            {confirmDeleteShow && (
+              <Modal
+                centered
+                contentClassName="confirmDeleteModal"
+                // contentClassName="custom-modal-content"
+                // dialogClassName="custom-modal-dialogue"
+                show={confirmDeleteShow}
+              >
+                <div className="confirmText">
+                  Bu resmi silmek istediğinize emin misiniz?
+                </div>
+                <div className="confirmPopup">
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteShow(false);
+                    }}
+                  >
+                    Vazgeç
+                  </button>
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteShow(false);
+                      onImageRemove(currentIndex);
+                      setRemoveFlag(true);
+                    }}
+                  >
+                    Sil
+                  </button>
+                </div>
+              </Modal>
+            )}
           </div>
         )}
       </ImageUploading>
