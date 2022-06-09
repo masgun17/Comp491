@@ -1,5 +1,8 @@
 import * as services from "./services";
 
+// These actions are functions that will be used in our React project. They wait responses from
+// 'Promise's that are passed from services.js and return their results.
+
 export const addNumAction = async (data) => {
   try {
     const result = await services.addNumService(data);
@@ -360,10 +363,6 @@ export const getAllAnswersAction = async (data) => {
   }
 }
 
-
-
-
-
 export const evaluateAction = async (data) => {
   try {
     const result = await services.evaluateService(data);
@@ -373,7 +372,6 @@ export const evaluateAction = async (data) => {
     console.log(error);
   }
 }
-
 
 export const saveDataAsExcelAction = async () => {
   try {

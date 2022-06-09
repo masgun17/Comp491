@@ -1,6 +1,9 @@
 import API from "./api";
 import axios from "axios";
 
+// These services use addresses defined in api.js. They use axios.post or axios.get methods
+// and return 'Promise's. Those 'Promise's are handled in actions.js
+
 export const addNumService = async (data) =>
   new Promise((resolve, reject) => {
     axios.post(API.add, data).then(resolve).catch(reject);
