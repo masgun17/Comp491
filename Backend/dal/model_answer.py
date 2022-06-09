@@ -15,6 +15,7 @@ class Answer():
     QuestionId = Column(BigInteger)
     UserAnswer = Column(String)
 
+    # search for a given id of an Answer entity from database
     @classmethod
     def has_item(cls, answer_id):
         conn = connection.cursor()
@@ -23,7 +24,6 @@ class Answer():
         try:
             query_item = conn.execute(f"select * from Answer where Id = {answer_id}").fetchall()[0]
             if query_item is not None:
-                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
@@ -31,6 +31,7 @@ class Answer():
             conn.close()
             return result_code, query_item
 
+    # search for a given attribute of an Answer entity from database
     @classmethod
     def has_item_by_column(cls, column_name, column_value, first_n=None):
         conn = connection.cursor()
@@ -49,7 +50,7 @@ class Answer():
             conn.close()
             return result_code, items
 
-
+    # search for given multiple attributes of an Answer entity from database
     @classmethod
     def has_item_by_multipple_columns(cls, column_names, column_values, first_n=None):
         conn = connection.cursor()
@@ -61,6 +62,7 @@ class Answer():
                 query = "select * from Answer where " + column_names[0] + " = '" + column_values[0] + "' "
                 for i in range(len(column_names)-1):
                     query = query + " and " + column_names[i] + " = '" + column_values[i] + "' "
+                print(query) # prints final query to before execute
                 items = conn.execute(query).fetchall()
                 if items is not None and len(items) > 0:
                     result_code = True
@@ -72,7 +74,7 @@ class Answer():
             conn.close()
             return result_code, items
 
-
+    # gets all instances from database
     @classmethod
     def get_all(cls):
         conn = connection.cursor()
@@ -251,18 +253,3 @@ class Answer():
                 return result_code, pd_res.value_counts()
 
 
-
-"""
-result_code1, one_item = Users.has_item(2)
-result_code1, all_items = Users.has_item_by_column("KvkkCheck",1)
-
-print(one_item)
-print(all_items)"""
-
-"""## UserType.update_item(2 , ["Admin", 1, 1, 0])
-UserType.add_item(["Admin", 1, 1, 0])
-
-
-
-result_code1, all_items = UserType.has_item_by_column("Role","Aadmin")
-print(all_items)"""

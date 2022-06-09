@@ -13,6 +13,8 @@ class PartScore():
     PartId = Column(BigInteger)
     Score = Column(Integer)
 
+    ## model_answer and model_assessment_session documents have similar functions with more comments
+
     @classmethod
     def has_item(cls, part_score_id):
         conn = connection.cursor()
@@ -21,7 +23,6 @@ class PartScore():
         try:
             query_item = conn.execute(f"select * from PartScore where Id = {part_score_id}").fetchall()[0]
             if query_item is not None:
-                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
@@ -156,17 +157,3 @@ class PartScore():
             return result_code, None
 
 
-"""
-result_code1, one_item = Users.has_item(2)
-result_code1, all_items = Users.has_item_by_column("KvkkCheck",1)
-
-print(one_item)
-print(all_items)"""
-
-"""## UserType.update_item(2 , ["Admin", 1, 1, 0])
-UserType.add_item(["Admin", 1, 1, 0])
-
-
-
-result_code1, all_items = UserType.has_item_by_column("Role","Aadmin")
-print(all_items)"""

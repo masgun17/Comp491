@@ -13,6 +13,7 @@ class ImagesInfoPage():
     image = Column(String)
     ind = Column(BigInteger)
 
+    ## model_answer and model_assessment_session documents have similar functions with more comments
     @classmethod
     def add_item(cls, image_url, index):
         conn = connection.cursor()

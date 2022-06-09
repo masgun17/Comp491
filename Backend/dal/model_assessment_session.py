@@ -13,11 +13,8 @@ class AssessmentSession():
     AddDate = Column(DateTime)
     Suggestions = Column(String)
 
-    """def __init__(self):
-        self.Id = -1
-        self.UserId = -1
-        self.AddDate = '2022-01-01 00:00:00.000'"""
 
+    # search for a given id of an AssessmentSession entity from database
     @classmethod
     def has_item(cls, assessment_id):
         conn = connection.cursor()
@@ -26,7 +23,6 @@ class AssessmentSession():
         try:
             query_item = conn.execute(f"select * from AssessmentSession where Id = {assessment_id}").fetchall()[0]
             if query_item is not None:
-                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
@@ -34,6 +30,7 @@ class AssessmentSession():
             conn.close()
             return result_code, query_item
 
+    # search for a given attribute of an AssessmentSession entity from database
     @classmethod
     def has_item_by_column(cls, column_name, column_value, first_n=None):
         conn = connection.cursor()
@@ -52,6 +49,7 @@ class AssessmentSession():
             conn.close()
             return result_code, items
 
+    # gets all instances from database
     @classmethod
     def get_all(cls):
         conn = connection.cursor()
@@ -66,7 +64,8 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
-    
+
+    # gets last instance from database
     @classmethod
     def get_last(cls):
         conn = connection.cursor()
@@ -82,6 +81,7 @@ class AssessmentSession():
             conn.close()
             return result_code, items[0]
 
+    # inserts a new AssessmentSession entity to database
     @classmethod
     def add_item(cls, UserId):
         conn = connection.cursor()
@@ -121,6 +121,7 @@ class AssessmentSession():
             conn.close()
             return result_code
 
+    # gets all instances from given id
     @classmethod
     def get_all_by_id(cls, userId):
         conn = connection.cursor()
@@ -135,6 +136,7 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
+
 
     @classmethod
     def getAllDataAsExcel(cls):
@@ -151,6 +153,7 @@ class AssessmentSession():
         finally:
             conn.close()
             return result_code, items
+
 
     ## Input will be: Id and (UserId, AddDate, Suggestions)
     @classmethod
@@ -177,7 +180,7 @@ class AssessmentSession():
             print(len(assessmentSesison_item))
             return result_code, None
 
-
+    # returns recommendetion list for a given AssessmentSession
     @classmethod
     def get_suggestions_by_assessmentId(cls, assessmentId):
         conn = connection.cursor()
@@ -196,7 +199,7 @@ class AssessmentSession():
             return result_code, items
 
 
-
+    # saves / updates the recommendetions
     @classmethod
     def save_suggestionIds(cls, assessmentSesison_id, suggestionIds): 
         conn = connection.cursor()

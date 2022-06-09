@@ -18,6 +18,8 @@ class Users():
     KvkkCheck = Column(Boolean)
     AddDate = Column(DateTime)
 
+    ## model_answer and model_assessment_session documents have similar functions with more comments
+
     @classmethod
     def has_item(cls, user_id):
         conn = connection.cursor()
@@ -26,7 +28,6 @@ class Users():
         try:
             query_item = conn.execute(f"select * from Users where Id = {user_id}").fetchall()[0]
             if query_item is not None:
-                ## item = {"Id": query_item[0][0], "UserId": query_item[0][1], "AddDate": query_item[0][2]}
                 result_code = True
         except Exception as e:
             print(e)
@@ -216,16 +217,3 @@ class Users():
             return result_code, items
 
 
-
-"""
-result_code1, one_item = Users.has_item(2)
-result_code1, all_items = Users.has_item_by_column("KvkkCheck",1)
-
-print(one_item)
-print(all_items)"""
-
-"""
-Users.add_item([1, "Mefe deneme2", "yuz2", "deneme@mail", "5442751998", "passdeneme", 1])
-
-result_code1, all_items = Users.has_item_by_column("KvkkCheck",1)
-print(all_items)"""
