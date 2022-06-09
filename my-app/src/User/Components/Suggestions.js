@@ -3,24 +3,23 @@ import { getSuggestionsByAssessmentIdAction, getSuggestionsContentAction } from 
 import { Modal } from "react-bootstrap";
 
 const Suggestions = ({ assessmentId, modalShow, ...props }) => {
-  const [suggestions, SetSuggestions] = useState([]);
+  const [suggestions, SetSuggestions] = useState([]); //Keeping suggestions coming from the backend
 
-  const getSuggestions = async () => {
+  const getSuggestions = async () => { //Getting suggestions given to that assessment 
     if (assessmentId !== null) {
-      var jsonData = {
+      var jsonData = { //request's data
         data: [
           {
             assessmentId: assessmentId,
           },
         ],
       };
-      let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData);
-      console.log(suggestionsByAssessmentId);
-      SetSuggestions(suggestionsByAssessmentId);
+      let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData); //API call for getting suggestions given to that assessment
+      SetSuggestions(suggestionsByAssessmentId); //Setting suggestions to a variable
     }
   };
 
-  useEffect(async () => {
+  useEffect(async () => { //useEffect which will start working when the modal is open.
     setTimeout(() => {
       getSuggestions();
     }, 100);

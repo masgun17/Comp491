@@ -23,26 +23,25 @@ import ExportCSV from "../Components/ExportCSV";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const [modalShow, setModalShow] = useState(false);
-  const [modalShow2, setModalShow2] = useState(false);
-  const [modalShow3, setModalShow3] = useState(false);
-  const [modalShow4, setModalShow4] = useState(false);
-  const [modalShow5, setModalShow5] = useState(false);
-  const [buttonIndex, setButtonIndex] = useState(0);
-  const [chosenAssessmentId, setChosenAssessmentId] = useState(null);
-  const { fontSize, setFontSize } = useContext(FontSizeContext);
-  const [showTable, setShowTable] = useState(false);
+  const [modalShow, setModalShow] = useState(false); //Boolean for showing CreateNewSuperAdmin Modal
+  const [modalShow2, setModalShow2] = useState(false); // Boolean for showing CreateNewAdmin Modal
+  const [modalShow3, setModalShow3] = useState(false); // Boolean for showing ChangePassword Modal
+  const [modalShow4, setModalShow4] = useState(false); // Boolean for showing PreviousTestAnswers Modal
+  const [modalShow5, setModalShow5] = useState(false); // Boolean for showing Suggestions Modal
+  const [chosenAssessmentId, setChosenAssessmentId] = useState(null); //Chosen assessmentId when it buttons clicked in the table
+  const { fontSize, setFontSize } = useContext(FontSizeContext); //To share the font-size of all of the text between the components and pages
+  const [showTable, setShowTable] = useState(false); //If there is no taken assessment, record table will not be shown
   const navigate = useNavigate();
 
 
-  let userName = sessionStorage.getItem('userName');
-  let userSurname = sessionStorage.getItem('userSurname');
-  let userEmail = sessionStorage.getItem('userEmail');
-  let userPhone = sessionStorage.getItem('userPhone');
-  let userTypeId = sessionStorage.getItem('userTypeId');
-  let userId = sessionStorage.getItem('userId');
-  const [rows, setRows] = React.useState([]);
-  const headersExcel = [
+  let userName = sessionStorage.getItem('userName'); //Logged user's name
+  let userSurname = sessionStorage.getItem('userSurname'); //Logged user's surname
+  let userEmail = sessionStorage.getItem('userEmail'); //Logged user's email
+  let userPhone = sessionStorage.getItem('userPhone'); //Logged user's phone number
+  let userTypeId = sessionStorage.getItem('userTypeId'); //Logged user's type id 
+  let userId = sessionStorage.getItem('userId'); //Logged user's id
+  const [rows, setRows] = React.useState([]); //Data shown in the table
+  const headersExcel = [ //Headers of Excel table
     { label: "id", key: "id" },
     { label: "date", key: "date" },
     { label: "name", key: "name" },
@@ -53,12 +52,11 @@ const Profile = () => {
     { label: "options", key: "options" },
     { label: "answer", key: "answer" },
   ]
-  const [excelData, setExcelData] = React.useState([]);
-  const [excelStart, setExcelStart] = useState(false);
+  const [excelData, setExcelData] = React.useState([]); //Data will be used in the excel creation process
+  const [excelStart, setExcelStart] = useState(false); //To start excel creation process
 
-  async function saveDataAsExcel() {
-    const save = await saveDataAsExcelAction();
-    console.log(save);
+  async function saveDataAsExcel() { //Function for saving data as excel
+    const save = await saveDataAsExcelAction(); //API call for getting the data which will be used in excel creation
     setExcelData(save);
 
   }
@@ -68,7 +66,7 @@ const Profile = () => {
     headers: headersExcel,
     data: excelData,
   }
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({ //Construction of the record table 
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.common.white,
@@ -89,9 +87,8 @@ const Profile = () => {
     },
   }));
 
-  function createData(id, name, surname, phone, email, date) {
-    console.log(typeof (name));
-    if (name === "Anonim") {
+  function createData(id, name, surname, phone, email, date) { //Creation row data for the record table
+    if (name === "Anonim") { //If there is an anonim test taker, its name and surname will be shown as Anonim.
       surname = name;
       return { id, name, surname, phone, email, date };
 
@@ -101,13 +98,13 @@ const Profile = () => {
     }
   }
 
-  useEffect(async () => {
+  useEffect(async () => { //Works when the page is loaded for the first time. Record table will be constructed by calling createRows function.
     await createRows();
     saveDataAsExcel();
   }, []);
 
-  async function createRows() {
-    var jsonData = {
+  async function createRows() { //Getting data from the database for the record table
+    var jsonData = { //request's data
       "data": [{
         "UserId": userId
       }]
@@ -115,18 +112,18 @@ const Profile = () => {
     let assessments;
     let temprows = [];
 
-    if (userTypeId === '3') {
-      assessments = await getAllAssessmentsAction();
+    if (userTypeId === '3') { //Super-admin users can see all of the records.
+      assessments = await getAllAssessmentsAction(); //API call for getting all the assessment record.
       for (var i = 0; i < assessments.length; i++) {
         temprows.push(createData(assessments[i]["id"], assessments[i]["name"], assessments[i]["surname"], assessments[i]["phone"], assessments[i]["email"], assessments[i]["date"]));
       }
-    } else {
-      assessments = await getAssessmentsAction(jsonData);
+    } else { //If the user is not a super-admin, they can only see the assessment records of themselves.
+      assessments = await getAssessmentsAction(jsonData); //API call for getting all the assessment record of the user.
       for (var i = 0; i < assessments.length; i++) {
         temprows.push(createData(assessments[i]["id"], userName, userSurname, userPhone, userEmail, assessments[i]["date"]));
       }
     }
-    if (temprows.length > 0) {
+    if (temprows.length > 0) { //If the length of the table is more than one, show the record table
       setShowTable(true);
     } else {
       setShowTable(false);
