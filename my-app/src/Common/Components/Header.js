@@ -7,17 +7,17 @@ import "../Styles/Header.css"
 import { Row, Col, Grid } from 'react-bootstrap';
 
 const Header = (props) => {
-  let userLogged = sessionStorage.getItem('isLogin');
-  let userTypeId = sessionStorage.getItem('userTypeId')
-  const { fontSize, setFontSize } = useContext(FontSizeContext)
+  let userLogged = sessionStorage.getItem('isLogin'); //Whether the user is logged in or not
+  let userTypeId = sessionStorage.getItem('userTypeId') //Getting user's type id
+  const { fontSize, setFontSize } = useContext(FontSizeContext) //To share the font-size of all of the text between the components and pages
 
-  const increaseFont = () => {
+  const increaseFont = () => { //Increasing the font-size of every component from the fontSizeIncrease button
     if (fontSize + 10 < 50) {
       setFontSize(fontSize + 10);
     }
   }
 
-  const decreaseFont = () => {
+  const decreaseFont = () => { //Decreasing the font-size of every component from the fontSizeDecrease button
     if (fontSize - 10 > 10) {
       setFontSize(fontSize - 10);
     }
