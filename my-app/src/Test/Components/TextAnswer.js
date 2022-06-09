@@ -4,13 +4,13 @@ import "../Styles/TextAnswer.css";
 export default function TextAnswer({ answer, questionID }) {
   const [savedAnswer, setSavedAnswer] = useState("");
 
-  useEffect(async () => {
+  useEffect(async () => { // fetch from local storage - if present
     if (localStorage.getItem(questionID)) {
       setSavedAnswer(localStorage.getItem(questionID));
     }
   }, []);
 
-  useEffect(async () => {
+  useEffect(async () => { // when input changes, send it to parent
     answer(savedAnswer);
   }, [savedAnswer])
 

@@ -8,53 +8,53 @@ import { toast } from 'react-toastify';
 
 const AddQuestion = ({ partId, ...props }) => {
   
-  const [freeText, setFreeText] = useState(true);
-  const [optionNo, setOptionNo] = useState(0);
-  const [options, setOptions] = useState([]);
-  const [showOptions, setShowOptions] = useState(false);
-  const [weight, setWeight] = useState(0);
-  toast.configure()
+  const [freeText, setFreeText] = useState(true); // boolean to select whether the question will be free-text question or multi-select question
+  const [optionNo, setOptionNo] = useState(0);  // default number of options for multi-select questions
+  const [options, setOptions] = useState([]);   // array with size of optionNo to hold options
+  const [showOptions, setShowOptions] = useState(false); // boolean, which enables input areas for options
+  const [weight, setWeight] = useState(0);  // not used
+  toast.configure() // used for confirmation popup
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event) => {  // enter key behavior for optionNo area
     if (event.key === "Enter") {
       setOptionNo(event.target.value);
     }
   };
-  useEffect(async () => {
+  useEffect(async () => { // creates an array with size of optionNo, filled with "" as default value
     const arr = Array.from({ length: optionNo }).fill("");
     setOptions(arr);
     setShowOptions(true);
   }, [optionNo]);
 
 
-  async function createQuestion() {
-    const questionText = document.getElementById("questionText").value;
-    const weight = document.getElementById("questionWeight").value;
-    const questionType = freeText ? "free-text" : "multi-select";
+  async function createQuestion() { // main function that sends request to backend via API call to create question with entered values
+    const questionText = document.getElementById("questionText").value; // fetch entered values
+    const weight = document.getElementById("questionWeight").value;// fetch entered values
+    const questionType = freeText ? "free-text" : "multi-select";// fetch entered values
     const optArray = [];
     if (questionType === "multi-select") {
       for (let index = 0; index < optionNo; index++) {
         const opt = document.getElementById(index).value;
         console.log(opt);
-        optArray.push(opt);
+        optArray.push(opt);// fetch entered values
       }
     }
 
     var jsonData = {
       data: [
         {
-          PartId: partId,
-          QuestionText: questionText,
+          PartId: partId, // supplied from Show Test screen
+          QuestionText: questionText, // fetched above
           Weight: weight,
           QuestionType: questionType,
           Options: optArray,
         },
       ],
     };
-    const a = await createQuestionAction(jsonData);
+    const a = await createQuestionAction(jsonData); // API call
     console.log(a);
     if (a === 'Question added Successfully') {
-      toast.success('Soru Başarıyla Eklendi!',
+      toast.success('Soru Başarıyla Eklendi!',  // success popup
         { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
     }
 

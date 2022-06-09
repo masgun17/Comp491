@@ -5,21 +5,15 @@ import { FontSizeContext } from "../../Helper/Context";
 
 export default function Checkbox({ filled, content, select, load }) {
   // Clickable is sent FROM parent, filled is sent TO parent, content is sent FROM parent
-  // const [checked, setChecked] = useState(filled);
 
-  // useEffect(async () => {
-  //   filled(true);
-  // }, [checked]);
   const { fontSize, setFontSize } = useContext(FontSizeContext);
 
-  function handleClick() {
-    // setChecked(!filled);
+  function handleClick() {  // on click behavior, selects the checkbox
     select();
   }
 
-  useEffect(async () => {
+  useEffect(async () => { // initialize function - if present, fetches from local storage, otherwise sets false
     load();
-    // console.log("loaded the checkbox");
   }, []);
 
   return (

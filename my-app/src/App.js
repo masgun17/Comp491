@@ -24,13 +24,7 @@ import { FontSizeContext} from "./Helper/Context";
 
 function App() {
   const [fontSize, setFontSize] = useState(20);
-  const [isLogin, setIsLogin] = useState(false);
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [emailForProfile,setEmailForProfile] = useState("");
-  const [phoneForProfile,setPhoneForProfile] = useState("");
-  const [id, setId] = useState("");
-  const [userTypeId, setUserTypeId] = useState("");
+
   return (
     <FontSizeContext.Provider value={{fontSize, setFontSize}}>
     <BrowserRouter>
@@ -51,7 +45,6 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
        </Routes>
-       {/* <button path="login" element={<Login />} /> */}
     </BrowserRouter>
     </FontSizeContext.Provider>
 
