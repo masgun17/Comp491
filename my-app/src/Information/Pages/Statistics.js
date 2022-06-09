@@ -146,7 +146,7 @@ const Statistics = () => {
                         }`}</span>
                       <span className="statVal">
                         {percentageDict && 
-                          (formatBins(percentageDict[e[0]][1])[2][i2] / percentageDict[e[0]][2] * 100).toFixed(2)}
+                          `%${(formatBins(percentageDict[e[0]][1])[2][i2] / percentageDict[e[0]][2] * 100).toFixed(2)}`}
                       </span>
                     </div>
                   ))

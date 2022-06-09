@@ -192,12 +192,21 @@
   }
   
   .deleteButton {
+    /* background-color: #bb6767; */
+    /* border: #bb6767; */
+    /* border: 1px solid #fff;   */
+    border:none;
+    /* border-radius: 50%; */
+    background-image: url('../../delete.svg');
+    background-repeat:no-repeat;
+    background-size: contain;
     height: 20px;
     width: 20px;
-    background-color: #bb6767;
-    border: #bb6767;
-    border-radius: 50%;
+    background-color: transparent;
     /* display: inline-block; */
+  }
+  .deleteButton:focus{
+    outline: none!important;
   }
   
   .questionButtonLayout {
@@ -228,6 +237,33 @@
     border-radius: 30px;
     padding: 20px;
     max-height: 100px;
+  }
+  .confirmDeleteModal{
+    padding: 4%;
+    height: 200px;
+    border-radius: 20px;
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+  }
+  .confirmModalButton{
+    background-color: #6781bb;
+    border-radius: 10px;
+    border: 2px solid #556c9c;
+    color: #fff;
+    height: 40px;
+    width: 120px;
+    margin-right: 30px;
+    font-size: 18px;
+  }
+  .confirmPopup{
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .confirmText{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;  
   }
   
   

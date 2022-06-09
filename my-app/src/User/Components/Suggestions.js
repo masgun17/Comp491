@@ -38,7 +38,7 @@ const Suggestions = ({ assessmentId, modalShow, ...props }) => {
       >
         
         <h1 style={{ "align-content": "center", "text-align": "center" }}>
-          Önerileriniz
+          Sizin için Önerilerimiz
         </h1>
         <div>
           <ul style={{ "text-align": "justify"}}>

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import AddQuestion from "../Components/AddQuestion";
 import {
   getAllPartsAction,
   getAllQuestionsAction,
@@ -7,7 +10,7 @@ import {
   deletePartAction,
   deleteQuestionAction,
 } from "../../tool/actions";
-import AddQuestion from "../Components/AddQuestion";
+// import AddQuestion from "../Components/AddQuestion";
 import "../Styles/ShowTest.css";
 
 const ShowTest = () => {
@@ -16,12 +19,18 @@ const ShowTest = () => {
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
   const [showAddNewPart, setShowAddNewPart] = useState(false);
+  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
+  const [currentQ, setCurrentQ] = useState('');
 
   const [parts, setParts] = useState([]);
 
   const getParts = async () => {
     let result = await getAllPartsAction();
-    setParts(result.sort((a,b) => {return a[1].localeCompare(b[1])}));
+    setParts(
+      result.sort((a, b) => {
+        return a[1].localeCompare(b[1]);
+      })
+    );
   };
 
   useEffect(async () => {
@@ -31,7 +40,7 @@ const ShowTest = () => {
   const [questions, setQuestions] = useState([]);
   const [isExtended, setIsExtended] = useState([]);
 
-  const getQuestions = async () =>{
+  const getQuestions = async () => {
     let result = await getAllQuestionsAction();
     setQuestions(result);
 
@@ -41,8 +50,7 @@ const ShowTest = () => {
       extended[index] = 0;
     }
     setIsExtended(extended);
-  
-  }
+  };
 
   useEffect(async () => {
     setTimeout(() => {
@@ -71,7 +79,7 @@ const ShowTest = () => {
     await getQuestions();
   };
 
-  const deletePart = async id => {
+  const deletePart = async (id) => {
     var jsonData = {
       data: [
         {
@@ -83,9 +91,9 @@ const ShowTest = () => {
     console.log(a);
     await getParts();
     await getQuestions();
-  }
+  };
 
-  const deleteQuestion = async id => {
+  const deleteQuestion = async (id) => {
     var jsonData = {
       data: [
         {
@@ -97,7 +105,7 @@ const ShowTest = () => {
     console.log(a);
     await getParts();
     await getQuestions();
-  }
+  };
 
   const [show, setShow] = useState(true);
 
@@ -117,9 +125,11 @@ const ShowTest = () => {
           <div className="partHeader">
             <h2>{e[1]}</h2>
             <div className="partButtons">
-              <button 
-                className="partDeleteButton" 
-                onClick={async () => {deletePart(e[0]);}}
+              <button
+                className="partDeleteButton"
+                onClick={async () => {
+                  deletePart(e[0]);
+                }}
               />
             </div>
           </div>
@@ -136,14 +146,13 @@ const ShowTest = () => {
                   <div className="questionDetailsTopRow">
                     <div style={{ "margin-left": "10px" }}>{element[2]}</div>
                     <div className="questionButtonLayout" onClick={(val) => {}}>
-                      <button 
-                        className="deleteButton" 
+                      <button
+                        className="deleteButton"
                         onClick={() => deleteQuestion(element[0])}
                       />
                     </div>
                   </div>
                   <div className="questionDetailsChoicesRow">
-                    <div>Choices:</div>
                     <div className="questionDetailsChoices">
                       {/* TODO: Get choices from db */}
                       {JSON.parse(element[5]).map((choices, index2) => (
@@ -162,16 +171,33 @@ const ShowTest = () => {
                 >
                   <div style={{ "margin-left": "10px" }}>{element[2]}</div>
                   <div className="questionButtonLayout">
-                    <button 
-                      className="deleteButton" 
-                      onClick={() => deleteQuestion(element[0])}
+                    <button
+                      className="deleteButton"
+                      // onClick={() => deleteQuestion(element[0])}
+                      onClick={() => {setConfirmDeleteShow(true); setCurrentQ(element[0]);}}
                     />
                   </div>
                 </div>
               )
             ) : null
           )}
-          <button class = "btn btn-primary btn-lg btn-block"
+          {confirmDeleteShow && (
+            <Modal
+              centered
+              contentClassName="confirmDeleteModal"
+              // contentClassName="custom-modal-content"
+              // dialogClassName="custom-modal-dialogue"
+              show={confirmDeleteShow}
+            >
+              <div className='confirmText'>Bu soruyu silmek istediğinize emin misiniz?</div>
+              <div className="confirmPopup">
+                <button className='confirmModalButton' type="button" onClick={() => {setConfirmDeleteShow(false);}}>Vazgeç</button>
+                <button className='confirmModalButton' type="button" onClick={() => {setConfirmDeleteShow(false); deleteQuestion(currentQ)}}>Sil</button>
+              </div>
+            </Modal>
+          )}
+          <button
+            class="btn btn-primary btn-lg btn-block"
             // className="addQuestionButton"
             // Update onClick function such that it will open a modal content structure
             onClick={() => {
@@ -184,14 +210,14 @@ const ShowTest = () => {
           </button>
         </div>
       ))}
-
       <div className="addPartButtonDiv">
-        <button className = "btn btn-primary btn-lg btn-block"
+        <button
+          className="btn btn-primary btn-lg btn-block"
           // Update onClick function such that it will open a modal content structure
           onClick={() => {
             setShowAddNewPart(!showAddNewPart);
           }}
-          style={{ "margin-top": "10px", "margin-bottom":"10px" }}
+          style={{ "margin-top": "10px", "margin-bottom": "10px" }}
         >
           Yeni Part Ekle
         </button>
@@ -206,20 +232,30 @@ const ShowTest = () => {
           <div>
             <label>
               Part Adı:
-              <input type="text" id="partName" placeholder="Part Adı"  style={{ "margin-right": "10px" }} />
+              <input
+                type="text"
+                id="partName"
+                placeholder="Part Adı"
+                style={{ "margin-right": "10px" }}
+              />
             </label>
             <label>
               Part Açıklaması:
-              <input type="text" id="scoreLimit" placeholder="Part Açıklaması" style={{ "margin-right": "10px" }}/>
+              <input
+                type="text"
+                id="scoreLimit"
+                placeholder="Part Açıklaması"
+                style={{ "margin-right": "10px" }}
+              />
             </label>
-            <button class = "btn btn-primary btn-block"
+            <button
+              class="btn btn-primary btn-block"
               onClick={() => {
                 createPart(
                   document.getElementById("partName").value,
                   document.getElementById("scoreLimit").value
                 );
                 setShowAddNewPart(!showAddNewPart);
-
               }}
             >
               Ekle
@@ -227,7 +263,7 @@ const ShowTest = () => {
           </div>
         </div>
       ) : null}
-      {/* </div> */}
+
       <AddQuestion
         show={modalShow}
         onHide={() => {

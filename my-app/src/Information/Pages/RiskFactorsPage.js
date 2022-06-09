@@ -193,7 +193,7 @@ const RiskFactorsPage = () => {
       <div className="informationPageLayout" style={{ "font-size": fontSize }}>
         <div className="informationPageDiv2" style={{ "grid-row-start": "2", "font-size": fontSize, "line-height": "1.8" }}>
           <h1 style={{ "font-size": fontSize * 1.5 }}>Risk Faktörleri </h1>
-          &emsp;&emsp;&emsp;Risk, risk faktörüne maruz kalmaya bağlı bir sonuç geliştirme olasılığıdır. Uluslararası araştırma literatürünün kapsamlı olarak incelenmesinde, Alzheimer hastalığı için hem risk hem de koruyucu faktörler olduğu belirlenmiştir. Teste dahil edilen risk faktörleri ve koruyucu faktörler, şuana kadar yapılan çalışmalardan elde edilen sonuçlardır. Alzheimer hastalığı için tanımlanmış koruyucu faktörler ve risk faktörleri şunları içerir:
+          Risk, risk faktörüne maruz kalmaya bağlı bir sonuç geliştirme olasılığıdır. Uluslararası araştırma literatürünün kapsamlı olarak incelenmesinde, Alzheimer hastalığı için hem risk hem de koruyucu faktörler olduğu belirlenmiştir. Teste dahil edilen risk faktörleri ve koruyucu faktörler, şuana kadar yapılan çalışmalardan elde edilen sonuçlardır. Alzheimer hastalığı için tanımlanmış koruyucu faktörler ve risk faktörleri şunları içerir:
           <br /><br />
           <div style={{ "align-self": "flex-start" }}>
             <h3 style={{ "font-size": fontSize }}>Koruyucu Faktörler</h3>
