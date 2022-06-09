@@ -198,7 +198,7 @@ class AssessmentSession():
 
 
     @classmethod
-    def save_suggestionIds(cls, assessmentSesison_id, suggestionIds):
+    def save_suggestionIds(cls, assessmentSesison_id, suggestionIds): 
         conn = connection.cursor()
         result_code = False
         if assessmentSesison_id is not None and suggestionIds is not None and len(suggestionIds)>0:
@@ -216,18 +216,16 @@ class AssessmentSession():
                 conn.close()
                 return result_code
         else:
-            print(len(assessmentSesison_item))
             return result_code, None
 
     @classmethod
-    def total_participants(cls):
+    def total_participants(cls): #Getting total number of people who solved the assessment.
         conn = connection.cursor()
         items = []
         result_code = False
         try:
            
             items = conn.execute(f"select count(*) from AssessmentSession").fetchall()
-            print(items)
             if items is not None and len(items) > 0:
                 result_code = True
                     

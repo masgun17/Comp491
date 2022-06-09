@@ -986,7 +986,7 @@ def Evaluate():
     print(errList)
     return json.dumps("Answers are uploaded for Evaluate")
 
-@app.route("/saveDataAsExcel",  methods=['GET', 'POST'])
+@app.route("/saveDataAsExcel",  methods=['GET', 'POST']) #Saving all of the assessments and their answers to an excel.
 def saveDataAsExcel():
     try:
         data = []
@@ -1013,7 +1013,7 @@ def saveDataAsExcel():
         print(e)
         return 'Bad Request Exception'
         
-@app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) 
+@app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) #Getting suggesstions for the assessment
 def getSuggestionsByAssessmentId():
     try:
         a = json.loads(request.data)
@@ -1021,18 +1021,14 @@ def getSuggestionsByAssessmentId():
         parameters = data[0]
         assessmentId = parameters['assessmentId']
         data = []
-        result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId)
-        print(type(suggestionsIds[0][0]))
-        print(suggestionsIds[0][0])
+        result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId) #Getting suggestion Ids of the assessment.
         suggestionsIds = suggestionsIds[0][0][1:-1]
         suggestionsIdsArray = suggestionsIds.split(",")
-        print(type(suggestionsIdsArray))
-        print(suggestionsIdsArray)
         suggestions = []
         if result_code:
             for sid in suggestionsIdsArray:
                 sid_int = int(sid.strip())
-                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int)
+                result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int) #Getting suggestions by suggestion Id.
                 if result_code2:
                     suggestions.append(suggestion[0][0])
                 
@@ -1087,20 +1083,11 @@ def getAnswerPercentage():
                     try:
                         resultCode2, runningSum = Answer.get_average_by_questionId(QuestionId)
                         resultCode3, counts = Answer.get_binned_averages(QuestionId)
-                        print("resultCode2",resultCode2)
-                        print("resultCode3",resultCode3)
-                        print("runningSum",runningSum)
-                        print("counts",counts)
 
                         if resultCode2 and resultCode3:
-                            print("-----------------")
-                            print(totalCount)
                             inlineData.append(runningSum/totalCount)
-                            print(runningSum/totalCount)
                             inlineData.append(counts.to_json())
-                            print(counts.to_json())
                             inlineData.append(totalCount)
-                            print("-----------------")
 
                     except Exception as e:
                         print(e)

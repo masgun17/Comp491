@@ -210,17 +210,11 @@ class Answer():
         runningSum=0
         try:
             items = conn.execute(f"select * from Answer where QuestionId = {questionId}").fetchall()
-            print("denemedeneme---------------------------------------")
-            print(items)
-            if questionId==10018:
-                print("10018---------------------------------------")
-                print(items)
             if items is not None and len(items) > 0:
                 result_code = True
                 for item in items:
                     answer = int(item[3])
                     runningSum += answer
-            # print(items)    
         except Exception as e:
             print(e)
         finally:
@@ -241,13 +235,11 @@ class Answer():
                 for item in items:
                     answer = int(item[3])
                     answerArr.append(answer)
-            # print(items)
                 if len(answerArr)==0:
                     return result_code, 0
                 else:
                     pd_res = pd.cut(answerArr, bins=3) 
                     print(pd_res.value_counts())
-            # print(pd_res)   
         except Exception as e:
             print(e)
             print("get_binned_averages_exception")
