@@ -17,37 +17,37 @@ import {
 } from "../../tool/actions";
 
 const DiseaseInformationPage = () => {
-  const { fontSize, setFontSize } = useContext(FontSizeContext);
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 2;
-  const [removeFlag, setRemoveFlag] = useState(false);
-  const [updateFlag, setUpdateFlag] = useState(false);
-  const [video1, setVideo1] = React.useState([]);
-  const [video2, setVideo2] = React.useState([]);
+  const { fontSize, setFontSize } = useContext(FontSizeContext);  //To share the font-size of all of the text between the components and pages
+  const [images, setImages] = React.useState([]); //Variable that stores images
+  const maxNumber = 2;  //Max number of videos or images can be seen on the page
+  const [removeFlag, setRemoveFlag] = useState(false);  //Boolean keeps whether the user clicked a remove button or not
+  const [updateFlag, setUpdateFlag] = useState(false);  //Boolean keeps whether the user clicked an update button or not
+  const [video1, setVideo1] = React.useState([]); //Variable that stores src of the first video
+  const [video2, setVideo2] = React.useState([]); //Variable that stores src of the second video
 
-  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
-  const [confirmDeleteAllShow, setConfirmDeleteAllShow] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState();
+  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);  //Show pop-up page when user wants to delete an image 
+  const [confirmDeleteAllShow, setConfirmDeleteAllShow] = useState(false);  //Show pop-up page when user wants to delete all of the images
+  const [currentIndex, setCurrentIndex] = useState(); //Keeps index for the images when any button clicked around the images
 
-  let userTypeId = sessionStorage.getItem("userTypeId");
+  let userTypeId = sessionStorage.getItem("userTypeId");  //Getting user's type id. If the user is super-admin, the user can change videos and images.
 
-  const getVideos = async () => {
+  const getVideos = async () => { //Function for getting data_url of the video from the database 
     var jsonData1 = {
       data: [
         {
-          ind: 1,
-          page: "i",
+          ind: 1, //Represents that it is first video
+          page: "i",  //Represents that it is on the information page (i)
         },
       ],
     };
-    let video1 = await getVideosAction(jsonData1);
+    let video1 = await getVideosAction(jsonData1);  //API call for getting the data_url of the first video from the database
 
     setVideo1(video1[0]["data_url"]);
     var jsonData2 = {
       data: [
         {
-          ind: 2,
-          page: "i",
+          ind: 2,//Represents that it is second video
+          page: "i",//Represents that it is on the information page (i)
         },
       ],
     };
@@ -59,123 +59,123 @@ const DiseaseInformationPage = () => {
     setImages(imageList);
   };
 
-  const getImages = async () => {
-    let result = await getImagesInfoPageAction();
+  const getImages = async () => {//Function for getting src of the images from the database 
+    let result = await getImagesInfoPageAction(); //API call for getting the src of the images from the database
     setImages(result);
   };
 
-  useEffect(async () => {
+  useEffect(async () => { //Getting videos and images while page is loading
     await getImages();
     await getVideos();
   }, []);
 
-  useEffect(async () => {
-    if (removeFlag) {
+  useEffect(async () => { //Run this when there are changes in the images array
+    if (removeFlag) { //If the user wanted to remove an image
       if (images !== null) {
-        await removeImage();
+        await removeImage(); //Function call for removing an image
       }
     }
-  }, [images]);
+  }, [images]); //Function call for updating the image list
 
-  useEffect(async () => {
-    if (updateFlag) {
-      if (images !== null) {
-        await updateImage();
+  useEffect(async () => { //Run this when there are changes in the images array
+    if (updateFlag) { //If the user wanted update image
+      if (images !== null) { 
+        await updateImage(); //Function call for updating the image list
       }
     }
-  }, [images]);
+  }, [images]); 
 
-  async function saveImage(image, index) {
-    var jsonData = {
+  async function saveImage(image, index) { //Saving image
+    var jsonData = { //request's data
       data: [
         {
-          data_url: image.data_url,
-          index: index,
+          data_url: image.data_url, //data_url of the image
+          index: index, //index of the image (the place where the image will be located)
         },
       ],
     };
 
-    const a = await saveImageInfoPageAction(jsonData);
-    await getImages();
+    const a = await saveImageInfoPageAction(jsonData); //API call for saving the image for that index
+    await getImages();//Getting images from the database again to update the screen
   }
 
-  async function updateImage() {
+  async function updateImage() {//Updating the image 
     for (let index = 0; index < 2; index++) {
       if (images[index]) {
         const image = images[index];
         var jsonData = {
           data: [
             {
-              Img_base64: image.data_url,
-              Index: index,
+              Img_base64: image.data_url, //data_url of the image
+              Index: index,//index of the image (the place where the image will be located)
             },
           ],
         };
-        const a = await updateImageInfoPageAction(jsonData);
+        const a = await updateImageInfoPageAction(jsonData); //API call for updating the image for that index
       }
     }
-    setUpdateFlag(false);
+    setUpdateFlag(false); //Update is done
   }
 
-  async function removeImage() {
-    for (let index = 0; index < 2; index++) {
+  async function removeImage() {//Function for removing images and updating the rest of the images' indexes
+    for (let index = 0; index < 2; index++) { //Looping through all of the images
       if (images[index]) {
         const image = images[index];
-        var jsonData = {
+        var jsonData = {  //request's data
           data: [
             {
-              Img_base64: image.data_url,
-              Index: index,
+              Img_base64: image.data_url, //data_url of the image
+              Index: index, //index of the image (the place where the image will be located)
             },
           ],
         };
-        const a = await updateImageInfoPageAction(jsonData);
+        const a = await updateImageInfoPageAction(jsonData);  //API call for updating the rest of the images' indexes
       } else {
-        var jsonData = {
+        var jsonData = {//request's data
           data: [
             {
-              Index: index,
+              Index: index, //index of the image (the place where the image will be located)
             },
           ],
         };
-        const a = await deleteImageInfoPageAction(jsonData);
+        const a = await deleteImageInfoPageAction(jsonData);  //API call for deleting the requested image
       }
     }
-    setRemoveFlag(false);
+    setRemoveFlag(false); //Deleting the image is done
   }
 
-  async function onImageRemoveAllButton() {
-    const a = await removeAllImagesInfoPageAction();
-    window.location.reload(false);
+  async function onImageRemoveAllButton() { //Removing all of the images
+    const a = await removeAllImagesInfoPageAction();  //API call for removing all of the images
+    window.location.reload(false);  //Reloading the page
   }
 
-  async function saveVideo1(video1) {
+  async function saveVideo1(video1) { //Function for saving the first video
     var jsonData = {
       data: [
         {
-          video: video1,
-          ind: 1,
-          page: "i",
+          video: video1,//src of the video
+          ind: 1,//index of the video on the page
+          page: "i",//which page the video will be shown (info)
         },
       ],
     };
 
-    const a = await saveVideoAction(jsonData);
-    window.location.reload(false);
+    const a = await saveVideoAction(jsonData);//API call for saving the first video
+    window.location.reload(false);//Reloading the page
   }
 
-  async function saveVideo2(video2) {
+  async function saveVideo2(video2) {//Function for saving the second video
     var jsonData = {
       data: [
         {
-          video: video2,
-          ind: 2,
-          page: "i",
+          video: video2,//src of the video
+          ind: 2,//index of the video on the page
+          page: "i",//which page the video will be shown (info)
         },
       ],
     };
-    const a = await saveVideoAction(jsonData);
-    window.location.reload(false);
+    const a = await saveVideoAction(jsonData);//API call for saving the second video
+    window.location.reload(false);//Reloading the page
   }
 
   return (

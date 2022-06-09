@@ -76,7 +76,6 @@ const Header = (props) => {
       </div>
 
       <Outlet style={{ "grid-row-start": "2" }} />
-      {/* <h1>HEY</h1> */}
     </div>
   )
 };

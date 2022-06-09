@@ -3,7 +3,7 @@ import "../Styles/InfoPage.css";
 import { FontSizeContext } from "../../Helper/Context";
 import seda from "./seguney.jpg";
 const Contact = () => {
-  const { fontSize, setFontSize } = useContext(FontSizeContext)
+  const { fontSize, setFontSize } = useContext(FontSizeContext) //To share the font-size of all of the text between the components and pages
 
   return (
     <div>
