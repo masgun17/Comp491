@@ -176,9 +176,8 @@ class Users():
             print(len(user_item))
             return result_code, None
 
-## Input will be: Id and (UserTypeId, Name, Surname, Email, Phone, Password, KvkkCheck)
     @classmethod
-    def change_password(cls, user_id, newPassword):
+    def change_password(cls, user_id, newPassword): #Updating the password of the user
         conn = connection.cursor()
         result_code = False
         if user_id is not None and newPassword is not None:
