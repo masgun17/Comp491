@@ -28,8 +28,7 @@ import pandas as pd
 
 app = Flask("comp491")
 
-## response = requests.get('https://httpbin.org/ip')
-## print('Your IP is {0}'.format(response.json()['origin']))
+## This document contains controller endpoints for the response frontend requests. !!!
 
 # Trusted Connection to Named Instance
 connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER=localhost\SQLEXPRESS;DATABASE=Comp491;Trusted_Connection=yes;')
@@ -39,56 +38,13 @@ conn=connection.cursor()
 def start():
     return "Welcome to our COMP-491 project web page"
 
-@app.route("/index")
-def index():
-    return "welcome mefe's web page"
-
-
-@app.route("/deneme-sayfası")
-def deneme():
-    return "BU BİR DENEME SAYFASIDIR"
-
 @app.route("/anasayfa")
 def anasayfa():
     return redirect(url_for('http://localhost:3000/'))
 
 
-@app.route("/add",  methods=['GET', 'POST'])
-def add():
-    try:
-        a = json.loads(request.data)
-        data = a['data']
-        numbers = data[0]
-        num1 = int(numbers['num1'])
-        num2 = int(numbers['num2'])
-
-        number1 = conn.execute(f"SELECT Value FROM Numbers where Id = {num1};").fetchall()
-        number2 = conn.execute(f"SELECT Value FROM Numbers where Id = {num2};").fetchall()
-        sum = number1[0][0] + number2[0][0]
-        print(sum)
-        return json.dumps(sum)
-    except Exception as e:
-        print(e)
-        return 'Bad Request '
-
-
-@app.route("/fetchdb",  methods=['GET'])
-def fetchDB():
-    try:
-        data = []
-        out = conn.execute(f"SELECT Value FROM Numbers;").fetchall()
-        for row in out:
-            for x in row:
-                data.append(x)
-        return json.dumps(data)
-        # return {"Values": data}
-    except Exception as e:
-        print(e)
-        return 'Bad Request'
-
-
 @app.route("/createPart",  methods=['GET', 'POST'])
-def createPart():
+def createPart(): # creates a new part
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -107,7 +63,7 @@ def createPart():
 
 
 @app.route("/getAllParts",  methods=['GET'])
-def getAllParts():
+def getAllParts(): # returns all parts
     try:
         data = []
         result_code, parts = Part.get_all()
@@ -126,7 +82,7 @@ def getAllParts():
 
 
 @app.route("/deletePart", methods=['GET', 'POST'])
-def deletePart():
+def deletePart(): # deletes from part for given partId
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -145,7 +101,7 @@ def deletePart():
 
 
 @app.route("/createQuestion",  methods=['GET', 'POST'])
-def createQuestion():
+def createQuestion(): # creates new question with respect to the given parameters
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -168,7 +124,7 @@ def createQuestion():
 
 
 @app.route("/getAllQuestions",  methods=['GET'])
-def getAllQuestions():
+def getAllQuestions(): # returns all quesitons on the system
     try:
         data = []
         result_code, questions = Question.get_all()
@@ -186,7 +142,7 @@ def getAllQuestions():
         return 'Bad Request Exception'
 
 @app.route("/deleteQuestion", methods=['GET', 'POST'])
-def deleteQuestion():
+def deleteQuestion(): # deletes from part for given questionId
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -369,7 +325,7 @@ def submitNewPassword():
         return 'Bad Request'
 
 @app.route("/createAssessmentSession",  methods=['GET', 'POST'])
-def createAssessmentSession():
+def createAssessmentSession(): # creates a new assessment session entity for given or anonym user
     try:
         import uuid
         uuid_surname = uuid.uuid4()
@@ -377,6 +333,7 @@ def createAssessmentSession():
         data = a['data']
         parameters = data[0]
         UserId = parameters['UserId']
+        ## Creates an anonym assessment session if user is not logged in
         if UserId is None or UserId=="":
             Users.add_item([1, "Anonim", uuid_surname, "Anonim", "Anonim", "Anonim", "Anonim", 1])
             result_code_2, new_anonim_user = Users.has_item_by_column("Surname", uuid_surname)
@@ -504,7 +461,7 @@ def removeAllImages():
 
 
 @app.route("/uploadUserAnswers",  methods=['GET', 'POST'])
-def uploadUserAnswers():
+def uploadUserAnswers(): # at the end of the assessment saves and uploads users answers to the database
     try:
         errList = []
         a = json.loads(request.data)
@@ -525,8 +482,6 @@ def uploadUserAnswers():
         print(e)
         print(request)
         return 'Bad Request Exception'
-    print("Total error count: ", len(errList))
-    print(errList)
     return json.dumps("Answers are uploaded for AssessmentSessionId " + str(AssessmentSessionId))
 
 
@@ -557,10 +512,8 @@ def getImagesInfoPage():
         if result_code:
             for row in images:
                 line = dict()
-                
                 line["data_url"] = row[1]
                 line["index"] = row[2]
-
                 data.append(line)
             return json.dumps(data)
         else:
@@ -597,7 +550,6 @@ def getImageFromIndexInfoPage():
         data = a['data']
         parameters = data[0]
         index = int(parameters['Index'])
-
         result_code, items = ImagesInfoPage.has_item_by_column("ind", index)
         if result_code:
             photo = items[0]
@@ -644,7 +596,6 @@ def saveImageRiskPage():
         parameters = data[0]
         data_url = parameters['data_url']
         index = parameters['index']
-
         result_code = ImagesRiskPage.add_item(data_url,index)
         if result_code:
             return "Image saved successfully"
@@ -663,10 +614,8 @@ def getImagesRiskPage():
         if result_code:
             for row in images:
                 line = dict()
-                
                 line["data_url"] = row[1]
                 line["index"] = row[2]
-
                 data.append(line)
             return json.dumps(data)
         else:
@@ -684,7 +633,6 @@ def deleteImageFromIndexRiskPage():
         data = a['data']
         parameters = data[0]
         index = int(parameters['Index'])
-
         result_code = ImagesRiskPage.delete_item(index)
         if result_code:
             return "Image removed successfully"
@@ -703,7 +651,6 @@ def getImageFromIndexRiskPage():
         data = a['data']
         parameters = data[0]
         index = int(parameters['Index'])
-
         result_code, items = ImagesRiskPage.has_item_by_column("ind", index)
         if result_code:
             photo = items[0]
@@ -786,7 +733,7 @@ def default(o):
         return o.isoformat()
 
 @app.route("/getAssessments",  methods=['GET', 'POST']) 
-def getAssessments():
+def getAssessments(): # returns assessment session with given id
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -808,7 +755,7 @@ def getAssessments():
         return 'Bad Request Exception'
 
 @app.route("/getAllAssessments",  methods=['GET', 'POST']) 
-def getAllAssessments():
+def getAllAssessments(): # returns all assessment sessions with id and solved date parameters
     try:
         data = []
         result_code, assessments = AssessmentSession.get_all()
@@ -835,7 +782,7 @@ def getAllAssessments():
         return 'Bad Request Exception'
 
 @app.route("/getAllAnswers",  methods=['GET', 'POST']) 
-def getAllAnswers():
+def getAllAnswers(): # returns all anwsers for each question for the statistics page
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -889,6 +836,8 @@ def getSuggestionsContent():
         print(e)
         return 'Bad Request Exception'
 
+# scoring algorithm that runs on backend
+# for the additions this endpoint can be modified as well as the evaluation.py document
 @app.route("/evaluate",  methods=['GET', 'POST'])
 def Evaluate():
     try:
@@ -978,7 +927,7 @@ def Evaluate():
     return json.dumps("Answers are uploaded for Evaluate")
 
 @app.route("/saveDataAsExcel",  methods=['GET', 'POST'])
-def saveDataAsExcel():
+def saveDataAsExcel(): # returns excel data to be installed from frontend
     try:
         data = []
         result_code, excelData = AssessmentSession.getAllDataAsExcel()
@@ -996,7 +945,6 @@ def saveDataAsExcel():
                 line["options"] = row[7]
                 line["answer"] = row[8]
                 data.append(line)
-            #print(excelData)
             return json.dumps(data)
         else:
             return json.dumps(data)
@@ -1005,7 +953,7 @@ def saveDataAsExcel():
         return 'Bad Request Exception'
         
 @app.route("/getSuggestionsByAssessmentId",  methods=['GET', 'POST']) 
-def getSuggestionsByAssessmentId():
+def getSuggestionsByAssessmentId(): ## returns the suggestion list for the given assessment session Id to show at the end of the assessment
     try:
         a = json.loads(request.data)
         data = a['data']
@@ -1013,12 +961,8 @@ def getSuggestionsByAssessmentId():
         assessmentId = parameters['assessmentId']
         data = []
         result_code, suggestionsIds = AssessmentSession.get_suggestions_by_assessmentId(assessmentId)
-        print(type(suggestionsIds[0][0]))
-        print(suggestionsIds[0][0])
         suggestionsIds = suggestionsIds[0][0][1:-1]
         suggestionsIdsArray = suggestionsIds.split(",")
-        print(type(suggestionsIdsArray))
-        print(suggestionsIdsArray)
         suggestions = []
         if result_code:
             for sid in suggestionsIdsArray:
@@ -1026,7 +970,6 @@ def getSuggestionsByAssessmentId():
                 result_code2, suggestion = Suggestions.get_suggestion_description_by_id(sid_int)
                 if result_code2:
                     suggestions.append(suggestion[0][0])
-                
             return json.dumps(suggestions)
         else:
             return json.dumps(suggestions)
@@ -1036,26 +979,23 @@ def getSuggestionsByAssessmentId():
 
 
 @app.route("/getAnswerPercentage",  methods=['GET', 'POST'])
-def getAnswerPercentage():
+def getAnswerPercentage(): # gets answer statistics
     try:
         errList = []
         a = json.loads(request.data)
         data = a['data']
         parameters = data[0]
         Request = parameters['dict']
-
         data = []
         line1 = dict()
         for req in Request.items():
             QuestionId = req[0]
             Answers = req[1]
             inlineData = []
-
             try:
                 resultCode, totalCount = Answer.get_count_by_questionId(QuestionId)
             except Exception as e:
                 print("Exception on reading totalCount")
-
             if len(Answers) != 0:
                 if resultCode:
                     line2 = dict()
@@ -1064,12 +1004,10 @@ def getAnswerPercentage():
                             resultCode2, answerCount = Answer.get_count_by_questionId_and_answer(QuestionId, answer)
                             if resultCode2:
                                 line2[answer] = answerCount/totalCount
-
                         except Exception as e:
                             errItem = [e,QuestionId,answer]
                             errList.append(errItem)
                     inlineData.append(line2)
-            
             else: 
                 if resultCode:
                     try:
@@ -1080,8 +1018,8 @@ def getAnswerPercentage():
                             inlineData.append(counts.to_json())
                             inlineData.append(totalCount)
                     except Exception as e:
+                        print(e)
                         print("Exception on reading runningSum")
-            
             line1[QuestionId] = inlineData
         return json.dumps(line1)
             

@@ -1,3 +1,6 @@
+## Parameters, thresholds and cutoff values can easily be changed here
+
+
 ## !!!!!!!!!! ABOUT YOUR HEALTH PART !!!!!!!!!!
 
 ## Scoring function for Agesex factor
