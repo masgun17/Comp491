@@ -16,15 +16,15 @@ import "../Styles/TakeTest.css";
 import { FontSizeContext } from "../../Helper/Context";
 
 const TakeTest = () => {
-  const [id, setId] = useState(null);
-  const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);
-  const [incomingAnswer, setIncomingAnswer] = useState("");
-  const [qID, setQid] = useState();
+  const [id, setId] = useState(null); // user id information to create assessment session at the end of test
+  const [currentAssessmentSession, setCurrentAssessmentSession] = useState(0);  // newly created assessment session info
+  const [incomingAnswer, setIncomingAnswer] = useState(""); // answer given to current question
+  const [qID, setQid] = useState(); // id of current question
   const { fontSize, setFontSize } = useContext(FontSizeContext);
-  const navigate = useNavigate();
-  toast.configure();
+  const navigate = useNavigate(); // used for page navigation
+  toast.configure();  // used for age warning popup
 
-  const createAssessmentSession = async () => {
+  const createAssessmentSession = async () => { // create a new assessment session at the end of test
     var jsonData = {
       data: [
         {
@@ -37,60 +37,58 @@ const TakeTest = () => {
     return a;
   };
 
-  useEffect(async () => {
-    setId(sessionStorage.getItem("userId"));
-    // if (id !== null && id !== "") {
-    //   // null check / "" check
-    //   // await createAssessmentSession();
-    //   setTimeout(() => {
-    //     createAssessmentSession();
-    //   }, 300);
-    // }
+  useEffect(async () => { // fetch user id from local storage
+    setId(sessionStorage.getItem("userId"));  
   }, [id]);
 
-  const [parts, setParts] = useState([]);
+  const [parts, setParts] = useState([]); // holds part information
 
-  const getParts = async () => {
+  const getParts = async () => {  // fetch part information
     let result = await getAllPartsAction();
     setParts(
-      result.sort((a, b) => {
+      result.sort((a, b) => {   // sort them to access them in order (Part 01 -> Part 02 -> and so on)
         return a[1].localeCompare(b[1]);
       })
     );
   };
 
-  useEffect(async () => {
+  useEffect(async () => { // fetch parts on page loading
     await getParts();
   }, []);
 
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]); // holds all question information
 
-  const getQuestions = async () => {
+  const getQuestions = async () => {  // fetch question information
     let result = await getAllQuestionsAction();
     setQuestions(result);
   };
 
-  useEffect(async () => {
+  useEffect(async () => { // fetch all question information with small delay
     setTimeout(() => {
       getQuestions();
     }, 100);
   }, []);
 
-  const [firstPage, setFirstPage] = useState(true);
-  const [showPartInfo, setShowPartInfo] = useState(false);
-  const [showQuestions, setShowQuestions] = useState(false);
-  const [partIndex, setPartIndex] = useState(0);
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [currentPartQuestionCount, setCurrentPartQuestionCount] = useState(0);
-  const [currentQuestionArray, setCurrentQuestionArray] = useState([]);
-  const [suggestions, SetSuggestions] = useState([]);
 
-  // TODO: Styling
+  // In our system, when a user starts a session, an information page welcomes them. After that page,
+  // they start the test. For each part, an information page is present at the start, followed by questions of that part.
+  // Users allowed to go back and forth in each part, but they cannot go back to previous parts.
+
+  const [firstPage, setFirstPage] = useState(true); // initial welcoming page flag
+  const [showPartInfo, setShowPartInfo] = useState(false);  // part information page flag
+  const [showQuestions, setShowQuestions] = useState(false);  // question flag
+
+  const [partIndex, setPartIndex] = useState(0);  // index to detect which part is currently active
+  const [questionIndex, setQuestionIndex] = useState(0);  // index to detect which question is currently active
+  const [currentPartQuestionCount, setCurrentPartQuestionCount] = useState(0);  // question count of active part
+  const [currentQuestionArray, setCurrentQuestionArray] = useState([]); // question array, consisting of the questions of active part
+
+  const [suggestions, SetSuggestions] = useState([]); // array to hold suggestions, which will be returned upon completion of test
 
   // Remark: Now we are fetching all questions from db upon entering the test and filter them part by part on frontend.
   // In case we encounter performance issues in the future, we might create new API calls to fetch questions part by part.
 
-  const nextClick = () => {
+  const nextClick = () => { // next button click - for better understanding refer to lines 73/75
     if (firstPage) {
       setFirstPage(false);
       setShowPartInfo(true);
@@ -122,7 +120,7 @@ const TakeTest = () => {
   };
 
   // Remark: Users cannot go back to previous parts. However they can go back and forth in any given part.
-  const backClick = () => {
+  const backClick = () => { // back button behavior
     if (showQuestions) {
       if (questionIndex === 0) {
         setShowQuestions(false);
@@ -133,14 +131,14 @@ const TakeTest = () => {
     }
   };
 
-  function saveToLocal() {
+  function saveToLocal() {  // method that saves individual answers to local storage
     localStorage.setItem(qID, incomingAnswer);
   }
 
-  const [lastPartCount, setLastPartCount] = useState();
+  const [lastPartCount, setLastPartCount] = useState(); // last part and question informations to turn 'Next' button into 'Submit' button
   const [lastQuestionCount, setLastQuestionCount] = useState();
 
-  useEffect(async () => {
+  useEffect(async () => { // method to fill lastPartCount and lastQuestionCount
     const partNumber = parts.length;
     const lastPartId = parts[partNumber - 1][0];
     const lastPartQuestionArray = [];
@@ -154,7 +152,7 @@ const TakeTest = () => {
     setLastQuestionCount(lastPartQuestionCount);
   }, [questions]);
 
-  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);  // last question check
 
   useEffect(async () => {
     if (
@@ -168,19 +166,17 @@ const TakeTest = () => {
     }
   }, [partIndex, questionIndex, showQuestions]);
 
-  const [completed, setCompleted] = useState(false);
-  const [suggestionStart, setSuggestionStart] = useState(false);
+  const [completed, setCompleted] = useState(false);  // flag - whether test is completed or not
+  const [suggestionStart, setSuggestionStart] = useState(false);  // flags for suggestions screen
   const [suggestionIsDone, setSuggestionIsDone] = useState(false);
 
 
+  const [answerArray, setAnswerArray] = useState([]); // answer array to send user answers to backend
 
-  const [answerArray, setAnswerArray] = useState([]);
-
-  const saveToDb = async () => {
+  const saveToDb = async () => {  // API call to send user answers
     let sessionId = currentAssessmentSession;
-    sessionId = await createAssessmentSession();
+    sessionId = await createAssessmentSession();  // first create a session
     
-
     setTimeout(() => {
       const arr = [];
       for (let index = 0; index < questions.length; index++) {
@@ -191,7 +187,7 @@ const TakeTest = () => {
         element.push(ans);
         arr.push(element);
       }
-      setAnswerArray(arr);
+      setAnswerArray(arr);  // populate answer array from local storage
 
       var jsonData = {
         data: [
@@ -201,13 +197,13 @@ const TakeTest = () => {
           },
         ],
       };
-      uploadUserAnswersAction(jsonData);
-      localStorage.clear();
-      setCompleted(true);
+      uploadUserAnswersAction(jsonData);  // upload answers
+      localStorage.clear(); // clear local storage
+      setCompleted(true); // set flag
     }, 300);
   };
 
-  useEffect(async () => {
+  useEffect(async () => { // age check (only users older than 65 years old will be able to take the test)
     const response = localStorage.getItem(1);
     if (response) {
       if (parseInt(response) < 65) {
@@ -221,7 +217,7 @@ const TakeTest = () => {
     }
   });
 
-  useEffect(async () => {
+  useEffect(async () => { // evaluate user answers
     if (completed) {
       setTimeout(() => {
         var jsonData = {
@@ -235,35 +231,13 @@ const TakeTest = () => {
         console.log(answerArray)
         const a = evaluateAction(jsonData).then(
           (onResolved) => {
-            // setSuggestionIsDone(true);
-            setSuggestionStart(true);
-
-            // Some task on success
+            setSuggestionStart(true); // show suggestions flag
           });
-        console.log(a);
-        //SetSuggestions(a);
-        // setSuggestionIsDone(true);
-
       }, 300);
     }
-
-    // if (currentAssessmentSession !== null) {
-    //   var jsonData2 = {
-    //     data: [
-    //       {
-    //         assessmentId: currentAssessmentSession,
-    //       },
-    //     ],
-    //   };
-    //   let suggestionsByAssessmentId = getSuggestionsByAssessmentIdAction(jsonData2);
-    //   console.log(suggestionsByAssessmentId);
-    //   SetSuggestions(suggestionsByAssessmentId);
-    //   setSuggestionIsDone(true);
-
-    // }
   }, [completed]);
 
-  useEffect(async () => {
+  useEffect(async () => { // fetch suggestions based on the evaluation above
 
     if (currentAssessmentSession !== null && suggestionStart) {
       var jsonData2 = {
@@ -274,10 +248,8 @@ const TakeTest = () => {
         ],
       };
       let suggestionsByAssessmentId = await getSuggestionsByAssessmentIdAction(jsonData2);
-      console.log(suggestionsByAssessmentId);
-      SetSuggestions(suggestionsByAssessmentId);
+      SetSuggestions(suggestionsByAssessmentId);  // show suggestions
       setSuggestionIsDone(true);
-
     }
 
   }, [suggestionStart]);
@@ -285,7 +257,6 @@ const TakeTest = () => {
   return (
     <div className="testPageLayout">
       {firstPage && <h1 style={{ "font-size": fontSize * 2 }}>Teste başlamak üzeresiniz. Lütfen ileri tuşuna basın!</h1>}
-      {/* {completed && <h1 style={{ "font-size": fontSize * 2 }}>Completed the test</h1>} */}
       {completed && suggestionIsDone &&
         suggestions && suggestions.length !== 0 &&
         <div  style={{
