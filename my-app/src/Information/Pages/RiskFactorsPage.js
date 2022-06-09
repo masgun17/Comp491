@@ -7,145 +7,143 @@ import ImageUploading from "react-images-uploading";
 import { saveImageRiskPageAction, getImagesRiskPageAction, updateImageRiskPageAction, deleteImageRiskPageAction, removeAllImagesRiskPageAction , saveVideoAction, getVideosAction} from "../../tool/actions"
 
 const RiskFactorsPage = () => {
-  const { fontSize, setFontSize } = useContext(FontSizeContext)
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 2;
-  const [removeFlag, setRemoveFlag] = useState(false);
-  const [updateFlag, setUpdateFlag] = useState(false);
-  const [video1, setVideo1] = React.useState([]);
-  const [video2, setVideo2] = React.useState([]);
-  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState();
-  const [confirmDeleteAllShow, setConfirmDeleteAllShow] = useState(false);
+  const { fontSize, setFontSize } = useContext(FontSizeContext);  //To share the font-size of all of the text between the components and pages
+  const [images, setImages] = React.useState([]); //Variable that stores images
+  const maxNumber = 2;  //Max number of videos or images can be seen on the page
+  const [removeFlag, setRemoveFlag] = useState(false);  //Boolean keeps whether the user clicked a remove button or not
+  const [updateFlag, setUpdateFlag] = useState(false);  //Boolean keeps whether the user clicked an update button or not
+  const [video1, setVideo1] = React.useState([]); //Variable that stores src of the first video
+  const [video2, setVideo2] = React.useState([]); //Variable that stores src of the second video
+  const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);  //Show pop-up page when user wants to delete an image 
+  const [confirmDeleteAllShow, setConfirmDeleteAllShow] = useState(false);  //Show pop-up page when user wants to delete all of the images
+  const [currentIndex, setCurrentIndex] = useState(); //Keeps index for the images when any button clicked around the images
 
-  let userTypeId = sessionStorage.getItem('userTypeId')
+  let userTypeId = sessionStorage.getItem('userTypeId') //Getting user's type id. If the user is super-admin, the user can change videos and images.
 
   const onChange = (imageList, addUpdateIndex) => {
     setImages(imageList);
   };
 
-  const getVideos = async () => {
+  const getVideos = async () => {//Function for getting data_url of the video from the database
     var jsonData1 = {
       "data": [{
-        "ind": 1,
-        "page": "r",
+        "ind": 1,//Represents that it is first video
+        "page": "r", //Represents that it is on the risk factors page (r)
       }]
     }
-    let video1 = await getVideosAction(jsonData1);
+    let video1 = await getVideosAction(jsonData1);  //API call for getting the data_url of the first video from the database
     
     setVideo1(video1[0]["data_url"])
     var jsonData2 = {
       "data": [{
-        "ind": 2,
-        "page": "r",
+        "ind": 2,//Represents that it is second video
+        "page": "r",  //Represents that it is on the risk factors page (r)
       }]
     }
     let video2 = await getVideosAction(jsonData2);
     setVideo2(video2[0]["data_url"])
   };
-  const getImages = async () => {
-    let result = await getImagesRiskPageAction();
+  const getImages = async () => {//Function for getting src of the images from the database 
+    let result = await getImagesRiskPageAction();//API call for getting the src of the images from the database
     setImages(result);
   };
 
-  useEffect(async () => {
+  useEffect(async () => {//Getting videos and images while page is loading
     await getImages();
     await getVideos();
 
   }, []);
 
-  useEffect(async () => {
-    if (removeFlag) {
+  useEffect(async () => { //Run this when there are changes in the images array
+    if (removeFlag) { //If the user wanted to remove an image
       if (images !== null) {
-        await removeImage();
+        await removeImage(); //Function call for removing an image
       }
     }
+  }, [images]); 
 
-  }, [images]);
-
-  useEffect(async () => {
-    if (updateFlag) {
-      if (images !== null) {
-        await updateImage();
+  useEffect(async () => { //Run this when there are changes in the images array
+    if (updateFlag) { //If the user wanted update image
+      if (images !== null) { 
+        await updateImage(); //Function call for updating the image list
       }
     }
+  }, [images]); 
 
-  }, [images]);
-
-  async function saveImage(image, index) {
+  async function saveImage(image, index) {//Saving image
     var jsonData = {
       "data": [{
-        "data_url": image.data_url,
-        "index": index,
+        "data_url": image.data_url,//data_url of the image
+        "index": index,//index of the image (the place where the image will be located)
       }]
     }
 
-    const a = await saveImageRiskPageAction(jsonData);
-    await getImages();
+    const a = await saveImageRiskPageAction(jsonData);//API call for saving the image for that index
+    await getImages();//Getting images from the database again to update the screen
 
   }
 
-  async function updateImage() {
+  async function updateImage() {//Updating the image 
     for (let index = 0; index < 2; index++) {
 
       if (images[index]) {
         const image = images[index];
         var jsonData = {
           "data": [{
-            "Img_base64": image.data_url,
-            "Index": index,
+            "Img_base64": image.data_url,//data_url of the image
+            "Index": index,//index of the image (the place where the image will be located)
           }]
         }
-        const a = await updateImageRiskPageAction(jsonData);
+        const a = await updateImageRiskPageAction(jsonData);//API call for updating the image for that index
       }
     }
     setUpdateFlag(false);
 
   }
 
-  async function removeImage() {
+  async function removeImage() {  //Function for removing images and updating the rest of the images' indexes
     for (let index = 0; index < 2; index++) {
 
       if (images[index]) {
         const image = images[index];
         var jsonData = {
           "data": [{
-            "Img_base64": image.data_url,
-            "Index": index,
+            "Img_base64": image.data_url,//data_url of the image
+            "Index": index,//index of the image (the place where the image will be located)
           }]
         }
-        const a = await updateImageRiskPageAction(jsonData);
+        const a = await updateImageRiskPageAction(jsonData);//API call for updating the rest of the images' indexes
       } else {
         var jsonData = {
           "data": [{
             "Index": index,
           }]
         }
-        const a = await deleteImageRiskPageAction(jsonData);
+        const a = await deleteImageRiskPageAction(jsonData);//API call for deleting the requested image
 
       }
     }
-    setRemoveFlag(false);
+    setRemoveFlag(false); //Deleting the image is done
   }
 
-  async function onImageRemoveAllButton() {
+  async function onImageRemoveAllButton() {//Removing all of the images
 
-    const a = await removeAllImagesRiskPageAction();
-    window.location.reload(false);
+    const a = await removeAllImagesRiskPageAction();//API call for removing all of the images
+    window.location.reload(false);//Reloading the page
 
   }
 
-  async function saveVideo1(video1) {
+  async function saveVideo1(video1) {//Function for saving the first video
     var jsonData = {
       "data": [{
-        "video": video1,
-        "ind": 1,
-        "page": "r",
+        "video": video1,//src of the video
+        "ind": 1,//index of the video on the page
+        "page": "r",//which page the video will be shown (risk factors)
       }]
     }
 
-    const a = await saveVideoAction(jsonData);
-    window.location.reload(false);
+    const a = await saveVideoAction(jsonData);//API call for saving the first video
+    window.location.reload(false);//Reloading the page
 
   
   }

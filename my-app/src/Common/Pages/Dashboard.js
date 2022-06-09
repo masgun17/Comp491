@@ -75,7 +75,7 @@ const Dashboard = () => {
         await removeImage(); //Function call for removing an image
       }
     }
-  }, [images]); //Function call for updating the image list
+  }, [images]); 
 
   useEffect(async () => { //Run this when there are changes in the images array
     if (updateFlag) { //If the user wanted update image
