@@ -26,6 +26,7 @@ const DiseaseInformationPage = () => {
   const [video2, setVideo2] = React.useState([]);
 
   const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
+  const [confirmDeleteAllShow, setConfirmDeleteAllShow] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
 
   let userTypeId = sessionStorage.getItem("userTypeId");
@@ -335,7 +336,7 @@ const DiseaseInformationPage = () => {
             ) : null}
             &nbsp;
             {userTypeId === "3" ? (
-              <button onClick={onImageRemoveAllButton}>
+              <button onClick={() => setConfirmDeleteAllShow(true)}>
                 Tüm Resimleri Kaldır
               </button>
             ) : null}
@@ -397,6 +398,41 @@ const DiseaseInformationPage = () => {
                       setConfirmDeleteShow(false);
                       onImageRemove(currentIndex);
                       setRemoveFlag(true);
+                    }}
+                  >
+                    Sil
+                  </button>
+                </div>
+              </Modal>
+            )}
+            {confirmDeleteAllShow && (
+              <Modal
+                centered
+                contentClassName="confirmDeleteModal"
+                // contentClassName="custom-modal-content"
+                // dialogClassName="custom-modal-dialogue"
+                show={confirmDeleteAllShow}
+              >
+                <div className="confirmText">
+                  Bütün resimleri silmek istediğinize emin misiniz?
+                </div>
+                <div className="confirmPopup">
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteAllShow(false);
+                     
+                    }}
+                  >
+                    Vazgeç
+                  </button>
+                  <button
+                    className="confirmModalButton"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteShow(false);
+                      onImageRemoveAllButton();
                     }}
                   >
                     Sil
