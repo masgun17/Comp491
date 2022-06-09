@@ -7,60 +7,59 @@ import {
 import "../Styles/Statistics.css";
 
 const Statistics = () => {
-  const [questions, setQuestions] = useState([]);
-  const [qIDandAnswers, setqIDandAnswers] = useState();
-  const [totalPeopleCount, setTotalPeopleCount] = useState(0);
-  const getQuestions = async () => {
-    let result = await getAllQuestionsAction();
+  const [questions, setQuestions] = useState([]); // Array that holds question informations
+  const [qIDandAnswers, setqIDandAnswers] = useState(); // Array that holds possible options of questions
+  const [totalPeopleCount, setTotalPeopleCount] = useState(0);  // Total number of people who solved the test
+
+  const getQuestions = async () => {  // function to fetch all questions and options to questions from db
+    let result = await getAllQuestionsAction(); // fetch all questions API call
     setQuestions(result);
-    console.log(result);
+    // console.log(result);
 
     let dict = {};
-    result.forEach((element) => {
+    result.forEach((element) => { // traverse in all questions
       let ansArr = [];
       if (element[4] === "multi-select") {
-        JSON.parse(element[5]).forEach((answer) => {
-          ansArr.push(answer);
+        JSON.parse(element[5]).forEach((answer) => {  // for each question (multi-select), traverse in each possible option
+          ansArr.push(answer);  // add it to array
         });
       }
-      dict[element[0]] = ansArr;
+      dict[element[0]] = ansArr;  // add it to dictionary -> to fetch it later by question id
     });
     setqIDandAnswers(dict);
   };
 
-  useEffect(async () => {
+  useEffect(async () => { // call getQuestions method on page loading
     setTimeout(() => {
       getQuestions();
     }, 0);
   }, []);
 
-  const [percentageDict, setPercentageDict] = useState();
+  const [percentageDict, setPercentageDict] = useState(); // dictionary that holds all statistics regarding average of answers, answer ranges and percentage distributions
 
   const getAnswerPercentages = async () => {
     if (qIDandAnswers) {
       var jsonData = {
-        data: [{ dict: qIDandAnswers }],
+        data: [{ dict: qIDandAnswers }],  // send option array and fetch the statistical distributions of options that are selected from test-takers from db
       };
       const a = await getAnswerPercentageAction(jsonData);
       setPercentageDict(a);
-      console.log(a)
-
     }
   };
 
-  useEffect(async () => {
+  useEffect(async () => { // call getAnswerPercentages when option array changes, which happens at page loading
     setTimeout(() => {
       getAnswerPercentages();
-    }, 300);
+    }, 300);  // 300 ms delay is there to avoid making backend busy
   }, [qIDandAnswers]);
 
-  useEffect(async() => {
+  useEffect(async() => {  // fetch total number of test-takers
     const a =  await getTotalPeopleCountAction();
     setTotalPeopleCount(a);    
 }, [percentageDict]);
 
 
-  function formatBins(string) {
+  function formatBins(string) {  // format the statisticals results hold in percentageDict, to show in screen
     let result = JSON.parse(string);
     // let finalStr = "";
     let startReturnArr = [];
@@ -150,7 +149,7 @@ const Statistics = () => {
                       </span>
                     </div>
                   ))
-                  : console.log("jhgj")}
+                  : {}}
               </div>
               </>):(<>Bu soru daha cevaplanmamıştır.</>)}
             </pre>
