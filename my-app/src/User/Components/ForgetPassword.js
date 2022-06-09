@@ -9,21 +9,21 @@ import "../Styles/User.css";
 import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = ({ ...props }) => {
-    const [email, setEmail] = useState(0);
+    const [email, setEmail] = useState(0); //Entered user's e-mail to the field
     toast.configure()
     const navigate = useNavigate();
 
-    async function submitNewPassword() {
-        var jsonData = {
+    async function submitNewPassword() { 
+        var jsonData = { //request's data
             "data": [{
               "email": email
             }]
           }
-        const a = await submitNewPasswordAction(jsonData);
-        if(a==='Password Changed'){
+        const a = await submitNewPasswordAction(jsonData); //API call to reset password of the user
+        if(a==='Password Changed'){ //If returned value of the API call is Password Changed, new password is sent to the entered email adress and alert the user.
             toast.success('Yeni şifreniz mailinize yönlendirilmiştir.',
             {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==='User is not registered'){
+        }else if(a==='User is not registered'){ //If returned value of the API call is User is not registered, user with entered email could not be found and alert the user.
             toast.warning('Kullanıcının hesabı bulunamadı',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }

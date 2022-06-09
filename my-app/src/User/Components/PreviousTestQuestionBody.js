@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import "../Styles/PreviousTest.css";
 
 const PreviousTestQuestionBody = ({ questionNum, question, passedAnswer, assessmentId, ...props }) => {
-  const [options, setOptions] = useState([]);
-  const [opt, setOpt] = useState(options);
+  const [options, setOptions] = useState([]); //Options of the question
+  const [opt, setOpt] = useState(options); //Selected option for the question
 
   useEffect(async () => {
     const localOptions = JSON.parse(question[5])
@@ -13,10 +13,10 @@ const PreviousTestQuestionBody = ({ questionNum, question, passedAnswer, assessm
 
     let temp = localOptions.slice();
     localOptions.forEach((element, index) => {
-      if (element === passedAnswer) {
+      if (element === passedAnswer) { //If passedAnswer and the element is equal, select that index as selected
         temp[index] = true;
       } else {
-        temp[index] = false;
+        temp[index] = false; //If passedAnswer and the element is not equal, do not select that index as selected
       }
     });
     setOpt(temp);

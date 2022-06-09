@@ -8,15 +8,15 @@ import { createNewSuperAdminAction } from "../../tool/actions"
 import "../Styles/User.css";
 
 const CreateNewSuperAdmin = ({ ...props }) => {
-    const [name, setName] = useState(0);
-    const [surname, setSurname] = useState(0);
-    const [email, setEmail] = useState(0);
-    const [phone, setTel] = useState(0);
-    const [password, setPassword] = useState(0);
+    const [name, setName] = useState(0); //Keeping new super-admin's name
+    const [surname, setSurname] = useState(0); //Keeping new super-admin's surname
+    const [email, setEmail] = useState(0); //Keeping new super-admin's email
+    const [phone, setTel] = useState(0); //Keeping new super-admin's phone numbe
+    const [password, setPassword] = useState(0); //Keeping new super-admin's password
     toast.configure()
 
-    async function createNewSuperAdminButton(name, surname, email, phone, password) {
-        var jsonData = {
+    async function createNewSuperAdminButton(name, surname, email, phone, password) { //Creating new super-admin by super-admin account
+        var jsonData = { //Data structure of request's data
           "data": [{
             "name": name,
             "surname": surname,
@@ -26,26 +26,26 @@ const CreateNewSuperAdmin = ({ ...props }) => {
           }]
         }
         
-        const a = await createNewSuperAdminAction(jsonData);
-        if(a==='User added Successfully'){
+        const a = await createNewSuperAdminAction(jsonData); //API call to create an admin account
+        if(a==='User added Successfully'){ //If returned value of the API call is User added Successfully, super-admin user is created alert the user.
             toast.success('Hesap Başarıyla Oluşturuldu',
             {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Lütfen isminizi giriniz!"){
+        }else if(a==="Lütfen isminizi giriniz!"){ //If returned value of the API call is Lütfen isminizi giriniz!, super-admin user's name field is empty and alert the user.
             toast.warning('Lütfen isim giriniz!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Lütfen soyadınızı giriniz!"){
+        }else if(a==="Lütfen soyadınızı giriniz!"){ //If returned value of the API call is Lütfen soyadınızı giriniz!, super-admin user's surname field is empty and alert the user.
             toast.warning('Lütfen soyad giriniz!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){
+        }else if(a==="Lütfen email adresinizi ya da telefon numaranızı giriniz!"){ //If returned value of the API call is Lütfen email adresinizi ya da telefon numaranızı giriniz!, super-admin user's email or phone number field is empty and alert the user.
             toast.warning('Email ya da telefon numarası giriniz!',
             {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Lütfen bir şifre belirleyiniz!"){
+        }else if(a==="Lütfen bir şifre belirleyiniz!"){ //If returned value of the API call is Lütfen bir şifre belirleyiniz!, super-admin user's password field is empty and alert the user.
             toast.warning('Lütfen bir şifre belirleyiniz!',
             {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){
+        }else if(a==="Şifreniz en az 8 haneli olmak zorundadır!"){ //If returned value of the API call is Şifreniz en az 8 haneli olmak zorundadır!, super-admin user's password's length is less than 8-character and alert the user.
             toast.warning('Şifre en az 8 haneli olmak zorundadır!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else{
+        }else{ //If returned value of the API call is Kullanıcının hesabı vardır!, super-admin user has an account in the database and alert the user.
             toast.warning('Kullanıcının hesabı vardır!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }

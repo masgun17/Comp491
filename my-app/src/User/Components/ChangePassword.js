@@ -10,34 +10,33 @@ import "../Styles/User.css";
 
 
 const ChangePassword = ({ ...props }) => {
-    const [password, setPassword] = useState(0);
-    const [passwordNew, setPasswordNew] = useState(0);
-    const [passwordNewAgain, setPasswordNewAgain] = useState(0);
+    const [password, setPassword] = useState(0); //Keeping old password
+    const [passwordNew, setPasswordNew] = useState(0); //Keeping new password
+    const [passwordNewAgain, setPasswordNewAgain] = useState(0); //Keeping new password value again
     toast.configure()
     const navigate = useNavigate();
 
     async function changePassword(password,passwordNew, passwordNewAgain) {
-        if(passwordNew!==passwordNewAgain){
+        if(passwordNew!==passwordNewAgain){ //If new password and new password again are not equal, return alert
             toast.warning('Yeni şifre ile yeni şifre tekrarın aynı olması gerekiyor!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(passwordNew.length<8){
+        }else if(passwordNew.length<8){ //If the new password's length is shorter than 8, return alert
             toast.warning('Yeni Şifreniz en az 8 haneli olmak zorundadır!',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(password==null){
+        }else if(password==null){ //If the user did not enter a new password, return alert.
             toast.warning('Güncel Şifrenizi Giriniz',
                 {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else{
-            var jsonData = {
+        }else{ //If everything okay, send call to backend.
+            var jsonData = { //request's data structure.
                 "data": [{
-                  "id": sessionStorage.getItem('userId'),
-                  "password": password,
-                  "passwordNew": passwordNew,
-                  "passwordNewAgain": passwordNewAgain
+                  "id": sessionStorage.getItem('userId'), //User's id to get and update the password column in the database
+                  "password": password, //Old password
+                  "passwordNew": passwordNew, //New password
+                  "passwordNewAgain": passwordNewAgain //New password again
                 }]
               }
-              const a = await changePasswordAction(jsonData);
-              if(a==='Password Changed'){
-                  //alert('Şifre Başarıyla Değiştirildi')
+              const a = await changePasswordAction(jsonData); //API call for change password
+              if(a==='Password Changed'){ //If returned value of the API call is Password Changed, password is changed in the database as well and alert the user.
                   toast.success('Şifre Başarıyla Değiştirildi',
                     {position: toast.POSITION.TOP_CENTER, autoClose:2000})
                   setPassword("")
@@ -46,7 +45,7 @@ const ChangePassword = ({ ...props }) => {
                   navigate("/");
 
 
-                }else if(a==="Current Password is not correct"){
+                }else if(a==="Current Password is not correct"){ //If returned value of the API call is Current Password is not correct, password couldn't changed in the database and alert the user.
                     //alert('Güncel Şifrenizi Hatalı Girdiniz')
                     toast.warning('Güncel Şifrenizi Hatalı Girdiniz',
                     {position: toast.POSITION.TOP_CENTER, autoClose:2000})

@@ -11,42 +11,42 @@ import "../Styles/User.css";
 
 function Login () {
     const navigate = useNavigate();
-    const [email, setEmail] = useState(0);
-    const [phone, setTel] = useState(0);
-    const [password, setPassword] = useState(0);
-    const [modalShow, setModalShow] = useState(false);
-    const{fontSize,setFontSize} = useContext(FontSizeContext) 
+    const [email, setEmail] = useState(0); //Keeps user's email
+    const [phone, setTel] = useState(0); //Keeps user's phone number
+    const [password, setPassword] = useState(0); //Keeps user's password
+    const [modalShow, setModalShow] = useState(false); //Boolean for showing ForgetPassword modal
+    const{fontSize,setFontSize} = useContext(FontSizeContext)  //To share the font-size of all of the text between the components and pages
     toast.configure()
 
     async function submitLoginForm(email, phone, password) {
-        var jsonData = {
+        var jsonData = { //request's data
           "data": [{
             "email": email,
             "phone": phone,
             "password": password
           }]
         }
-        const a = await loginAction(jsonData);
-        if(a["Login"]){
+        const a = await loginAction(jsonData); //API call for login to the system
+        if(a["Login"]){ //If it returns true, save name, surname, email, phone, id, and type id of the user to the sessionStorage
             sessionStorage.setItem('isLogin', 'true')
             sessionStorage.setItem('userName', a["Name"])
             sessionStorage.setItem('userSurname', a["Surname"])
             sessionStorage.setItem('userEmail', a["Email"])
             sessionStorage.setItem('userPhone', a["Phone"])
             sessionStorage.setItem('userId', a["Id"])
-            sessionStorage.setItem('userTypeId',a["UserTypeId"])
-            navigate("/");
+            sessionStorage.setItem('userTypeId',a["UserTypeId"]) //1 is for patients, 2 is for admins, 3 is for super-admins
+            navigate("/"); //Navigates to the homepage
             window.location.reload(false);
-        }else if(a==='This account is not in the database'){
+        }else if(a==='This account is not in the database'){ //If it returns 'This account is not in the database', user is not signup yet, alert the user.
             toast.info('Lütfen önce Kayıt Olunuz!',
            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==='Login unsuccessful'){
+        }else if(a==='Login unsuccessful'){ //If it returns 'Login unsuccessful', user entered his/her password wrong, alert the user.
             toast.error('Şifre Hatalı!',
            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Email ya da telefon numaranızı giriniz!"){
+        }else if(a==="Email ya da telefon numaranızı giriniz!"){ //If it returns "Email ya da telefon numaranızı giriniz!", user did not enter his/her email or phone number, alert the user.
             toast.warning('Email ya da telefon numaranızı giriniz!',
            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
-        }else if(a==="Lütfen Şifrenizi Giriniz!"){
+        }else if(a==="Lütfen Şifrenizi Giriniz!"){  //If it returns "Lütfen Şifrenizi Giriniz!", user did not enter a password, alert the user.
             toast.warning('Lütfen Şifrenizi Giriniz!',
            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
         }else{
@@ -54,7 +54,6 @@ function Login () {
            {position: toast.POSITION.TOP_CENTER, autoClose:2000})
 
         }
-        console.log(a);
       }
 
 

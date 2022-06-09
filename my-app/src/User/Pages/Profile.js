@@ -5,7 +5,6 @@ import ChangePassword from '../Components/ChangePassword';
 import PreviousTestAnswers from '../Components/PreviousTestAnswers';
 import Suggestions from '../Components/Suggestions';
 import { Button } from "react-bootstrap";
-
 import "../Styles/Profile.css";
 import "../Styles/User.css";
 import Table from '@mui/material/Table';
@@ -18,7 +17,6 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { getAssessmentsAction, getAllAssessmentsAction, saveDataAsExcelAction } from "../../tool/actions";
 import React, { useState, useEffect, useContext } from "react";
-import { Assessment, AssessmentSharp } from "@material-ui/icons";
 import { CSVDownload } from 'react-csv';
 import ExportCSV from "../Components/ExportCSV";
 

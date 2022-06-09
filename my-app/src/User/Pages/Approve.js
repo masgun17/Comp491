@@ -1,6 +1,6 @@
 import React from 'react'
 import "../Styles/Approve.css";
-
+// This component is used to show Approve modal in the sign-up page when it is clicked.
 const Approve = props => {
     return (
       <div className="approve-box" style={{"margin-top":"10%"}}>
